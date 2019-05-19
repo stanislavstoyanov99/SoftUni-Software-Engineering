@@ -1,0 +1,60 @@
+div{
+    display: inline-block;
+    width: 30%;
+    margin-left:2%;
+    vertical-align: top;
+}
+
+span{
+    font-weight: bold;
+    border: dotted darkcyan;
+}
+
+h1{
+    text-align: center;
+    display: inline;
+    color: blue;
+}
+
+p{
+    color: darkviolet;
+}
+
+li{
+    border: 2px solid yellow;
+}
+
+#green{
+    display: inline;
+    background: green;
+}
+
+#blue{
+    display: inline;
+    background: blue;
+}
+
+#red{
+    display: inline;
+    background: red;
+}
+
+#purple{
+    display: inline;
+    background: purple;
+}
+
+#orange{
+    display: inline;
+    background: orange;
+}
+
+.color-blocks{
+    padding: 20px;
+    border: 3px solid yellow;
+    margin: 20px;
+    font-family: 'Indie Flower', cursive;
+    font-size: large;
+    font-weight: bold;
+    color: white;
+}
