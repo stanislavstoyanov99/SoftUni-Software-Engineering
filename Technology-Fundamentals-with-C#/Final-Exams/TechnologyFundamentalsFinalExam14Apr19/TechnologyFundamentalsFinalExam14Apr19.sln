@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01ArrivingInKathmandu", "01ArrivingInKathmandu\01ArrivingInKathmandu.csproj", "{5159F51B-FA3F-4C65-83C7-63A83AC22CE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02OnTheWayToAnnapurna", "02OnTheWayToAnnapurna\02OnTheWayToAnnapurna.csproj", "{E1F05339-23D2-419A-9EC7-B9558331E235}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5159F51B-FA3F-4C65-83C7-63A83AC22CE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5159F51B-FA3F-4C65-83C7-63A83AC22CE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5159F51B-FA3F-4C65-83C7-63A83AC22CE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5159F51B-FA3F-4C65-83C7-63A83AC22CE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1F05339-23D2-419A-9EC7-B9558331E235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1F05339-23D2-419A-9EC7-B9558331E235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1F05339-23D2-419A-9EC7-B9558331E235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1F05339-23D2-419A-9EC7-B9558331E235}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {929002F0-89B3-420C-B5DE-6C6781042F68}
+	EndGlobalSection
+EndGlobal
