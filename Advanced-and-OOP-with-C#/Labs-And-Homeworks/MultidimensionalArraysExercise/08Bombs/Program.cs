@@ -37,7 +37,7 @@ namespace _08Bombs
                 int bombRow = bomb[0];
                 int bombCol = bomb[1];
 
-                if (IsInside(matrix, bombRow, bombCol))
+                if (matrix[bombRow, bombCol] > 0)
                 {
                     if (IsInside(matrix, bombRow - 1, bombCol - 1) && matrix[bombRow - 1, bombCol - 1] > 0)
                     {
