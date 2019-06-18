@@ -12,9 +12,9 @@ namespace _01ClubParty
             string[] input = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             Stack<string> symbols = new Stack<string>(input);
+            Queue<string> halls = new Queue<string>();
 
-            List<string> halls = new List<string>();
-            List<int> people = new List<int>();
+            List<int> allGroups = new List<int>();
 
             while (symbols.Any())
             {
@@ -23,30 +23,24 @@ namespace _01ClubParty
 
                 bool isNumber = int.TryParse(currentSymbol, out currentPeople);
 
-                if (isNumber)
+                if (!isNumber)
                 {
-                    if (halls.Count != 0)
-                    {
-                        if (currentPeople + people.Sum() <= maxCapacity)
-                        {
-                            people.Add(currentPeople);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"{halls[0]} -> {string.Join(", ", people)}");
-                            halls.RemoveAt(0);
-                            people.Clear();
-
-                            if (halls.Count != 0)
-                            {
-                                people.Add(currentPeople);
-                            }
-                        }
-                    }
+                    halls.Enqueue(currentSymbol);
                 }
                 else
                 {
-                    halls.Add(currentSymbol);
+                    if (currentPeople + allGroups.Sum() > maxCapacity)
+                    {
+                        Console.WriteLine($"{halls.Dequeue()} -> {string.Join(", ", allGroups)}");
+                        allGroups.Clear();
+                    }
+
+                    if (halls.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    allGroups.Add(currentPeople);
                 }
             }
         }
