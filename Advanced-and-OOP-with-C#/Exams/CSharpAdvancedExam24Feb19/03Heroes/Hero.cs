@@ -25,9 +25,7 @@ namespace Heroes
 
             sb.AppendLine($"Hero: {this.Name} – {this.Level}lvl");
             sb.AppendLine("Item:");
-            sb.AppendLine($"  * Strength: {this.Item.Strenght}");
-            sb.AppendLine($"  * Ability: {this.Item.Ability}");
-            sb.Append($"  * Intelligence: {this.Item.Intelligence}");
+            sb.AppendLine(this.Item.ToString());
 
             return sb.ToString().Trim();
         }

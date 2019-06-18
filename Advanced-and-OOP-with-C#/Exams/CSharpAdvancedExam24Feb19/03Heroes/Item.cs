@@ -6,14 +6,14 @@ namespace Heroes
 {
     public class Item
     {
-        public Item(int strenght, int ability, int intelligence)
+        public Item(int strength, int ability, int intelligence)
         {
-            this.Strenght = strenght;
+            this.Strength = strength;
             this.Ability = ability;
             this.Intelligence = intelligence;
         }
 
-        public int Strenght { get; set; }
+        public int Strength { get; set; }
 
         public int Ability { get; set; }
 
@@ -22,7 +22,7 @@ namespace Heroes
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"  * Strength: {this.Strenght}");
+            sb.AppendLine($"  * Strength: {this.Strength}");
             sb.AppendLine($"  * Ability: {this.Ability}");
             sb.Append($"  * Intelligence: {this.Intelligence}");
 

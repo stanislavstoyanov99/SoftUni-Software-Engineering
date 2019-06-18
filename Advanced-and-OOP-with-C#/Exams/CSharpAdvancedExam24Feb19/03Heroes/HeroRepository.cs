@@ -28,9 +28,9 @@ namespace Heroes
 
         public Hero GetHeroWithHighestStrength()
         {
-            int maxStrength = this.data.Select(h => h.Item.Strenght).Max();
+            int maxStrength = this.data.Select(h => h.Item.Strength).Max();
 
-            return this.data.FirstOrDefault(h => h.Item.Strenght == maxStrength);
+            return this.data.FirstOrDefault(h => h.Item.Strength == maxStrength);
         }
 
         public Hero GetHeroWithHighestAbility()
