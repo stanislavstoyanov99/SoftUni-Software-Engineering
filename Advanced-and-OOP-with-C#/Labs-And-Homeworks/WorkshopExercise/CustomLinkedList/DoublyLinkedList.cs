@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace CustomLinkedList
 {
-    public class DoublyLinkedList<T>
+    public class DoublyLinkedList<T> : IEnumerable<T>
         where T : IComparable<T>
     {
         private class LinkNode
@@ -173,6 +174,23 @@ namespace CustomLinkedList
             {
                 throw new InvalidOperationException("Double linked list is empty!");
             }
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            LinkNode currentNode = this.head;
+
+            while (currentNode != null)
+            {
+                yield return currentNode.Value;
+
+                currentNode = currentNode.NextNode;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

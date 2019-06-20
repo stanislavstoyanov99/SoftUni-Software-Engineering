@@ -16,6 +16,11 @@ namespace CustomLinkedList
             string[] array = doublyLinkedList.ToArray();
 
             Console.WriteLine(doublyLinkedList.Contains("Gosho"));
+
+            foreach (var item in doublyLinkedList)
+            {
+                Console.WriteLine(item);
+            }
         }
     }
 }
