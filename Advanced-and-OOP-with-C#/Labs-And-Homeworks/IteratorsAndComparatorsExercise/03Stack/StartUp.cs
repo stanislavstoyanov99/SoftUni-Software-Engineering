@@ -31,18 +31,12 @@ namespace Stack
 
             foreach (var number in stack)
             {
-                if (number != 0)
-                {
-                    Console.WriteLine(number);
-                }
+                Console.WriteLine(number);
             }
 
             foreach (var number in stack)
             {
-                if (number != 0)
-                {
-                    Console.WriteLine(number);
-                }
+                Console.WriteLine(number);
             }
         }
     }

@@ -7,13 +7,11 @@ namespace Stack
 {
     public class CustomStack<T> : IEnumerable<T>
     {
-        private const int defaultSize = 2;
-
-        private T[] innerArray;
+        private List<T> innerList;
 
         public CustomStack()
         {
-            this.innerArray = new T[defaultSize];
+            this.innerList = new List<T>();
             this.Count = 0;
         }
 
@@ -21,12 +19,7 @@ namespace Stack
 
         public void Push(T element)
         {
-            if (this.innerArray.Length == Count)
-            {
-                this.Grow();
-            }
-
-            this.innerArray[this.Count] = element;
+            this.innerList.Add(element);
             this.Count++;
         }
 
@@ -35,8 +28,8 @@ namespace Stack
             this.CheckIfEmpty();
             this.Count--;
 
-            T tempElement = this.innerArray[this.Count];
-            this.innerArray[this.Count] = default(T);
+            T tempElement = this.innerList[this.Count];
+            this.innerList.Remove(tempElement);
 
             return tempElement;
         }
@@ -45,7 +38,7 @@ namespace Stack
         {
             this.CheckIfEmpty();
 
-            return this.innerArray[this.Count - 1];
+            return this.innerList[this.Count - 1];
         }
 
         private void CheckIfEmpty()
@@ -57,19 +50,11 @@ namespace Stack
             }
         }
 
-        private void Grow()
-        {
-            T[] tempArray = new T[defaultSize * 2];
-
-            this.innerArray.CopyTo(tempArray, 0);
-            this.innerArray = tempArray;
-        }
-
         public IEnumerator<T> GetEnumerator()
         {
-            for (int number = innerArray.Length - 1; number >= 0; number--)
+            for (int number = innerList.Count - 1; number >= 0; number--)
             {
-                yield return innerArray[number];
+                yield return innerList[number];
             }
         }
 
