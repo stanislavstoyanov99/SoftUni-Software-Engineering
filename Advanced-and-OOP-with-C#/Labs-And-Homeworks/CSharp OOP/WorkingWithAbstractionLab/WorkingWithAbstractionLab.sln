@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.705
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01RhombusOfStars", "01RhombusOfStars\01RhombusOfStars.csproj", "{5B1C8230-453A-497E-A5DC-98EADBA93EFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02PointInRectangle", "02PointInRectangle\02PointInRectangle.csproj", "{7157CDD7-C8F0-465A-BD6E-F2F84FBF6E14}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5B1C8230-453A-497E-A5DC-98EADBA93EFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B1C8230-453A-497E-A5DC-98EADBA93EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B1C8230-453A-497E-A5DC-98EADBA93EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B1C8230-453A-497E-A5DC-98EADBA93EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7157CDD7-C8F0-465A-BD6E-F2F84FBF6E14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7157CDD7-C8F0-465A-BD6E-F2F84FBF6E14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7157CDD7-C8F0-465A-BD6E-F2F84FBF6E14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7157CDD7-C8F0-465A-BD6E-F2F84FBF6E14}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB2506F1-6F01-43EB-8D38-8B3360DBA881}
+	EndGlobalSection
+EndGlobal
