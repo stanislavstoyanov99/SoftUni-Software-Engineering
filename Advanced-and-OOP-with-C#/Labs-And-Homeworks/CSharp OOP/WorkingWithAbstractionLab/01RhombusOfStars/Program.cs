@@ -2,24 +2,33 @@
 
 namespace _01RhombusOfStars
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
+        {
+            Runner runner = new Runner();
+            runner.Start();
+        }
+    }
+
+    public class Runner
+    {
+        public void Start()
         {
             int figureSize = int.Parse(Console.ReadLine());
 
             for (int starsCount = 1; starsCount <= figureSize; starsCount++)
             {
-                PrintRow(figureSize, starsCount);
+                this.PrintRow(figureSize, starsCount);
             }
 
             for (int starsCount = figureSize - 1; starsCount >= 1; starsCount--)
             {
-                PrintRow(figureSize, starsCount);
+                this.PrintRow(figureSize, starsCount);
             }
         }
 
-        private static void PrintRow(int figureSize, int starsCount)
+        private void PrintRow(int figureSize, int starsCount)
         {
             for (int i = 0; i < figureSize - starsCount; i++)
             {
