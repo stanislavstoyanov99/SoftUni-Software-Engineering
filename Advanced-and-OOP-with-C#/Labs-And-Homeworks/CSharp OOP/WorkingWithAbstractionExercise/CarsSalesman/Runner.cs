@@ -33,6 +33,7 @@ namespace P02_CarsSalesman
             }
 
             int carCount = int.Parse(Console.ReadLine());
+
             for (int i = 0; i < carCount; i++)
             {
                 string[] parameters = Console.ReadLine()
