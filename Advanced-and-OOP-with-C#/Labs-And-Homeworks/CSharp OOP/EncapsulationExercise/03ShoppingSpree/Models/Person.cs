@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 using ShoppingSpree.Exceptions;
 
@@ -74,18 +73,18 @@ namespace ShoppingSpree.Models
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            string result = string.Empty;
 
             if (this.bagOfProducts.Count == 0)
             {
-                sb.AppendLine($"{this.Name} - Nothing bought");
+                result += $"{this.Name} - Nothing bought";
             }
             else
             {
-                sb.AppendLine($"{this.Name} - {string.Join(", ", this.bagOfProducts)}");
+                result += $"{this.Name} - {string.Join(", ", this.bagOfProducts)}";
             }
 
-            return sb.ToString().TrimEnd();
+            return result.TrimEnd();
         }
     }
 }
