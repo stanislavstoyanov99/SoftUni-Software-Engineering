@@ -2,6 +2,6 @@
 {
     public interface ICallable
     {
-        string Call();
+        string Call(string number);
     }
 }

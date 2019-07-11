@@ -1,9 +1,8 @@
 ﻿using System;
-using _04Telephony.Core;
-using _04Telephony.Exceptions;
-using _04Telephony.Interfaces;
 
-namespace _04Telephony
+using _06BirthdayCelebrations.Core;
+
+namespace _06BirthdayCelebrations
 {
     public class StartUp
     {

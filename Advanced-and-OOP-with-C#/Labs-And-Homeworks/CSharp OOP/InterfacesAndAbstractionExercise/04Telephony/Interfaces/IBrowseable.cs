@@ -2,6 +2,6 @@
 {
     public interface IBrowseable
     {
-        string Browse();
+        string Browse(string siteName);
     }
 }
