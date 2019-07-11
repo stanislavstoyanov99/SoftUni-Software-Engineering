@@ -1,6 +1,4 @@
-﻿using System;
-
-using _05BorderControl.Interfaces;
+﻿using _05BorderControl.Interfaces;
 
 namespace _05BorderControl.Models
 {

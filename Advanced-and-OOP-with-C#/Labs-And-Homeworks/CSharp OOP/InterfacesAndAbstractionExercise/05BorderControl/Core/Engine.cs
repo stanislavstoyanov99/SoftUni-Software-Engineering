@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
 
+using _05BorderControl.Extentions;
 using _05BorderControl.Interfaces;
 using _05BorderControl.Models;
 
@@ -41,12 +42,7 @@ namespace _05BorderControl.Core
                 .Select(c => c.Id)
                 .ToList();
 
-            PrintFakeIds(fakeIds);
-        }
-
-        private void PrintFakeIds(List<string> fakeIds)
-        {
-            Console.WriteLine(string.Join(Environment.NewLine, fakeIds));
+            Console.WriteLine(fakeIds.PrintAll());
         }
 
         private void CreateRobot(string[] tokens)
