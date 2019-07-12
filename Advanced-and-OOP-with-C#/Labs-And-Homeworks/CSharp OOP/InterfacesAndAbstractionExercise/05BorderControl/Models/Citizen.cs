@@ -4,8 +4,6 @@ namespace _05BorderControl.Models
 {
     public class Citizen : IIdentifiable
     {
-        private int age;
-
         public Citizen(string name, int age, string id)
         {
             this.Name = name;

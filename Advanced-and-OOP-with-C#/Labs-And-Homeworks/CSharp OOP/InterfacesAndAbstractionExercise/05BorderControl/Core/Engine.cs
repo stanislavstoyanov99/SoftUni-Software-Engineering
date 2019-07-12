@@ -10,11 +10,19 @@ namespace _05BorderControl.Core
 {
     public class Engine
     {
-        private List<IIdentifiable> citizensAndRobots;
+        private readonly List<IIdentifiable> citizensAndRobots;
 
         public Engine()
         {
             this.citizensAndRobots = new List<IIdentifiable>();
+        }
+
+        public IReadOnlyCollection<IIdentifiable> CitizensAndRobots
+        {
+            get
+            {
+                return this.citizensAndRobots;
+            }
         }
 
         public void Run()
@@ -37,7 +45,7 @@ namespace _05BorderControl.Core
 
             string lastDigits = Console.ReadLine();
 
-            var fakeIds = citizensAndRobots
+            var fakeIds = CitizensAndRobots
                 .Where(c => c.Id.EndsWith(lastDigits))
                 .Select(c => c.Id)
                 .ToList();
