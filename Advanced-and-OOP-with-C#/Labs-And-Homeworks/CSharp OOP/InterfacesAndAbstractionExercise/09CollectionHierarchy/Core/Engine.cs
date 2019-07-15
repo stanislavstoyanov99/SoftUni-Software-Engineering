@@ -8,9 +8,11 @@ namespace _09CollectionHierarchy.Core
 {
     public class Engine
     {
+        private const int NUMBER_OF_COLLECTIONS = 3;
         private readonly AddCollection addCollection;
         private readonly AddRemoveCollection addRemoveCollection;
         private readonly MyList myList;
+
         private readonly List<string> stringResult;
         private readonly List<int> intResult;
 
@@ -29,7 +31,7 @@ namespace _09CollectionHierarchy.Core
             string[] elements = Console.ReadLine()
                 .Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
-            for (int collection = 0; collection < 3; collection++)
+            for (int collection = 0; collection < NUMBER_OF_COLLECTIONS; collection++)
             {
                 foreach (var element in elements)
                 {

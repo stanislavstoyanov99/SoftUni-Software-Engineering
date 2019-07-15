@@ -2,9 +2,9 @@
 
 namespace _09CollectionHierarchy.Models
 {
-    public class MyList : AddRemoveCollection, IMylist
+    public class MyList : Collection, IAddRemoveCollection, IMylist
     {
-        public override string Remove()
+        public string Remove()
         {
             string item = base.Data[0];
             base.Data.RemoveAt(0);
