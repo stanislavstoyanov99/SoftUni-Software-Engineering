@@ -13,21 +13,21 @@ namespace _08MilitaryElite.Core
     {
         private readonly List<ISoldier> army;
 
-        private readonly PrivateFactory privateFactory;
-        private readonly LieutenantGeneralFactory generalFactory;
-        private readonly EngineerFactory engineerFactory;
-        private readonly CommandoFactory commandoFactory;
-        private readonly SpyFactory spyFactory;
+        private readonly SoldierFactory soldierFactory;
+        //private readonly LieutenantGeneralFactory generalFactory;
+        //private readonly EngineerFactory engineerFactory;
+        //private readonly CommandoFactory commandoFactory;
+        //private readonly SpyFactory spyFactory;
 
         public Engine()
         {
             this.army = new List<ISoldier>();
 
-            this.privateFactory = new PrivateFactory();
-            this.generalFactory = new LieutenantGeneralFactory();
-            this.engineerFactory = new EngineerFactory();
-            this.commandoFactory = new CommandoFactory();
-            this.spyFactory = new SpyFactory();
+            //this.privateFactory = new PrivateFactory();
+            //this.generalFactory = new LieutenantGeneralFactory();
+            //this.engineerFactory = new EngineerFactory();
+            //this.commandoFactory = new CommandoFactory();
+            //this.spyFactory = new SpyFactory();
         }
 
         public void Run()
@@ -44,9 +44,13 @@ namespace _08MilitaryElite.Core
                 string lastName = soldierInfo[3];
                 decimal salary = decimal.Parse(soldierInfo[4]);
 
+                SoldierFactory soldierFactory = null;
+
                 if (soldierType == "Private")
                 {
-                    ISoldier soldier = this.privateFactory.CreatePrivate(id, firstName, lastName, salary);
+                    soldierFactory = new PrivateFactory(id, firstName, lastName, salary);
+                    ISoldier soldier = soldierFactory.GetSoldier();
+
                     this.army.Add(soldier);
                 }
                 else if (soldierType == "LieutenantGeneral")
