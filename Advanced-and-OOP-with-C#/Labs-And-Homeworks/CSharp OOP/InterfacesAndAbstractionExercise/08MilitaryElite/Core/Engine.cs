@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using _08MilitaryElite.Exceptions;
 using _08MilitaryElite.Interfaces;
 using _08MilitaryElite.Models;
-using _08MilitaryElite.Factories;
 
 namespace _08MilitaryElite.Core
 {
@@ -13,21 +12,9 @@ namespace _08MilitaryElite.Core
     {
         private readonly List<ISoldier> army;
 
-        private readonly SoldierFactory soldierFactory;
-        //private readonly LieutenantGeneralFactory generalFactory;
-        //private readonly EngineerFactory engineerFactory;
-        //private readonly CommandoFactory commandoFactory;
-        //private readonly SpyFactory spyFactory;
-
         public Engine()
         {
             this.army = new List<ISoldier>();
-
-            //this.privateFactory = new PrivateFactory();
-            //this.generalFactory = new LieutenantGeneralFactory();
-            //this.engineerFactory = new EngineerFactory();
-            //this.commandoFactory = new CommandoFactory();
-            //this.spyFactory = new SpyFactory();
         }
 
         public void Run()
@@ -44,18 +31,15 @@ namespace _08MilitaryElite.Core
                 string lastName = soldierInfo[3];
                 decimal salary = decimal.Parse(soldierInfo[4]);
 
-                SoldierFactory soldierFactory = null;
-
                 if (soldierType == "Private")
                 {
-                    soldierFactory = new PrivateFactory(id, firstName, lastName, salary);
-                    ISoldier soldier = soldierFactory.GetSoldier();
+                    ISoldier soldier = new Private(id, firstName, lastName, salary);
 
                     this.army.Add(soldier);
                 }
                 else if (soldierType == "LieutenantGeneral")
                 {
-                    ILieutenantGeneral lieutenantGeneral = this.generalFactory.CreateLieutenantGeneral(id, firstName, lastName, salary);
+                    ILieutenantGeneral lieutenantGeneral = new LieutenantGeneral(id, firstName, lastName, salary);
 
                     string[] privates = soldierInfo
                         .Skip(5)
@@ -71,7 +55,7 @@ namespace _08MilitaryElite.Core
                     {
                         string corps = soldierInfo[5];
 
-                        IEngineer engineer = this.engineerFactory.CreateEngineer(id, firstName, lastName, salary, corps);
+                        IEngineer engineer = new Engineer(id, firstName, lastName, salary, corps);
 
                         string[] repairs = soldierInfo
                             .Skip(6)
@@ -92,7 +76,7 @@ namespace _08MilitaryElite.Core
                     {
                         string corps = soldierInfo[5];
 
-                        ICommando commando = this.commandoFactory.CreateCommando(id, firstName, lastName, salary, corps);
+                        ICommando commando = new Commando(id, firstName, lastName, salary, corps);
 
                         string[] missions = soldierInfo
                             .Skip(6)
@@ -111,7 +95,7 @@ namespace _08MilitaryElite.Core
                 {
                     int codeNumber = (int)salary;
 
-                    ISpy spy = this.spyFactory.CreateSpy(id, firstName, lastName, codeNumber);
+                    ISpy spy = new Spy(id, firstName, lastName, codeNumber);
 
                     this.army.Add(spy);
                 }
