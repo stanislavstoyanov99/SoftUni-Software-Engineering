@@ -2,7 +2,7 @@
 
 namespace P01.Stream_Progress.Models
 {
-    public class File : IStream
+    public class File : Stream
     {
         private readonly string name;
 
@@ -13,9 +13,5 @@ namespace P01.Stream_Progress.Models
             this.Length = length;
             this.BytesSent = bytesSent;
         }
-
-        public int Length { get; private set; }
-
-        public int BytesSent { get; private set; }
     }
 }

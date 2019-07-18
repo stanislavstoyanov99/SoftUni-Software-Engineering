@@ -2,7 +2,7 @@
 
 namespace P01.Stream_Progress.Models
 {
-    public class Music: IStream
+    public class Music: Stream
     {
         private readonly string artist;
         private readonly string album;
@@ -15,9 +15,5 @@ namespace P01.Stream_Progress.Models
             this.Length = length;
             this.BytesSent = bytesSent;
         }
-
-        public int Length { get; private set; }
-
-        public int BytesSent { get; private set; }
     }
 }
