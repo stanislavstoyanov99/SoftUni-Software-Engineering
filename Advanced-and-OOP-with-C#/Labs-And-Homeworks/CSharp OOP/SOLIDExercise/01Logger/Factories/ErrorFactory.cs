@@ -5,13 +5,12 @@ using _01Logger.Exceptions;
 using _01Logger.Models.Contracts;
 using _01Logger.Models.Enumerations;
 using _01Logger.Models.Errors;
+using _01Logger.Models.Formats;
 
 namespace _01Logger.Factories
 {
     public class ErrorFactory
     {
-        private const string dateFormat = "M/dd/yyyy h:mm:ss tt";
-
         public IError GetError(string dateString, string levelString, string message)
         {
             Level level;
@@ -24,16 +23,20 @@ namespace _01Logger.Factories
             }
 
             DateTime dateTime;
+
             try
             {
-                dateTime = DateTime.ParseExact(dateString, dateFormat, CultureInfo.InvariantCulture);
+                dateTime = DateTime.ParseExact(dateString,
+                    DateTimeFormat.FORMAT, CultureInfo.InvariantCulture);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new InvalidDateFormatException();
             }
 
-            return new Error(dateTime, message, level);
+            IError error = new Error(dateTime, message, level);
+
+            return error;
         }
     }
 }

@@ -7,18 +7,13 @@ namespace _01Logger.Core
 {
     public class Engine
     {
-        private ILogger logger;
-        private ErrorFactory errorFactory;
+        private readonly ILogger logger;
+        private readonly ErrorFactory errorFactory;
 
-        private Engine()
-        {
-            this.errorFactory = new ErrorFactory();    
-        }
-
-        public Engine(ILogger logger)
-            : this()
+        public Engine(ILogger logger, ErrorFactory errorFactory)
         {
             this.logger = logger;
+            this.errorFactory = errorFactory;
         }
 
         public void Run()

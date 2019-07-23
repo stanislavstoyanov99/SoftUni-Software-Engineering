@@ -6,12 +6,12 @@ using System.Globalization;
 using _01Logger.Models.Contracts;
 using _01Logger.Models.Enumerations;
 using _01Logger.Models.IOManagement;
+using _01Logger.Models.Formats;
 
 namespace _01Logger.Models.Files
 {
     public class LogFile : IFile
     {
-        private const string dateFormat = "M/dd/yyyy h:mm:ss tt";
         private const string currentDirectory = "\\logs\\";
         private const string currentFile = "log.txt";
 
@@ -23,6 +23,7 @@ namespace _01Logger.Models.Files
             this.IOManager = new IOManager(currentDirectory, currentFile);
             this.currentPath = this.IOManager.GetCurrentPath();
             this.IOManager.EnsureDirectoryAndFileExist();
+
             this.Path = currentPath + currentDirectory + currentFile;
         }
 
@@ -39,7 +40,7 @@ namespace _01Logger.Models.Files
             string message = error.Message;
 
             string formattedMessage = string.Format(format,
-                dateTime.ToString(dateFormat, CultureInfo.InvariantCulture),
+                dateTime.ToString(DateTimeFormat.FORMAT, CultureInfo.InvariantCulture),
                 level.ToString(),
                 message);
 

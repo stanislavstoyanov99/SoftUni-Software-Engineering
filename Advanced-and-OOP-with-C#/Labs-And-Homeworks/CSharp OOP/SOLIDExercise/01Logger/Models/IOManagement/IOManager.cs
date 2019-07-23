@@ -6,9 +6,9 @@ namespace _01Logger.Models.IOManagement
 {
     public class IOManager : IIOManager
     {
-        private string currentPath;
-        private string currentDirectory;
-        private string currentFile;
+        private readonly string currentPath;
+        private readonly string currentDirectory;
+        private readonly string currentFile;
 
         private IOManager()
         {
@@ -33,7 +33,7 @@ namespace _01Logger.Models.IOManagement
                 Directory.CreateDirectory(this.CurrentDirectoryPath);
             }
 
-            File.WriteAllText(this.CurrentFilePath, "");
+            File.WriteAllText(this.CurrentFilePath, string.Empty);
         }
 
         public string GetCurrentPath()

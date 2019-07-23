@@ -3,31 +3,21 @@ using System.Globalization;
 
 using _01Logger.Models.Contracts;
 using _01Logger.Models.Enumerations;
+using _01Logger.Models.Formats;
 
 namespace _01Logger.Models.Appenders
 {
-    public class ConsoleAppender : IAppender
+    public class ConsoleAppender : Appender, IAppender
     {
-        private const string dateFormat = "M/dd/yyyy h:mm:ss tt";
-        private int messagesAppended;
-
-        private ConsoleAppender()
-        {
-            this.messagesAppended = 0;
-        }
-
         public ConsoleAppender(ILayout layout, Level level)
-            :this()
         {
             this.Layout = layout;
             this.Level = level;
         }
 
-        public ILayout Layout { get; private set; }
+        public override int MessagesAppended { get; protected set; }
 
-        public Level Level { get; private set; }
-
-        public void Append(IError error)
+        public override void Append(IError error)
         {
             string format = this.Layout.Format;
 
@@ -36,20 +26,18 @@ namespace _01Logger.Models.Appenders
             string message = error.Message;
 
             string formattedMessage = String.Format(format,
-                dateTime.ToString(dateFormat, CultureInfo.InvariantCulture),
+                dateTime.ToString(DateTimeFormat.FORMAT, CultureInfo.InvariantCulture),
                 level.ToString(),
                 message);
 
             Console.WriteLine(formattedMessage);
-            messagesAppended++;
+
+            MessagesAppended++;
         }
 
         public override string ToString()
         {
-            return $"Appender type: {this.GetType().Name}," +
-                $" Layout type: {this.Layout.GetType().Name}," +
-                $" Report level: {this.Level.ToString()}," +
-                $" Messages appended: {this.messagesAppended}";
+            return base.ToString();
         }
     }
 }

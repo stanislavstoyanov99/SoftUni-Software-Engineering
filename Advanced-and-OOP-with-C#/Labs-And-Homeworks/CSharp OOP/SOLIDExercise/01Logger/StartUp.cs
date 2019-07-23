@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using _01Logger.Models.Contracts;
 using _01Logger.Factories;
 using _01Logger.Core;
+using _01Logger.Models;
 
 namespace _01Logger
 {
@@ -13,12 +14,16 @@ namespace _01Logger
         {
             int appendersCount = int.Parse(Console.ReadLine());
             ICollection<IAppender> appenders = new List<IAppender>();
-            AppenderFactory appenderFactory = new AppenderFactory();
+
+            LayoutFactory layoutFactory = new LayoutFactory();
+            AppenderFactory appenderFactory = new AppenderFactory(layoutFactory);
+            ErrorFactory errorFactory = new ErrorFactory();
 
             ReadAppenderData(appendersCount, appenders, appenderFactory);
-            ILogger logger = new Models.Logger(appenders);
 
-            Engine engine = new Engine(logger);
+            ILogger logger = new Logger(appenders);
+
+            Engine engine = new Engine(logger, errorFactory);
             engine.Run();
         }
 

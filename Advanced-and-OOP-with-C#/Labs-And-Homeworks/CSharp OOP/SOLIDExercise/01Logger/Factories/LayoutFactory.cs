@@ -1,6 +1,9 @@
-﻿using _01Logger.Exceptions;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+
+using _01Logger.Exceptions;
 using _01Logger.Models.Contracts;
-using _01Logger.Models.Layouts;
 
 namespace _01Logger.Factories
 {
@@ -8,20 +11,17 @@ namespace _01Logger.Factories
     {
         public ILayout GetLayout(string type)
         {
-            ILayout layout;
+            Type typeToCreate = Assembly
+                .GetExecutingAssembly()
+                .GetTypes()
+                .FirstOrDefault(t => t.Name == type);
 
-            if (type == "SimpleLayout")
-            {
-                layout = new SimpleLayout();
-            }
-            else if (type == "XmlLayout")
-            {
-                layout = new XmlLayout();
-            }
-            else
+            if (typeToCreate == null)
             {
                 throw new InvalidLayoutTypeException();
             }
+
+            ILayout layout = (ILayout)Activator.CreateInstance(typeToCreate);
 
             return layout;
         }

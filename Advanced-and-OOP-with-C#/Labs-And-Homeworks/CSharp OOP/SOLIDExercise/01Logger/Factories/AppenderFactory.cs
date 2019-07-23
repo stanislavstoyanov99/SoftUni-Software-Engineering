@@ -1,20 +1,20 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 
 using _01Logger.Exceptions;
-using _01Logger.Models.Appenders;
 using _01Logger.Models.Contracts;
 using _01Logger.Models.Enumerations;
-using _01Logger.Models.Files;
 
 namespace _01Logger.Factories
 {
     public class AppenderFactory
     {
-        private LayoutFactory layoutFactory;
+        private readonly LayoutFactory layoutFactory;
 
-        public AppenderFactory()
+        public AppenderFactory(LayoutFactory layoutFactory)
         {
-            this.layoutFactory = new LayoutFactory();
+            this.layoutFactory = layoutFactory;
         }
 
         public IAppender GetAppender(string appenderType, string layoutType, string levelString)
@@ -29,20 +29,23 @@ namespace _01Logger.Factories
 
             ILayout layout = this.layoutFactory.GetLayout(layoutType);
 
-            IAppender appender;
-            if (appenderType == "ConsoleAppender")
-            {
-                appender = new ConsoleAppender(layout, level);
-            }
-            else if (appenderType == "FileAppender")
-            {
-                IFile file = new LogFile();
-                appender = new FileAppender(layout, level, file);
-            }
-            else
+            Type appenderToCreate = Assembly
+                .GetExecutingAssembly()
+                .GetTypes()
+                .FirstOrDefault(t => t.Name == appenderType);
+
+            if (appenderToCreate == null)
             {
                 throw new InvalidAppenderTypeException();
             }
+
+            object[] args = new object[]
+            {
+                layout,
+                level,
+            };
+
+            IAppender appender = (IAppender)Activator.CreateInstance(appenderToCreate, args);
 
             return appender;
         }

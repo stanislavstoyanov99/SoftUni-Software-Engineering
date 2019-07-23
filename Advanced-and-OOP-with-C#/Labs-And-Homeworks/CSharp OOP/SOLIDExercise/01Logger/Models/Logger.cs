@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
+using System.Collections.Generic;
 
 using _01Logger.Models.Contracts;
 
@@ -7,7 +7,7 @@ namespace _01Logger.Models
 {
     public class Logger : ILogger
     {
-        private ICollection<IAppender> appenders;
+        private readonly ICollection<IAppender> appenders;
 
         public Logger(ICollection<IAppender> appenders)
         {
