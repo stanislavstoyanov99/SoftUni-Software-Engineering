@@ -88,9 +88,9 @@ namespace MortalEngines.Entities.Models
 
             sb.AppendLine($"- {this.Name}")
                 .AppendLine($" *Type: {this.GetType().Name}")
-                .AppendLine($" *Health: {this.HealthPoints}")
-                .AppendLine($" *Attack: {this.AttackPoints}")
-                .AppendLine($" *Defense: {this.DefensePoints}");
+                .AppendLine($" *Health: {this.HealthPoints:F2}")
+                .AppendLine($" *Attack: {this.AttackPoints:F2}")
+                .AppendLine($" *Defense: {this.DefensePoints:F2}");
 
             if (this.Targets.Count == 0)
             {
@@ -98,8 +98,7 @@ namespace MortalEngines.Entities.Models
             }
             else
             {
-                sb.AppendLine(" *Targets: ");
-                sb.Append(string.Join(",", this.Targets));
+                sb.AppendLine($" *Targets: {string.Join(",", this.Targets)}");
             }
 
             return sb.ToString().TrimEnd();

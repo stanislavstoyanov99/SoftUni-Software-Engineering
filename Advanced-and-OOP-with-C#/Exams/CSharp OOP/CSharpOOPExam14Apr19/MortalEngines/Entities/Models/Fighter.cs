@@ -10,21 +10,14 @@ namespace MortalEngines.Entities.Models
         private const int ATTACK_POINTS_TO_INCREASE = 50;
         private const int DEFENSE_POINTS_TO_DECREASE = 25;
 
-        public Fighter(string name, double attackPoints, double defensePoints, double healthPoints)
-            : base(name, attackPoints, defensePoints, healthPoints)
+        public Fighter(string name, double attackPoints, double defensePoints,
+            double healthPoints = INITIAL_HEALTH_POINTS)
+            : base(name, attackPoints += ATTACK_POINTS_TO_INCREASE, defensePoints -= DEFENSE_POINTS_TO_DECREASE, healthPoints)
         {
-            this.HealthPoints = INITIAL_HEALTH_POINTS;
+            this.AggressiveMode = true;
         }
 
-        public bool AggressiveMode
-        {
-            get => true;
-            private set
-            {
-                this.AttackPoints += ATTACK_POINTS_TO_INCREASE;
-                this.DefensePoints -= DEFENSE_POINTS_TO_DECREASE;
-            }
-        }
+        public bool AggressiveMode { get; private set; }
 
         public void ToggleAggressiveMode()
         {
