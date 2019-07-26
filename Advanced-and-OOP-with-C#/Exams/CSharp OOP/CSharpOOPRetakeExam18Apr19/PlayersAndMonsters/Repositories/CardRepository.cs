@@ -19,7 +19,7 @@ namespace PlayersAndMonsters.Repositories
 
         public int Count => this.Cards.Count;
 
-        public IReadOnlyCollection<ICard> Cards => this.cards;
+        public IReadOnlyCollection<ICard> Cards => this.cards.AsReadOnly();
 
         public void Add(ICard card)
         {
@@ -28,7 +28,9 @@ namespace PlayersAndMonsters.Repositories
                 throw new ArgumentException(ExceptionMessages.CardNotFoundException);
             }
 
-            if (this.cards.Any(p => p.Name == card.Name))
+            bool isCardExists = this.cards.Any(p => p.Name == card.Name);
+
+            if (isCardExists)
             {
                 throw new ArgumentException(string.Format(ExceptionMessages.CardAllreadyExistsException,
                     card.Name));

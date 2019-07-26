@@ -86,14 +86,17 @@
 
             foreach (var player in this.playerRepository.Players)
             {
-                sb.AppendLine($"Username: {player.Username} - Health: {player.Health} - Cards {player.CardRepository.Count}");
+                sb.AppendLine(string.Format(ConstantMessages.PlayerReportInfo,
+                    player.Username,
+                    player.Health,
+                    player.CardRepository.Count));
 
                 foreach (var card in player.CardRepository.Cards)
                 {
-                    sb.AppendLine($"Card: {card.Name} - Damage: {card.DamagePoints}");
+                    sb.AppendLine(string.Format(ConstantMessages.CardReportInfo, card.Name, card.DamagePoints));
                 }
 
-                sb.AppendLine("###");
+                sb.AppendLine(ConstantMessages.DefaultReportSeparator);
             }
 
             return sb.ToString().TrimEnd();

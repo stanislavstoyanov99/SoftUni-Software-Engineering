@@ -19,7 +19,7 @@ namespace PlayersAndMonsters.Repositories
 
         public int Count => this.Players.Count;
 
-        public IReadOnlyCollection<IPlayer> Players => this.players;
+        public IReadOnlyCollection<IPlayer> Players => this.players.AsReadOnly();
 
         public void Add(IPlayer player)
         {
@@ -28,7 +28,9 @@ namespace PlayersAndMonsters.Repositories
                 throw new ArgumentException(ExceptionMessages.PlayerNotFoundException);
             }
 
-            if (this.players.Any(p => p.Username == player.Username))
+            bool isPlayerExists = this.players.Any(p => p.Username == player.Username);
+
+            if (isPlayerExists)
             {
                 throw new ArgumentException(string.Format(ExceptionMessages.PlayerAllreadyExistsException,
                     player.Username));
