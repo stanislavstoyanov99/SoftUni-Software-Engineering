@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-
-using PlayersAndMonsters.Common;
-using PlayersAndMonsters.Models.Players;
-using PlayersAndMonsters.Models.Players.Contracts;
-using PlayersAndMonsters.Models.BattleFields.Contracts;
-
-namespace PlayersAndMonsters.Models.BattleFields
+﻿namespace PlayersAndMonsters.Models.BattleFields
 {
+    using System;
+    using System.Linq;
+
+    using PlayersAndMonsters.Common;
+    using PlayersAndMonsters.Models.Players;
+    using PlayersAndMonsters.Models.Players.Contracts;
+    using PlayersAndMonsters.Models.BattleFields.Contracts;
+
     public class BattleField : IBattleField
     {
         private const int HEALTH_TO_INCREASE = 40;

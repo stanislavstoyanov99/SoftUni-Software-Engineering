@@ -2,14 +2,14 @@
 {
     using Core;
     using Core.Contracts;
-    using PlayersAndMonsters.Core.Factories;
-    using PlayersAndMonsters.Core.Factories.Contracts;
     using PlayersAndMonsters.IO;
     using PlayersAndMonsters.IO.Contracts;
-    using PlayersAndMonsters.Models.BattleFields;
-    using PlayersAndMonsters.Models.BattleFields.Contracts;
     using PlayersAndMonsters.Repositories;
+    using PlayersAndMonsters.Core.Factories;
+    using PlayersAndMonsters.Models.BattleFields;
     using PlayersAndMonsters.Repositories.Contracts;
+    using PlayersAndMonsters.Core.Factories.Contracts;
+    using PlayersAndMonsters.Models.BattleFields.Contracts;
 
     public class StartUp
     {
@@ -31,7 +31,9 @@
                 cardFactory,
                 battleField);
 
-            IEngine engine = new Engine(managerController, reader, writer);
+            ICommandInterpreter commandInterpreter = new CommandInterpreter(managerController);
+
+            IEngine engine = new Engine(commandInterpreter, reader, writer);
             engine.Run();
         }
     }

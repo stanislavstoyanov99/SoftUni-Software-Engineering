@@ -1,20 +1,21 @@
-﻿using System;
-using System.Text;
-
-using PlayersAndMonsters.Core.Contracts;
-using PlayersAndMonsters.IO.Contracts;
-
-namespace PlayersAndMonsters.Core
+﻿namespace PlayersAndMonsters.Core
 {
+    using System;
+    using System.Reflection;
+    using System.Text;
+
+    using PlayersAndMonsters.Core.Contracts;
+    using PlayersAndMonsters.IO.Contracts;
+
     public class Engine : IEngine
     {
-        private readonly IManagerController managerController;
+        private readonly ICommandInterpreter commandInterpreter;
         private readonly IReader reader;
         private readonly IWriter writer;
 
-        public Engine(IManagerController managerController, IReader reader, IWriter writer)
+        public Engine(ICommandInterpreter commandInterpreter, IReader reader, IWriter writer)
         {
-            this.managerController = managerController;
+            this.commandInterpreter = commandInterpreter;
             this.reader = reader;
             this.writer = writer;
         }
@@ -23,57 +24,25 @@ namespace PlayersAndMonsters.Core
         {
             string input = string.Empty;
 
+            StringBuilder sb = new StringBuilder();
+
             while ((input = this.reader.ReadLine()) != "Exit")
             {
-                string[] commandArgs = input.Split(" ");
-                string commandType = commandArgs[0];
-                string resultMessage = string.Empty;
-
-                StringBuilder sb = new StringBuilder();
+                string[] inputArgs = input
+                    .Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
                 try
                 {
-                    switch (commandType)
-                    {
-                        case "AddPlayer":
-                            string playerType = commandArgs[1];
-                            string playerUsername = commandArgs[2];
+                    string result = this.commandInterpreter.Read(inputArgs);
+                    this.writer.WriteLine(result);
 
-                            resultMessage = this.managerController.AddPlayer(playerType, playerUsername);
-                            sb.AppendLine(resultMessage);
-                            break;
-                        case "AddCard":
-                            string cardType = commandArgs[1];
-                            string cardName = commandArgs[2];
-
-                            resultMessage = this.managerController.AddCard(cardType, cardName);
-                            sb.AppendLine(resultMessage);
-                            break;
-                        case "AddPlayerCard":
-                            string username = commandArgs[1];
-                            string cardNameToAdd = commandArgs[2];
-
-                            resultMessage = this.managerController.AddPlayerCard(username, cardNameToAdd);
-                            sb.AppendLine(resultMessage);
-                            break;
-                        case "Fight":
-                            string attackUser = commandArgs[1];
-                            string enemyUser = commandArgs[2];
-
-                            resultMessage = this.managerController.Fight(attackUser, enemyUser);
-                            sb.AppendLine(resultMessage);
-                            break;
-                        case "Report":
-                            resultMessage = this.managerController.Report();
-                            sb.AppendLine(resultMessage);
-                            break;
-                    }
-
-                    this.writer.Write(sb.ToString());
+                    sb.AppendLine(result);
                 }
-                catch (Exception ex)
+                catch (TargetInvocationException ex)
                 {
-                    sb.AppendLine(ex.Message);
+                    this.writer.WriteLine(ex.InnerException.Message);
+
+                    sb.AppendLine(ex.InnerException.Message);
                 }
             }
         }

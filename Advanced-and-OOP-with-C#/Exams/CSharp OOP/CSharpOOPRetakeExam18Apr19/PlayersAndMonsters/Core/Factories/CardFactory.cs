@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-
-using PlayersAndMonsters.Common;
-using PlayersAndMonsters.Core.Factories.Contracts;
-using PlayersAndMonsters.Models.Cards.Contracts;
-
-namespace PlayersAndMonsters.Core.Factories
+﻿namespace PlayersAndMonsters.Core.Factories
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+
+    using PlayersAndMonsters.Common;
+    using PlayersAndMonsters.Core.Factories.Contracts;
+    using PlayersAndMonsters.Models.Cards.Contracts;
+
     public class CardFactory : ICardFactory
     {
         private const string SUFFIX = "Card";

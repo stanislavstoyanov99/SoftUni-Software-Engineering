@@ -4,8 +4,8 @@
 
     using Contracts;
     using PlayersAndMonsters.Common;
-    using PlayersAndMonsters.Core.Factories.Contracts;
     using PlayersAndMonsters.Models.BattleFields.Contracts;
+    using PlayersAndMonsters.Core.Factories.Contracts;
     using PlayersAndMonsters.Models.Cards.Contracts;
     using PlayersAndMonsters.Models.Players.Contracts;
     using PlayersAndMonsters.Repositories.Contracts;

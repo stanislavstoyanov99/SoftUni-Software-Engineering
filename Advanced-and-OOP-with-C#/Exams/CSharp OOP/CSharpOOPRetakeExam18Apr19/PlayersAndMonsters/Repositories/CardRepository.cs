@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-
-using PlayersAndMonsters.Common;
-using PlayersAndMonsters.Models.Cards.Contracts;
-using PlayersAndMonsters.Repositories.Contracts;
-
-namespace PlayersAndMonsters.Repositories
+﻿namespace PlayersAndMonsters.Repositories
 {
+    using System;
+    using System.Linq;
+    using System.Collections.Generic;
+
+    using PlayersAndMonsters.Common;
+    using PlayersAndMonsters.Models.Cards.Contracts;
+    using PlayersAndMonsters.Repositories.Contracts;
+
     public class CardRepository : ICardRepository
     {
         private readonly List<ICard> cards;

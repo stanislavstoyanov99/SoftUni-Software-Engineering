@@ -1,10 +1,10 @@
-﻿using System;
-
-using PlayersAndMonsters.Common;
-using PlayersAndMonsters.Models.Cards.Contracts;
-
-namespace PlayersAndMonsters.Models.Cards
+﻿namespace PlayersAndMonsters.Models.Cards
 {
+    using System;
+
+    using PlayersAndMonsters.Common;
+    using PlayersAndMonsters.Models.Cards.Contracts;
+
     public abstract class Card : ICard
     {
         private string name;

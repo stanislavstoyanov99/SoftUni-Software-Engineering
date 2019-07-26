@@ -1,15 +1,15 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-
-using PlayersAndMonsters.Common;
-using PlayersAndMonsters.Core.Factories.Contracts;
-using PlayersAndMonsters.Models.Players.Contracts;
-using PlayersAndMonsters.Repositories;
-using PlayersAndMonsters.Repositories.Contracts;
-
-namespace PlayersAndMonsters.Core.Factories
+﻿namespace PlayersAndMonsters.Core.Factories
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+
+    using PlayersAndMonsters.Common;
+    using PlayersAndMonsters.Core.Factories.Contracts;
+    using PlayersAndMonsters.Models.Players.Contracts;
+    using PlayersAndMonsters.Repositories;
+    using PlayersAndMonsters.Repositories.Contracts;
+
     public class PlayerFactory : IPlayerFactory
     {
         public IPlayer CreatePlayer(string type, string username)

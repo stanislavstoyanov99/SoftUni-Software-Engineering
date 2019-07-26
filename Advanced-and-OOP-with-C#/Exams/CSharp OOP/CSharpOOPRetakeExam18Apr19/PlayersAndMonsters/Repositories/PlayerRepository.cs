@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-
-using PlayersAndMonsters.Common;
-using PlayersAndMonsters.Models.Players.Contracts;
-using PlayersAndMonsters.Repositories.Contracts;
-
-namespace PlayersAndMonsters.Repositories
+﻿namespace PlayersAndMonsters.Repositories
 {
+    using System;
+    using System.Linq;
+    using System.Collections.Generic;
+
+    using PlayersAndMonsters.Common;
+    using PlayersAndMonsters.Models.Players.Contracts;
+    using PlayersAndMonsters.Repositories.Contracts;
+
     public class PlayerRepository : IPlayerRepository
     {
         private readonly List<IPlayer> players;

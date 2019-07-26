@@ -1,9 +1,9 @@
-﻿using System;
-
-using PlayersAndMonsters.IO.Contracts;
-
-namespace PlayersAndMonsters.IO
+﻿namespace PlayersAndMonsters.IO
 {
+    using System;
+
+    using PlayersAndMonsters.IO.Contracts;
+
     public class Reader : IReader
     {
         public string ReadLine()
