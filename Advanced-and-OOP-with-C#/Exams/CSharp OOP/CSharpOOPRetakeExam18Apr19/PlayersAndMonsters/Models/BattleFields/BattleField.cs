@@ -2,38 +2,32 @@
 using System.Linq;
 
 using PlayersAndMonsters.Common;
-using PlayersAndMonsters.Models.BattleFields.Contracts;
 using PlayersAndMonsters.Models.Players;
 using PlayersAndMonsters.Models.Players.Contracts;
+using PlayersAndMonsters.Models.BattleFields.Contracts;
 
 namespace PlayersAndMonsters.Models.BattleFields
 {
     public class BattleField : IBattleField
     {
+        private const int HEALTH_TO_INCREASE = 40;
+        private const int DAMAGE_POINTS_TO_INCREASE = 30;
+
         public void Fight(IPlayer attackPlayer, IPlayer enemyPlayer)
         {
-            if (attackPlayer.IsDead || enemyPlayer.IsDead)
+            if (attackPlayer.IsDead == true || enemyPlayer.IsDead == true)
             {
                 throw new ArgumentException(ExceptionMessages.PlayerDeadException);
             }
 
             if (attackPlayer.GetType().Name == nameof(Beginner))
             {
-                attackPlayer.Health += 40;
-
-                foreach (var card in attackPlayer.CardRepository.Cards)
-                {
-                    card.DamagePoints += 30;
-                }
+                IncreasePoints(attackPlayer);
             }
-            else if (enemyPlayer.GetType().Name == nameof(Beginner))
-            {
-                enemyPlayer.Health += 40;
 
-                foreach (var card in enemyPlayer.CardRepository.Cards)
-                {
-                    card.DamagePoints += 30;
-                }
+            if (enemyPlayer.GetType().Name == nameof(Beginner))
+            {
+                IncreasePoints(enemyPlayer);
             }
 
             attackPlayer.Health += attackPlayer
@@ -71,6 +65,16 @@ namespace PlayersAndMonsters.Models.BattleFields
                 {
                     break;
                 }
+            }
+        }
+
+        private static void IncreasePoints(IPlayer player)
+        {
+            player.Health += HEALTH_TO_INCREASE;
+
+            foreach (var card in player.CardRepository.Cards)
+            {
+                card.DamagePoints += DAMAGE_POINTS_TO_INCREASE;
             }
         }
     }

@@ -6,8 +6,8 @@ namespace PlayersAndMonsters.Models.Players
     {
         private const int INITIAL_HEALTH_POINTS = 250;
 
-        public Advanced(ICardRepository cardRepository, string username, int health) 
-            : base(cardRepository, username, health = INITIAL_HEALTH_POINTS)
+        public Advanced(ICardRepository cardRepository, string username) 
+            : base(cardRepository, username, INITIAL_HEALTH_POINTS)
         {
 
         }

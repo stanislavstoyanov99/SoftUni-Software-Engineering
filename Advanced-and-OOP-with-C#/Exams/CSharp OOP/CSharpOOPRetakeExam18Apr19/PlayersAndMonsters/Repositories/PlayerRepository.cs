@@ -42,6 +42,11 @@ namespace PlayersAndMonsters.Repositories
             IPlayer player = this.players
                 .FirstOrDefault(p => p.Username == username);
 
+            if (player == null)
+            {
+                throw new ArgumentException(ExceptionMessages.PlayerNotFoundException);
+            }
+
             return player;
         }
 

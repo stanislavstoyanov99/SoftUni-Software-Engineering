@@ -2,11 +2,11 @@
 {
     public static class ConstantMessages
     {
-        public const string SuccessfullyAddedPlayer =
-            "Successfully added player of type {0} with username: {1}";
+        public const string SuccessfullyAddedPlayer 
+            = "Successfully added player of type {0} with username: {1}";
 
-        public const string SuccessfullyAddedCard =
-            "Successfully added card of type {0}Card with name: {1}";
+        public const string SuccessfullyAddedCard 
+            = "Successfully added card of type {0} with name: {1}";
 
         public const string SuccessfullyAddedPlayerWithCards
             = "Successfully added card: {0} to user: {1}";

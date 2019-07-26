@@ -42,6 +42,11 @@ namespace PlayersAndMonsters.Repositories
             ICard card = this.cards
                 .FirstOrDefault(p => p.Name == name);
 
+            if (card == null)
+            {
+                throw new ArgumentException(ExceptionMessages.CardNotFoundException);
+            }
+
             return card;
         }
 

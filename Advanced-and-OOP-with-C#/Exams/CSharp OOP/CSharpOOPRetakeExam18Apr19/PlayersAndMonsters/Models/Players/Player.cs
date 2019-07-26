@@ -48,7 +48,7 @@ namespace PlayersAndMonsters.Models.Players
             }
         }
 
-        public bool IsDead { get; }
+        public bool IsDead { get; private set; }
 
         public void TakeDamage(int damagePoints)
         {
@@ -57,9 +57,14 @@ namespace PlayersAndMonsters.Models.Players
                 throw new ArgumentException(ExceptionMessages.InvalidDamagePointsException);
             }
 
-            if (this.Health - damagePoints > 0)
+            if (this.Health - damagePoints >= 0)
             {
                 this.Health -= damagePoints;
+            }
+            else
+            {
+                this.Health = 0;
+                this.IsDead = true;
             }
         }
     }
