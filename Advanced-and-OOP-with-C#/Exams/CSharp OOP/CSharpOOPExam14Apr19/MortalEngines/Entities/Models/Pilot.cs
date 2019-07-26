@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
+using System.Collections.Generic;
 
 using MortalEngines.Common;
 using MortalEngines.Entities.Contracts;
@@ -30,7 +30,7 @@ namespace MortalEngines.Entities.Models
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException(ExceptionMessages.PilotNameNullOrEmptyException);
+                    throw new ArgumentNullException(ExceptionMessages.PilotNameNullOrEmptyException);
                 }
 
                 this.name = value;
@@ -39,7 +39,7 @@ namespace MortalEngines.Entities.Models
 
         public IReadOnlyCollection<IMachine> Machines
         {
-            get => this.machines;
+            get => this.machines.AsReadOnly();
         }
 
         public void AddMachine(IMachine machine)

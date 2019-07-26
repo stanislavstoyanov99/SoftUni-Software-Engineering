@@ -1,12 +1,12 @@
 ﻿namespace MortalEngines.Core
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Contracts;
     using MortalEngines.Common;
     using MortalEngines.Entities.Models;
     using MortalEngines.Entities.Contracts;
-    using System.Linq;
 
     public class MachinesManager : IMachinesManager
     {
@@ -22,6 +22,7 @@
         public string HirePilot(string name)
         {
             string result = string.Empty;
+
             bool isFound = this.pilots.Any(p => p.Name == name);
 
             if (!isFound)
@@ -48,7 +49,7 @@
 
             if (!isFound)
             {
-                ITank tank = new Tank(name, attackPoints, defensePoints);
+                IMachine tank = new Tank(name, attackPoints, defensePoints);
                 this.machines.Add(tank);
 
                 result = string.Format(OutputMessages.TankManufactured,
@@ -92,77 +93,67 @@
 
         public string EngageMachine(string selectedPilotName, string selectedMachineName)
         {
-            string result = string.Empty;
-
             IPilot foundPilot = this.pilots
-                .Find(p => p.Name == selectedPilotName);
+                .FirstOrDefault(p => p.Name == selectedPilotName);
 
             IMachine foundMachine = this.machines
-                .Find(p => p.Name == selectedMachineName);
+                .FirstOrDefault(p => p.Name == selectedMachineName);
 
             if (foundPilot == null)
             {
-                result = string.Format(OutputMessages.PilotNotFound, selectedPilotName);
+                return string.Format(OutputMessages.PilotNotFound, selectedPilotName);
             }
+
             if (foundMachine == null)
             {
-                result = string.Format(OutputMessages.MachineNotFound);
+                return string.Format(OutputMessages.MachineNotFound, selectedMachineName);
             }
 
             if (foundMachine.Pilot != null)
             {
-                result = string.Format(OutputMessages.MachineHasPilotAlready, selectedMachineName);
+                return string.Format(OutputMessages.MachineHasPilotAlready, foundMachine.Name);
             }
             else
             {
                 foundPilot.AddMachine(foundMachine);
                 foundMachine.Pilot = foundPilot;
 
-                result = string.Format(OutputMessages.MachineEngaged, selectedPilotName, selectedMachineName);
+                return string.Format(OutputMessages.MachineEngaged, foundPilot.Name, foundMachine.Name);
             }
-
-            return result;
         }
 
         public string AttackMachines(string attackingMachineName, string defendingMachineName)
         {
-            string result = string.Empty;
-
             IMachine attackingMachine = this.machines
-                .Find(m => m.Name == attackingMachineName);
+                .FirstOrDefault(m => m.Name == attackingMachineName);
 
             IMachine defendingMachine = this.machines
-                .Find(m => m.Name == defendingMachineName);
+                .FirstOrDefault(m => m.Name == defendingMachineName);
 
             if (attackingMachine == null)
             {
-                result = string.Format(OutputMessages.MachineNotFound, attackingMachine);
+                return string.Format(OutputMessages.MachineNotFound, attackingMachineName);
             }
 
             if (defendingMachine == null)
             {
-                result = string.Format(OutputMessages.MachineNotFound, defendingMachine);
+                return string.Format(OutputMessages.MachineNotFound, defendingMachineName);
             }
 
             if (attackingMachine.HealthPoints == 0)
             {
-                result = string.Format(OutputMessages.DeadMachineCannotAttack, attackingMachineName);
+                return string.Format(OutputMessages.DeadMachineCannotAttack, attackingMachineName);
             }
 
             if (defendingMachine.HealthPoints == 0)
             {
-                result = string.Format(OutputMessages.DeadMachineCannotAttack, defendingMachineName);
+                return string.Format(OutputMessages.DeadMachineCannotAttack, defendingMachineName);
             }
 
-            if (attackingMachine.HealthPoints > 0 && defendingMachine.HealthPoints > 0)
-            {
-                attackingMachine.Attack(defendingMachine);
+            attackingMachine.Attack(defendingMachine);
 
-                result = string.Format(OutputMessages.AttackSuccessful,
-                    defendingMachine.Name, attackingMachine.Name, defendingMachine.HealthPoints);
-            }
-
-            return result;
+            return string.Format(OutputMessages.AttackSuccessful,
+                defendingMachine.Name, attackingMachine.Name, defendingMachine.HealthPoints);
         }
 
         public string PilotReport(string pilotReporting)
@@ -186,7 +177,7 @@
             string result = string.Empty;
 
             IMachine foundFighter = this.machines
-                .Find(t => t.Name == fighterName &&
+                .FirstOrDefault(t => t.Name == fighterName &&
                 t.GetType().Name == nameof(Fighter));
 
             if (foundFighter != null)
@@ -209,7 +200,7 @@
             string result = string.Empty;
 
             IMachine foundTank = this.machines
-                .Find(t => t.Name == tankName &&
+                .FirstOrDefault(t => t.Name == tankName &&
                 t.GetType().Name == nameof(Tank));
 
             if (foundTank != null)

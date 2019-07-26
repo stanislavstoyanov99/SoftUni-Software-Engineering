@@ -10,9 +10,8 @@ namespace MortalEngines.Entities.Models
         private const int ATTACK_POINTS_TO_INCREASE = 50;
         private const int DEFENSE_POINTS_TO_DECREASE = 25;
 
-        public Fighter(string name, double attackPoints, double defensePoints,
-            double healthPoints = INITIAL_HEALTH_POINTS)
-            : base(name, attackPoints += ATTACK_POINTS_TO_INCREASE, defensePoints -= DEFENSE_POINTS_TO_DECREASE, healthPoints)
+        public Fighter(string name, double attackPoints, double defensePoints)
+            : base(name, attackPoints + ATTACK_POINTS_TO_INCREASE, defensePoints - DEFENSE_POINTS_TO_DECREASE, INITIAL_HEALTH_POINTS)
         {
             this.AggressiveMode = true;
         }
@@ -39,14 +38,18 @@ namespace MortalEngines.Entities.Models
 
         public override string ToString()
         {
+            string result = string.Empty;
+
             if (this.AggressiveMode == true)
             {
-                return base.ToString() + Environment.NewLine + " *Aggressive: ON";
+                result = base.ToString() + Environment.NewLine + " *Aggressive: ON";
             }
             else
             {
-                return base.ToString() + Environment.NewLine + " *Aggressive: OFF";
+                result = base.ToString() + Environment.NewLine + " *Aggressive: OFF";
             }
+
+            return result;
         }
     }
 }

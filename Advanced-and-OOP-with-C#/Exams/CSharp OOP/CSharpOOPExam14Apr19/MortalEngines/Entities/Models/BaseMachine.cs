@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
+using System.Collections.Generic;
+
 using MortalEngines.Common;
 using MortalEngines.Entities.Contracts;
 
@@ -32,7 +33,7 @@ namespace MortalEngines.Entities.Models
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentException(ExceptionMessages.MachineNullOrEmptyException);
+                    throw new ArgumentNullException(ExceptionMessages.MachineNullOrEmptyException);
                 }
 
                 this.name = value;

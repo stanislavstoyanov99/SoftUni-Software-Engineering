@@ -10,9 +10,8 @@ namespace MortalEngines.Entities.Models
         private const int ATTACK_POINTS_TO_DECREASE = 40;
         private const int DEFENSE_POINTS_TO_INCREASE = 30;
 
-        public Tank(string name, double attackPoints, double defensePoints,
-            double healthPoints = INITIAL_HEALTH_POINTS)
-            : base(name, attackPoints -= ATTACK_POINTS_TO_DECREASE, defensePoints += DEFENSE_POINTS_TO_INCREASE, healthPoints)
+        public Tank(string name, double attackPoints, double defensePoints)
+            : base(name, attackPoints - ATTACK_POINTS_TO_DECREASE, defensePoints + DEFENSE_POINTS_TO_INCREASE, INITIAL_HEALTH_POINTS)
         {
             this.DefenseMode = true;
         }
@@ -39,14 +38,18 @@ namespace MortalEngines.Entities.Models
 
         public override string ToString()
         {
+            string result = string.Empty;
+
             if (this.DefenseMode == true)
             {
-                return base.ToString() + Environment.NewLine + " *Defense: ON";
+                result = base.ToString() + Environment.NewLine + " *Defense: ON";
             }
             else
             {
-                return base.ToString() + Environment.NewLine + " *Defense: OFF";
+                result = base.ToString() + Environment.NewLine + " *Defense: OFF";
             }
+
+            return result;
         }
     }
 }

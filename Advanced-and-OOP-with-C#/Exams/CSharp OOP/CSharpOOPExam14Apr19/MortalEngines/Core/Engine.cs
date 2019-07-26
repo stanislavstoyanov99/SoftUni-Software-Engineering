@@ -1,17 +1,19 @@
 ﻿using System;
-
+using System.Reflection;
 using MortalEngines.Core.Contracts;
 using MortalEngines.IO.Contracts;
 
 namespace MortalEngines.Core
 {
-    public class Engine : IEngine, IWriter
+    public class Engine : IEngine
     {
-        private readonly MachinesManager machinesManager;
+        private readonly ICommandInterpreter commandInterpreter;
+        private readonly IWriter writer;
 
-        public Engine()
+        public Engine(ICommandInterpreter commandInterpreter, IWriter writer)
         {
-            this.machinesManager = new MachinesManager();
+            this.commandInterpreter = commandInterpreter;
+            this.writer = writer;
         }
 
         public void Run()
@@ -20,87 +22,18 @@ namespace MortalEngines.Core
 
             while ((input = Console.ReadLine()) != "Quit")
             {
-                string[] commandArgs = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-                string commandType = commandArgs[0];
-
-                string contentToWrite = string.Empty;
+                string[] inputArgs = input.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
                 try
                 {
-                    switch (commandType)
-                    {
-                        case "HirePilot":
-                            string pilotName = commandArgs[1];
-
-                            contentToWrite = this.machinesManager.HirePilot(pilotName);
-                            Write(contentToWrite);
-                            break;
-                        case "PilotReport":
-                            string pilotNameForReport = commandArgs[1];
-
-                            contentToWrite = this.machinesManager.PilotReport(pilotNameForReport);
-                            Write(contentToWrite);
-                            break;
-                        case "ManufactureTank":
-                            string tankName = commandArgs[1];
-                            double tankAttack = double.Parse(commandArgs[2]);
-                            double tankDefense = double.Parse(commandArgs[3]);
-
-                            contentToWrite = this.machinesManager.ManufactureTank(tankName, tankAttack, tankDefense);
-                            Write(contentToWrite);
-                            break;
-                        case "ManufactureFighter":
-                            string fighterName = commandArgs[1];
-                            double fighterAttack = double.Parse(commandArgs[2]);
-                            double fighterDefense = double.Parse(commandArgs[3]);
-
-                            contentToWrite = this.machinesManager.ManufactureFighter(fighterName, fighterAttack, fighterDefense);
-                            Write(contentToWrite);
-                            break;
-                        case "MachineReport":
-                            string machineName = commandArgs[1];
-
-                            contentToWrite = this.machinesManager.MachineReport(machineName);
-                            Write(contentToWrite);
-                            break;
-                        case "AggressiveMode":
-                            string attackerName = commandArgs[1];
-
-                            contentToWrite = this.machinesManager.ToggleFighterAggressiveMode(attackerName);
-                            Write(contentToWrite);
-                            break;
-                        case "DefenseMode":
-                            string defenderName = commandArgs[1];
-
-                            contentToWrite = this.machinesManager.ToggleTankDefenseMode(defenderName);
-                            Write(contentToWrite);
-                            break;
-                        case "Engage":
-                            string pilotNameToEngage = commandArgs[1];
-                            string machineNameToEngage = commandArgs[2];
-
-                            contentToWrite = this.machinesManager.EngageMachine(pilotNameToEngage, machineNameToEngage);
-                            Write(contentToWrite);
-                            break;
-                        case "Attack":
-                            string attackingMachineName = commandArgs[1];
-                            string defendingMachineName = commandArgs[2];
-
-                            contentToWrite = this.machinesManager.AttackMachines(attackingMachineName, defendingMachineName);
-                            Write(contentToWrite);
-                            break;
-                    }
+                    string result = this.commandInterpreter.Read(inputArgs);
+                    this.writer.Write(result);
                 }
-                catch (Exception ex)
+                catch (TargetInvocationException ex)
                 {
-                    Write($"Error: {ex.Message}");
-                }               
+                    this.writer.Write($"Error: {ex.InnerException.Message}");
+                }
             }
-        }
-
-        public void Write(string content)
-        {
-            Console.WriteLine(content);
         }
     }
 }

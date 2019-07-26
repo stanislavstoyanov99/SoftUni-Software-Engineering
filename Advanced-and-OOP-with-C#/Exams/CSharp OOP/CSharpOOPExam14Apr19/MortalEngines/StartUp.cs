@@ -1,5 +1,7 @@
 ﻿using MortalEngines.Core;
 using MortalEngines.Core.Contracts;
+using MortalEngines.IO;
+using MortalEngines.IO.Contracts;
 
 namespace MortalEngines
 {
@@ -7,7 +9,12 @@ namespace MortalEngines
     {
         public static void Main()
         {
-            IEngine engine = new Engine();
+            IMachinesManager machinesManager = new MachinesManager();
+
+            ICommandInterpreter commandInterpreter = new CommandInterpreter(machinesManager);
+            IWriter writer = new Writer();
+
+            IEngine engine = new Engine(commandInterpreter, writer);
             engine.Run();
         }
     }
