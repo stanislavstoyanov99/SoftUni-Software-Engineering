@@ -86,7 +86,7 @@
 
             foreach (var player in this.playerRepository.Players)
             {
-                sb.AppendLine($"Username: {player.Username} - Health: {player.Health} – Cards {player.CardRepository.Count}");
+                sb.AppendLine($"Username: {player.Username} - Health: {player.Health} - Cards {player.CardRepository.Count}");
 
                 foreach (var card in player.CardRepository.Cards)
                 {
