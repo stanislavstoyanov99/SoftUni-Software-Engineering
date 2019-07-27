@@ -11,7 +11,10 @@ namespace MortalEngines.Entities.Models
         private const int DEFENSE_POINTS_TO_INCREASE = 30;
 
         public Tank(string name, double attackPoints, double defensePoints)
-            : base(name, attackPoints - ATTACK_POINTS_TO_DECREASE, defensePoints + DEFENSE_POINTS_TO_INCREASE, INITIAL_HEALTH_POINTS)
+            : base(name,
+                  attackPoints - ATTACK_POINTS_TO_DECREASE,
+                  defensePoints + DEFENSE_POINTS_TO_INCREASE,
+                  INITIAL_HEALTH_POINTS)
         {
             this.DefenseMode = true;
         }
