@@ -21,7 +21,7 @@
 
             if (playerType == null)
             {
-                throw new ArgumentException(ExceptionMessages.PlayerNotFoundException);
+                throw new ArgumentNullException(ExceptionMessages.PlayerNotFoundException);
             }
 
             ICardRepository cardRepository = new CardRepository();

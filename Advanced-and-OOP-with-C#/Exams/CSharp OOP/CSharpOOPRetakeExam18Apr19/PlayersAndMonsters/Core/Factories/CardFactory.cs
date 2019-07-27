@@ -21,7 +21,7 @@
 
             if (cardType == null)
             {
-                throw new ArgumentException(ExceptionMessages.CardNotFoundException);
+                throw new ArgumentNullException(ExceptionMessages.CardNotFoundException);
             }
 
             ICard card = (ICard)Activator.CreateInstance(cardType, name);
