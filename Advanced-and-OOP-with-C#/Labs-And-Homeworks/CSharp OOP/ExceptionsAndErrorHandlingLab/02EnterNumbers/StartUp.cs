@@ -12,10 +12,10 @@ namespace _02EnterNumbers
                 {
                     ReadNumber(1, 10);
                 }
-                catch (ArgumentException)
+                catch (ArgumentException ex)
                 {
+                    Console.WriteLine(ex.Message);
                     i = 0;
-                    ReadNumber(1, 10);
                 }
             }
         }
@@ -23,14 +23,15 @@ namespace _02EnterNumbers
         public static void ReadNumber(int start, int end)
         {
             Console.Write("Enter number: ");
-            int input = int.Parse(Console.ReadLine());
+            string input = Console.ReadLine();
+            bool isNumber = int.TryParse(input, out int number);
 
-            if (input.GetType() != typeof(int))
+            if (isNumber == false)
             {
                 throw new ArgumentException("The input is not a number");
             }
 
-            if (input < start || input > end)
+            if (number < start || number > end)
             {
                 throw new ArgumentException($"The number is not in the given range [{start}]-[{end}]");
             }
