@@ -21,7 +21,7 @@
         }
 
         [TestMethod]
-        public void ShouldSumValues2()
+        public void ShouldSumValuesSecond()
         {
             int a = 2;
             int b = 3;
