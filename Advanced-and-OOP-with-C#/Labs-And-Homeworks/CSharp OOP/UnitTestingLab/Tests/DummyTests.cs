@@ -37,7 +37,7 @@ namespace Tests
 
             Assert.That(() => this.dummy.TakeAttack(1),
                 Throws.InvalidOperationException.With.Message.EqualTo("Dummy is dead."),
-                "Dummy is alive.");
+                "Dummy can't be attacked because he's dead");
         }
 
         [Test]
@@ -46,7 +46,8 @@ namespace Tests
             this.dummy.TakeAttack(20);
             // dummy is dead
 
-            Assert.That(this.dummy.GiveExperience(), Is.EqualTo(10), "Dummy is alive.");
+            Assert.That(this.dummy.GiveExperience(), Is.EqualTo(10),
+                "Dummy cannot give experience points because he's dead.");
         }
 
         [Test]
@@ -57,7 +58,7 @@ namespace Tests
 
             Assert.That(() => this.dummy.GiveExperience(),
                 Throws.InvalidOperationException.With.Message.EqualTo("Target is not dead."),
-                "Dummy is alive.");
+                "Dummy cannot give experience points because he's alive.");
         }
     }
 }
