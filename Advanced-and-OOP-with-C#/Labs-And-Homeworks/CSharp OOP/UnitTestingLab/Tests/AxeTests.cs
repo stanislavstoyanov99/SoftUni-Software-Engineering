@@ -19,10 +19,11 @@ namespace Tests
         [Test]
         public void CheckIfConstructorPassesSuccessfully()
         {
-            Axe fakeAxe = new Axe(10, 1);
+            const int expectedAttackPoints = 10;
+            const int expectedDurabilityPoints = 1;
 
-            Assert.AreEqual(fakeAxe.AttackPoints, this.axe.AttackPoints);
-            Assert.AreEqual(fakeAxe.DurabilityPoints, this.axe.DurabilityPoints);
+            Assert.AreEqual(expectedAttackPoints, this.axe.AttackPoints);
+            Assert.AreEqual(expectedDurabilityPoints, this.axe.DurabilityPoints);
         }
 
         [Test]
