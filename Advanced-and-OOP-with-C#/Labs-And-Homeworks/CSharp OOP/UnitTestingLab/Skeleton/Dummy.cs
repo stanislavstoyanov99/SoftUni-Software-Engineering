@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Skeleton.Contracts;
+using System;
 
-public class Dummy
+public class Dummy : ITarget
 {
     private int health;
     private int experience;
@@ -11,9 +12,16 @@ public class Dummy
         this.experience = experience;
     }
 
-    public int Health 
+    public int Health => this.health;
+
+    public int GiveExperience()
     {
-        get { return this.health; }
+        if (!this.IsDead())
+        {
+            throw new InvalidOperationException("Target is not dead.");
+        }
+
+        return this.experience;
     }
 
     public bool IsDead()
@@ -29,15 +37,5 @@ public class Dummy
         }
 
         this.health -= attackPoints;
-    }
-
-    public int GiveExperience()
-    {
-        if (!this.IsDead())
-        {
-            throw new InvalidOperationException("Target is not dead.");
-        }
-
-        return this.experience;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using Skeleton.Contracts;
 using System;
 
 namespace Tests
@@ -6,8 +7,8 @@ namespace Tests
     [TestFixture]
     public class AxeTests
     {
-        private Axe axe;
-        private Dummy dummy;
+        private IWeapon axe;
+        private ITarget dummy;
 
         [SetUp]
         public void CreateAxeAndDummy()
@@ -45,7 +46,8 @@ namespace Tests
             axe.Attack(dummy);
 
             Assert.That(() => axe.Attack(dummy),
-                Throws.InvalidOperationException.With.Message.EqualTo("Axe is broken."));
+                Throws.InvalidOperationException.With.Message.EqualTo("Axe is broken."),
+                "Axe durability should be less or equal to zero in order axe to be ");
         }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using NUnit.Framework;
+using Skeleton.Contracts;
 
 namespace Tests
 {
     [TestFixture]
     public class DummyTests
     {
-        private Dummy dummy;
+        private ITarget dummy;
 
         [SetUp]
         public void CreateDummy()
@@ -17,7 +18,7 @@ namespace Tests
         public void CheckIfConstructorPassesSuccessfully()
         {
             // Check only health points, because experience is not property
-            const int expectedHealthPoints = 10;
+            const int expectedHealthPoints = 20;
 
             Assert.AreEqual(expectedHealthPoints, this.dummy.Health, "Constructor failed!");
         }
