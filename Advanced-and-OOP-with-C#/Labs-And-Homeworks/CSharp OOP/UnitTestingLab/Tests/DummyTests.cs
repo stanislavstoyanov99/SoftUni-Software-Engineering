@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+
 using Skeleton.Contracts;
 
 namespace Tests
@@ -54,7 +55,6 @@ namespace Tests
         [Test]
         public void CheckIfAliveDummyGivesExperiencePoints()
         {
-            this.dummy.TakeAttack(10);
             // dummy is alive
 
             Assert.That(() => this.dummy.GiveExperience(),

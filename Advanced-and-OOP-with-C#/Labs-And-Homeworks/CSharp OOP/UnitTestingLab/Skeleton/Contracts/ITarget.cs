@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Skeleton.Contracts
+﻿namespace Skeleton.Contracts
 {
     public interface ITarget
     {

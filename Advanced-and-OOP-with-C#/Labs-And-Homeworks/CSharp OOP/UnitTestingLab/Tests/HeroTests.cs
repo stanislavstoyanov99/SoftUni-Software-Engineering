@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
+
 using Skeleton.Contracts;
-using Skeleton.Models;
+using Skeleton.FakeModels;
 
 namespace Tests
 {
@@ -12,12 +13,16 @@ namespace Tests
         [Test]
         public void HeroGainsExperienceAfterAttackIfTargetDies()
         {
+            // Arrange
             ITarget fakeTarget = new FakeTarget();
             IWeapon fakeWeapon = new FakeWeapon();
-
             Hero hero = new Hero(HeroName, fakeWeapon);
 
+            // Act
+            hero.Attack(fakeTarget);
+
             // Assert
+            Assert.That(hero.Experience, Is.EqualTo(20));
         }
     }
 }

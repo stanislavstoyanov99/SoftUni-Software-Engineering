@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
+
 using Skeleton.Contracts;
-using System;
 
 namespace Tests
 {
