@@ -13,6 +13,7 @@ namespace Skeleton.FakeModels
         public void Attack(ITarget target)
         {
             target.TakeAttack(this.AttackPoints);
+
             this.durabilityPoints -= 1;
         }
     }
