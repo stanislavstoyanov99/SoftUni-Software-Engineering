@@ -1,39 +1,42 @@
 using System;
-
-using NUnit.Framework;
 using ExtendedDatabase;
+using NUnit.Framework;
 
 namespace Tests
 {
     public class ExtendedDatabaseTests
     {
-        private Person person;
+        private Person testPerson1;
+        private Person testPerson2;
+        private Person testPerson3;
+
         private ExtendedDatabase.ExtendedDatabase extendedDatabase;
 
         [SetUp]
         public void Setup()
         {
-            this.person = new Person(1, "Pesho");
+            this.testPerson1 = new Person(1, "Pesho");
+            this.testPerson2 = new Person(2, "Kiro");
+            this.testPerson3 = new Person(3, "Gosho");
 
-            Person[] people = new Person[16];
-
-            for (int i = 0; i < people.Length; i++)
-            {
-                people[i] = new Person(i, $"Username{i}");
-            }
-
-            this.extendedDatabase = new ExtendedDatabase.ExtendedDatabase(people);
+            this.extendedDatabase = new ExtendedDatabase.ExtendedDatabase(testPerson2, testPerson3);
         }
 
         [Test]
         public void Test_Person_Constructor()
         {
-            Assert.AreEqual(1, this.person.Id);
-            Assert.AreEqual("Pesho", this.person.UserName);
+            Assert.AreEqual(1, this.testPerson1.Id);
+            Assert.AreEqual("Pesho", this.testPerson1.UserName);
         }
 
         [Test]
-        public void Test_If_AddRange_With_Empty_People()
+        public void Test_Database_Constructor()
+        {
+            Assert.AreEqual(2, this.extendedDatabase.Count);
+        }
+
+        [Test]
+        public void Test_If_AddRange_Works_With_Empty_People()
         {
             Person[] people = new Person[17];
 
@@ -42,7 +45,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_Add_Range_With_Null_People()
+        public void Test_Add_Range__Works_With_Null_People()
         {
             Person[] people = new Person[3];
 
@@ -51,7 +54,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_AddRange_Throws_Exception()
+        public void Test_AddRange_With_More_People_Than_Allowed()
         {
             Person[] people = new Person[17];
 
@@ -68,36 +71,40 @@ namespace Tests
         [Test]
         public void Test_If_Add_Works_Correctly()
         {
-            this.extendedDatabase.Remove();
-            this.extendedDatabase.Add(new Person(333, "Slavi"));
+            this.extendedDatabase.Add(this.testPerson1);
 
-            Assert.AreEqual(16, this.extendedDatabase.Count);
+            Assert.AreEqual(3, this.extendedDatabase.Count);
         }
 
         [Test]
-        public void Test_If_Add_Throws_First_Exception()
+        public void Test_Add_Person_In_Full_Database()
         {
+            Person[] people = new Person[16];
+
+            for (int i = 0; i < people.Length; i++)
+            {
+                people[i] = new Person(i, $"Username{i}");
+            }
+
+            this.extendedDatabase = new ExtendedDatabase.ExtendedDatabase(people);
+
             Assert.Throws<InvalidOperationException>
-                (() => this.extendedDatabase.Add(this.person));
+                (() => this.extendedDatabase.Add(this.testPerson1));
         }
 
         [Test]
-        public void Test_If_Add_Throws_Second_Exception()
+        public void Test_Already_Added_PersonUsername()
         {
-            this.extendedDatabase.Remove();
-
-            Person targetPerson = new Person(100, "Username10");
+            Person targetPerson = new Person(2, "Kiro");
 
             Assert.Throws<InvalidOperationException>
                 (() => this.extendedDatabase.Add(targetPerson));
         }
         
         [Test]
-        public void Test_If_Add_Throws_Third_Exception()
+        public void Test_Already_Added_PersonId()
         {
-            this.extendedDatabase.Remove();
-
-            Person targetPerson = new Person(1, "Username1");
+            Person targetPerson = new Person(2, "Stefan");
 
             Assert.Throws<InvalidOperationException>
                 (() => this.extendedDatabase.Add(targetPerson));
@@ -106,7 +113,7 @@ namespace Tests
         [Test]
         public void Test_If_Remove_Works_Correctly()
         {
-            int expectedCount = 15;
+            int expectedCount = 1;
 
             this.extendedDatabase.Remove();
 
@@ -143,19 +150,16 @@ namespace Tests
         public void Test_If_No_Username_Is_Found()
         {
             Assert.Throws<InvalidOperationException>
-                (() => this.extendedDatabase.FindByUsername("Kiro"));
+                (() => this.extendedDatabase.FindByUsername(this.testPerson1.UserName));
         }
 
         [Test]
         public void Test_If_Find_By_Username_Works_Correctly()
         {
-            Person person = new Person(1, "Username1");
+            Person actualPerson = this.extendedDatabase
+                .FindByUsername(this.testPerson2.UserName);
 
-            this.extendedDatabase = new ExtendedDatabase.ExtendedDatabase(person);
-
-            Person expectedPerson = this.extendedDatabase.FindByUsername(person.UserName);
-
-            Assert.AreEqual(expectedPerson, person);
+            Assert.AreEqual(this.testPerson2, actualPerson);
         }
 
         [Test]
@@ -177,13 +181,9 @@ namespace Tests
         [Test]
         public void Test_If_Find_By_Id_Works_Correctly()
         {
-            Person person = new Person(1, "Username1");
+            Person actualPerson = this.extendedDatabase.FindById(2);
 
-            this.extendedDatabase = new ExtendedDatabase.ExtendedDatabase(person);
-
-            Person expectedPerson = this.extendedDatabase.FindById(1);
-
-            Assert.AreEqual(expectedPerson, person);
+            Assert.AreEqual(this.testPerson2, actualPerson);
         }
     }
 }
