@@ -78,24 +78,28 @@ namespace Tests
 
         [Test]
         public void Test_Add_Person_In_Full_Database()
-        {
-            Person[] people = new Person[16];
+        {         
+            Person[] people = new Person[15];
 
             for (int i = 0; i < people.Length; i++)
             {
-                people[i] = new Person(i, $"Username{i}");
+                 people[i] = new Person(i + 10, $"Username{i}");
             }
 
-            this.extendedDatabase = new ExtendedDatabase.ExtendedDatabase(people);
+            var extendedDatabase = new ExtendedDatabase.ExtendedDatabase(people);
+
+            extendedDatabase.Add(this.testPerson1);
 
             Assert.Throws<InvalidOperationException>
-                (() => this.extendedDatabase.Add(this.testPerson1));
+                (() => this.extendedDatabase.Add(this.testPerson2));
         }
 
         [Test]
         public void Test_Already_Added_PersonUsername()
         {
-            Person targetPerson = new Person(2, "Kiro");
+            this.extendedDatabase.Add(this.testPerson1);
+
+            Person targetPerson = new Person(300, "Pesho");
 
             Assert.Throws<InvalidOperationException>
                 (() => this.extendedDatabase.Add(targetPerson));
@@ -163,25 +167,37 @@ namespace Tests
         }
 
         [Test]
+        public void Test_If_Find_By_Username_Is_Case_Sensitive()
+        {
+            this.extendedDatabase.Add(this.testPerson1);
+
+            Assert.Throws<InvalidOperationException>
+                (() => this.extendedDatabase.FindByUsername(this.testPerson1.UserName.ToLower()));
+        }
+
+        [Test]
         public void Test_If_Id_Is_A_Positive_Number()
         {
             int id = -10;
 
             Assert.Throws<ArgumentOutOfRangeException>
-                (() => this.extendedDatabase.FindById(id));
+                (() => this.extendedDatabase
+                .FindById(id));
         }
 
         [Test]
         public void Test_If_No_Id_Is_Found()
         {
             Assert.Throws<InvalidOperationException>
-                (() => this.extendedDatabase.FindById(200));
+                (() => this.extendedDatabase
+                .FindById(200));
         }
 
         [Test]
         public void Test_If_Find_By_Id_Works_Correctly()
         {
-            Person actualPerson = this.extendedDatabase.FindById(2);
+            Person actualPerson = this.extendedDatabase
+                .FindById(2);
 
             Assert.AreEqual(this.testPerson2, actualPerson);
         }
