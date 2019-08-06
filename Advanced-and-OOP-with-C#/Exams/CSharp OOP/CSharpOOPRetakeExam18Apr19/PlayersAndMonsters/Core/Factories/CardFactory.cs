@@ -14,6 +14,7 @@
 
         public ICard CreateCard(string type, string name)
         {
+            
             Type cardType = Assembly
                 .GetCallingAssembly()
                 .GetTypes()

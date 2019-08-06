@@ -39,10 +39,9 @@
             get => this.health;
             set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentException(ExceptionMessages.InvalidPlayerHealthException);
-                }
+                Validator.ThrowIfIntegerIsBelowZero(
+                    value,
+                    ExceptionMessages.InvalidPlayerHealthException);
 
                 this.health = value;
             }
@@ -52,14 +51,15 @@
 
         public void TakeDamage(int damagePoints)
         {
-            if (damagePoints < 0)
-            {
-                throw new ArgumentException(ExceptionMessages.InvalidDamagePointsException);
-            }
+            Validator.ThrowIfIntegerIsBelowZero(
+                damagePoints,
+                ExceptionMessages.InvalidDamagePointsException);
 
-            if (this.Health - damagePoints >= 0)
+            int newHealth = this.Health - damagePoints;
+
+            if (newHealth >= 0)
             {
-                this.Health -= damagePoints;
+                this.Health = newHealth;
             }
             else
             {

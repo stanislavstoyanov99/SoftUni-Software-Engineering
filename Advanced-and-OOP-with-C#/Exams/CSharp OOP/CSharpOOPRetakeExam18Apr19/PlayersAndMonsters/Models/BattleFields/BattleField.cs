@@ -30,34 +30,22 @@
                 IncreasePoints(enemyPlayer);
             }
 
-            attackPlayer.Health += attackPlayer
-                .CardRepository
-                .Cards
-                .Sum(c => c.HealthPoints);
+            IncreaseHealthPoints(attackPlayer);
 
-            enemyPlayer.Health += enemyPlayer
-                .CardRepository
-                .Cards
-                .Sum(c => c.HealthPoints);
+            IncreaseHealthPoints(enemyPlayer);
+
+            int attackerDamagePoints = GetDamagePoints(attackPlayer);
+
+            int enemyDamagePoints = GetDamagePoints(enemyPlayer);
 
             while (true)
             {
-                int attackerDamagePoints = attackPlayer
-                    .CardRepository
-                    .Cards
-                    .Sum(c => c.DamagePoints);
-
                 enemyPlayer.TakeDamage(attackerDamagePoints);
 
                 if (enemyPlayer.Health == 0)
                 {
                     break;
                 }
-
-                int enemyDamagePoints = enemyPlayer
-                    .CardRepository
-                    .Cards
-                    .Sum(c => c.DamagePoints);
 
                 attackPlayer.TakeDamage(enemyDamagePoints);
 
@@ -68,7 +56,23 @@
             }
         }
 
-        private static void IncreasePoints(IPlayer player)
+        private int GetDamagePoints(IPlayer player)
+        {
+            return player
+                .CardRepository
+                .Cards
+                .Sum(c => c.DamagePoints);
+        }
+
+        private void IncreaseHealthPoints(IPlayer player)
+        {
+            player.Health += player
+                .CardRepository
+                .Cards
+                .Sum(c => c.HealthPoints);
+        }
+
+        private void IncreasePoints(IPlayer player)
         {
             player.Health += HEALTH_TO_INCREASE;
 

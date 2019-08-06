@@ -28,7 +28,8 @@
                 throw new ArgumentException(ExceptionMessages.CardNotFoundException);
             }
 
-            bool isCardExists = this.cards.Any(p => p.Name == card.Name);
+            bool isCardExists = this.cards
+                .Any(p => p.Name == card.Name);
 
             if (isCardExists)
             {
@@ -37,6 +38,16 @@
             }
 
             this.cards.Add(card);
+        }
+
+        public bool Remove(ICard card)
+        {
+            if (card == null)
+            {
+                throw new ArgumentException(ExceptionMessages.CardNotFoundException);
+            }
+
+            return this.cards.Remove(card);
         }
 
         public ICard Find(string name)
@@ -50,16 +61,6 @@
             }
 
             return card;
-        }
-
-        public bool Remove(ICard card)
-        {
-            if (card == null)
-            {
-                throw new ArgumentException(ExceptionMessages.CardNotFoundException);
-            }
-
-            return this.cards.Remove(card);
         }
     }
 }

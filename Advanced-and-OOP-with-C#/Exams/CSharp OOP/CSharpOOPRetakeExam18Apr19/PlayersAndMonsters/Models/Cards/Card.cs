@@ -37,10 +37,9 @@
             get => this.damagePoints;
             set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentException(ExceptionMessages.InvalidCardDamagePointsException);
-                }
+                Validator.ThrowIfIntegerIsBelowZero(
+                    value,
+                    ExceptionMessages.InvalidCardDamagePointsException);
 
                 this.damagePoints = value;
             }
@@ -51,10 +50,9 @@
             get => this.healthPoints;
             private set
             {
-                if (value < 0)
-                {
-                    throw new ArgumentException(ExceptionMessages.InvalidCardHPException);
-                }
+                Validator.ThrowIfIntegerIsBelowZero(
+                    value,
+                    ExceptionMessages.InvalidCardHPException);
 
                 this.healthPoints = value;
             }
