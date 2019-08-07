@@ -62,7 +62,7 @@
         {
             if (rider == null)
             {
-                throw new ArgumentNullException(string.Format(ExceptionMessages.RiderInvalid));
+                throw new ArgumentNullException(nameof(rider), string.Format(ExceptionMessages.RiderInvalid));
             }
 
             if (rider.CanParticipate == false)
@@ -71,12 +71,12 @@
                     rider.Name));
             }
 
-            bool doesRiderExists = this.riders
+            bool doesRiderExist = this.riders
                 .Any(r => r.Name == rider.Name);
 
-            if (doesRiderExists)
+            if (doesRiderExist)
             {
-                throw new ArgumentNullException(string.Format(ExceptionMessages.RiderAlreadyAdded,
+                throw new ArgumentNullException(nameof(rider), string.Format(ExceptionMessages.RiderAlreadyAdded,
                     rider.Name, this.Name));
             }
 

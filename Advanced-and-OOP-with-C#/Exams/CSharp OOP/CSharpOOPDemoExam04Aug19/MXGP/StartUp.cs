@@ -1,11 +1,11 @@
 ﻿namespace MXGP
 {
-    using MXGP.Core;
-    using MXGP.Core.Contracts;
-    using MXGP.Factories;
     using MXGP.IO;
+    using MXGP.Core;
+    using MXGP.Factories;
     using MXGP.IO.Contracts;
     using MXGP.Repositories;
+    using MXGP.Core.Contracts;
 
     public class StartUp
     {
@@ -14,17 +14,13 @@
             IReader reader = new ConsoleReader();
             IWriter writer = new ConsoleWriter();
 
-            MotorcycleRepository motorcycleRepository = new MotorcycleRepository();
-            RaceRepository raceRepository = new RaceRepository();
-            RiderRepository riderRepository = new RiderRepository();
+            //MotorcycleRepository motorcycleRepository = new MotorcycleRepository();
+            //RaceRepository raceRepository = new RaceRepository();
+            //RiderRepository riderRepository = new RiderRepository();
 
-            MotorcycleFactory motorcycleFactory = new MotorcycleFactory();
+            //MotorcycleFactory motorcycleFactory = new MotorcycleFactory();
 
-            IChampionshipController championshipController = new ChampionshipController(
-                motorcycleFactory,
-                motorcycleRepository,
-                raceRepository,
-                riderRepository);
+            IChampionshipController championshipController = new ChampionshipController();
 
             ICommandInterpreter commandInterpreter = new CommandInterpreter(championshipController);
 

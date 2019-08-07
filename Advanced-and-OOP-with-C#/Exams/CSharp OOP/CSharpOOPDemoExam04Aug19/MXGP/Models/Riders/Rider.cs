@@ -34,17 +34,16 @@
 
         public int NumberOfWins { get; private set; }
 
-        public bool CanParticipate { get; private set; }
+        public bool CanParticipate => this.Motorcycle != null;
 
         public void AddMotorcycle(IMotorcycle motorcycle)
         {
             if (motorcycle == null)
             {
-                throw new ArgumentException(ExceptionMessages.MotorcycleInvalid);
+                throw new ArgumentNullException(nameof(motorcycle), ExceptionMessages.MotorcycleInvalid);
             }
 
             this.Motorcycle = motorcycle;
-            this.CanParticipate = true;
         }
 
         public void WinRace()

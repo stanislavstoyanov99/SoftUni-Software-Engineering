@@ -23,8 +23,6 @@
         {
             string input = string.Empty;
 
-            StringBuilder sb = new StringBuilder();
-
             while ((input = this.reader.ReadLine()) != "End")
             {
                 string[] inputArgs = input
@@ -33,19 +31,13 @@
                 try
                 {
                     string result = this.commandInterpreter.Read(inputArgs);
-                    //this.writer.WriteLine(result);
-
-                    sb.AppendLine(result);
+                    this.writer.WriteLine(result);
                 }
                 catch (TargetInvocationException ex)
                 {
-                    //this.writer.WriteLine(ex.InnerException.Message);
-
-                    sb.AppendLine(ex.InnerException.Message);
+                    this.writer.WriteLine(ex.InnerException.Message);
                 }
             }
-
-            Console.WriteLine(sb.ToString());
         }
     }
 }
