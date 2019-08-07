@@ -18,7 +18,7 @@
 
             if (motorCycleType == null)
             {
-                throw new ArgumentNullException("Type is not found.");
+                throw new ArgumentNullException("Requisted type is not found.");
             }
 
             try

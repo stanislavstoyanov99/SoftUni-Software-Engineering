@@ -34,7 +34,7 @@
 
         public int NumberOfWins { get; private set; }
 
-        public bool CanParticipate => this.Motorcycle != null;
+        public bool CanParticipate { get; private set; }
 
         public void AddMotorcycle(IMotorcycle motorcycle)
         {
@@ -44,6 +44,7 @@
             }
 
             this.Motorcycle = motorcycle;
+            this.CanParticipate = true;
         }
 
         public void WinRace()

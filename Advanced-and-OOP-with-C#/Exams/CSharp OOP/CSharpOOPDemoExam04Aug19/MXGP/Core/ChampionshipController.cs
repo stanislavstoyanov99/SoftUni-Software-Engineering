@@ -6,33 +6,35 @@
 
     using MXGP.Core.Contracts;
     using MXGP.Factories;
-    using MXGP.Models.Motorcycles;
     using MXGP.Models.Motorcycles.Contracts;
     using MXGP.Models.Races;
     using MXGP.Models.Races.Contracts;
     using MXGP.Models.Riders;
     using MXGP.Models.Riders.Contracts;
-    using MXGP.Repositories;
     using MXGP.Repositories.Contracts;
     using MXGP.Utilities.Messages;
 
     public class ChampionshipController : IChampionshipController
     {
-        //private MotorcycleFactory motorcycleFactory;
-
         private readonly IRepository<IMotorcycle> motorcycleRepository;
 
         private readonly IRepository<IRace> raceRepository;
 
         private readonly IRepository<IRider> riderRepository;
 
-        public ChampionshipController()
-        {
-            //this.motorcycleFactory = motorcycleFactory;
+        private readonly MotorcycleFactory motorcycleFactory;
 
-            this.motorcycleRepository = new MotorcycleRepository();
-            this.raceRepository = new RaceRepository();
-            this.riderRepository = new RiderRepository();
+        public ChampionshipController(
+            IRepository<IMotorcycle> motorcycleRepository,
+            IRepository<IRace> raceRepository,
+            IRepository<IRider> riderRepository,
+            MotorcycleFactory motorcycleFactory)
+        {
+            this.motorcycleRepository = motorcycleRepository;
+            this.raceRepository = raceRepository;
+            this.riderRepository = riderRepository;
+
+            this.motorcycleFactory = motorcycleFactory;
         }
 
         public string CreateRider(string riderName)
@@ -42,7 +44,7 @@
             if (riderFound != null)
             {
                 throw new ArgumentException(string.Format(ExceptionMessages.RiderExists,
-                    riderName));
+                    riderFound.Name));
             }
 
             riderFound = new Rider(riderName);
@@ -60,17 +62,10 @@
             if (foundMotorcycle != null)
             {
                 throw new ArgumentException(string.Format(ExceptionMessages.MotorcycleExists,
-                    model));
+                    foundMotorcycle.Model));
             }
 
-            if (type == "Power")
-            {
-                foundMotorcycle = new PowerMotorcycle(model, horsePower);
-            }
-            else if (type == "Speed")
-            {
-                foundMotorcycle = new SpeedMotorcycle(model, horsePower);
-            }
+            foundMotorcycle = this.motorcycleFactory.CreateMotorcycle(type, model, horsePower);
 
             this.motorcycleRepository.Add(foundMotorcycle);
 
@@ -132,8 +127,8 @@
 
             if (raceFound != null)
             {
-                throw new ArgumentException(string.Format(ExceptionMessages.RaceExists,
-                    name));
+                throw new InvalidOperationException(string.Format(ExceptionMessages.RaceExists,
+                    raceFound.Name));
             }
 
             raceFound = new Race(name, laps);
@@ -170,13 +165,13 @@
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine(string.Format(OutputMessages.RiderFirstPosition,
-                sortedRiders[0].Name, foundRace.Name));
+                sortedRiders.First().Name, foundRace.Name));
 
             sb.AppendLine(string.Format(OutputMessages.RiderSecondPosition,
                 sortedRiders[1].Name, foundRace.Name));
 
             sb.AppendLine(string.Format(OutputMessages.RiderThirdPosition,
-                sortedRiders[2].Name, foundRace.Name));
+                sortedRiders.Last().Name, foundRace.Name));
 
             this.raceRepository.Remove(foundRace);
 
