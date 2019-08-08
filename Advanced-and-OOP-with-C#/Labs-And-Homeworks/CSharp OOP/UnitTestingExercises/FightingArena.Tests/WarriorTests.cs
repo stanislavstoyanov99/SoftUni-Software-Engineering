@@ -1,19 +1,12 @@
-using FightingArena;
+﻿using System;
 using NUnit.Framework;
-using System;
 
 namespace Tests
 {
     public class WarriorTests
     {
-        [SetUp]
-        public void Setup()
-        {
-
-        }
-
         [Test]
-        public void TestIfConstructorWorksCorrectly()
+        public void Test_If_Constructor_Works_Correctly()
         {
             string expectedName = "Pesho";
             int expectedDmg = 15;
@@ -27,16 +20,16 @@ namespace Tests
         }
 
         [Test]
-        public void TestEmptyName()
+        public void Test_If_Warrior_Name_Is_Null()
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                Warrior warrior = new Warrior(" ", 25, 100);
+                Warrior warrior = new Warrior(null, 25, 100);
             });
         }
 
         [Test]
-        public void TestWhiteSpaceName()
+        public void Test_Warrior_WhiteSpace_Name()
         {
             Assert.Throws<ArgumentException>(() =>
             {
@@ -45,7 +38,7 @@ namespace Tests
         }
 
         [Test]
-        public void TestIfDamageIsZero()
+        public void Test_If_Damage_Is_Zero()
         {
             Assert.Throws<ArgumentException>(() =>
             {
@@ -54,7 +47,7 @@ namespace Tests
         }
 
         [Test]
-        public void TestIfDamageIsLessThanZero()
+        public void Test_If_Damage_Is_Less_Than_Zero()
         {
             Assert.Throws<ArgumentException>(() =>
             {
@@ -63,7 +56,7 @@ namespace Tests
         }
 
         [Test]
-        public void TestIfHealthIsLessThanZero()
+        public void Test_If_Health_Is_Less_Than_Zero()
         {
             Assert.Throws<ArgumentException>(() =>
             {
@@ -72,22 +65,22 @@ namespace Tests
         }
 
         [Test]
-        public void TestIfAttackWorksCorrectly()
+        public void Test_If_Attack_Works_Correctly()
         {
-            int expectedAttHp = 95;
-            int expectedDefHp = 80;
+            int expectedAttackerHp = 95;
+            int expectedDefenderHP = 80;
 
             Warrior attacker = new Warrior("Pesho", 10, 100);
             Warrior defender = new Warrior("Gosho", 5, 90);
 
             attacker.Attack(defender);
 
-            Assert.AreEqual(expectedAttHp, attacker.HP);
-            Assert.AreEqual(expectedDefHp, defender.HP);
+            Assert.AreEqual(expectedAttackerHp, attacker.HP);
+            Assert.AreEqual(expectedDefenderHP, defender.HP);
         }
 
         [Test]
-        public void TestAttackingWithLowHp()
+        public void Test_Attacking_With_Low_Hp()
         {
             Warrior attacker = new Warrior("Pesho", 10, 25);
             Warrior deffender = new Warrior("Gosho", 5, 45);
@@ -99,7 +92,7 @@ namespace Tests
         }
 
         [Test]
-        public void TestAttackingEnemyWithLowHp()
+        public void Test_Attacking_Enemy_With_Low_Hp()
         {
             Warrior attacker = new Warrior("Pesho", 10, 45);
             Warrior deffender = new Warrior("Gosho", 5, 25);
@@ -108,6 +101,40 @@ namespace Tests
             {
                 attacker.Attack(deffender);
             });
+        }
+
+        [Test]
+        public void Test_Attacking_Too_Strong_Enemy()
+        {
+            Warrior attacker = new Warrior("Pesho", 10, 50);
+            Warrior deffender = new Warrior("Gosho", 80, 25);
+
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                attacker.Attack(deffender);
+            });
+        }
+
+        [Test]
+        public void Test_If_Attack_Works_Correctly_When_ЕnemyDamage_Is_Greater_Than_Deffender_Hp()
+        {
+            Warrior attacker = new Warrior("Pesho", 100, 100);
+            Warrior defender = new Warrior("Gosho", 200, 50);
+
+            Assert.Throws<InvalidOperationException>(() => attacker.Attack(defender));
+        }
+
+        [Test]
+        public void Test_If_Attack_Works_Correctly_When_AttackerDamage_Is_Greater_Than_Deffender_Hp()
+        {
+            Warrior attacker = new Warrior("Pesho", 100, 100);
+            Warrior defender = new Warrior("Gosho", 50, 50);
+
+            int expectedDefenderHp = 0;
+
+            attacker.Attack(defender);
+
+            Assert.AreEqual(expectedDefenderHp, defender.HP);
         }
     }
 }
