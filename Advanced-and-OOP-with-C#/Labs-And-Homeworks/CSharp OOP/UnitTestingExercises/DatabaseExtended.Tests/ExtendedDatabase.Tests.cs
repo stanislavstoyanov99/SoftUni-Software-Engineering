@@ -1,4 +1,5 @@
 using System;
+
 using ExtendedDatabase;
 using NUnit.Framework;
 
@@ -45,7 +46,7 @@ namespace Tests
         }
 
         [Test]
-        public void Test_Add_Range__Works_With_Null_People()
+        public void Test_If_Add_Range_Works_With_Null_People()
         {
             Person[] people = new Person[3];
 
@@ -86,7 +87,7 @@ namespace Tests
                  people[i] = new Person(i + 10, $"Username{i}");
             }
 
-            var extendedDatabase = new ExtendedDatabase.ExtendedDatabase(people);
+            this.extendedDatabase = new ExtendedDatabase.ExtendedDatabase(people);
 
             extendedDatabase.Add(this.testPerson1);
 
