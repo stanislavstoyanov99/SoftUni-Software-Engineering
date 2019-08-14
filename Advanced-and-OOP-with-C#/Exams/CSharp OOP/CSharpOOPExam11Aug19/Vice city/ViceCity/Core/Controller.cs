@@ -19,17 +19,23 @@ namespace ViceCity.Core
         private readonly IPlayer mainPlayer;
         private readonly INeighbourhood neighbourhood;
 
-        private readonly Queue<IGun> guns;
-        private readonly List<IPlayer> civilPlayers;
+        private readonly List<IPlayer> players;
         private readonly IRepository<IGun> gunRepository;
+
+        private const string MainPlayerNameKey = "Vercetti";
+        private const string FullNameMainPlayer = "Tommy Vercetti";
+        private const int InitialMainPlayerHealthPoints = 100;
 
         public Controller()
         {
             this.mainPlayer = new MainPlayer();
             this.neighbourhood = new GangNeighbourhood();
 
-            this.guns = new Queue<IGun>();
-            this.civilPlayers = new List<IPlayer>();
+            this.players = new List<IPlayer>()
+            {
+                this.mainPlayer
+            };
+
             this.gunRepository = new GunRepository();
         }
 
@@ -37,7 +43,7 @@ namespace ViceCity.Core
         {
             IPlayer civilPlayer = new CivilPlayer(name);
 
-            this.civilPlayers.Add(civilPlayer);
+            this.players.Add(civilPlayer);
 
             return $"Successfully added civil player: {civilPlayer.Name}!";
         }
@@ -59,39 +65,43 @@ namespace ViceCity.Core
                 return $"Invalid gun type!";
             }
 
-            this.guns.Enqueue(gun);
+            this.gunRepository.Add(gun);
 
             return $"Successfully added {name} of type: {type}";
         }
 
         public string AddGunToPlayer(string name)
         {
-            if (this.guns.Count == 0)
+            if (this.gunRepository.Models.Count == 0)
             {
                 return "There are no guns in the queue!";
             }
 
-            IGun gun = null;
+            IGun gun = this.gunRepository.Models
+                    .First(g => g.CanFire == true);
 
-            if (name == "Vercetti")
+            if (name == MainPlayerNameKey)
             {
-                gun = this.guns.Dequeue();
+                IPlayer playerVercetti = this.players
+                    .FirstOrDefault(p => p.Name == FullNameMainPlayer && p.GetType().Name == nameof(MainPlayer));
 
-                this.mainPlayer.GunRepository.Add(gun);
+                this.gunRepository.Remove(gun);
+
+                playerVercetti.GunRepository.Add(gun);
 
                 return $"Successfully added {gun.Name} to the Main Player: Tommy Vercetti";
             }
 
-            bool doesPlayerNameExist = this.civilPlayers.Any(p => p.Name == name);
+            bool doesPlayerNameExist = this.players.Any(p => p.Name == name);
 
             if (!doesPlayerNameExist)
             {
                 return "Civil player with that name doesn't exists!";
             }
 
-            gun = this.guns.Dequeue();
+            IPlayer civilPlayer = this.players.First(p => p.Name == name);
 
-            IPlayer civilPlayer = this.civilPlayers.First(p => p.Name == name);
+            this.gunRepository.Remove(gun);
 
             civilPlayer.GunRepository.Add(gun);
 
@@ -100,23 +110,33 @@ namespace ViceCity.Core
 
         public string Fight()
         {
-            this.neighbourhood.Action(mainPlayer, this.civilPlayers);
+            IPlayer mainPlayer = this.players
+                .First(p => p.GetType().Name == nameof(MainPlayer));
 
-            if (mainPlayer.IsAlive && this.civilPlayers.Any(p => p.IsAlive))
-            {
-                return "Everything is okay!";
-            }
+            List<IPlayer> civilPlayers = this.players
+                .Where(p => p.GetType().Name == nameof(CivilPlayer))
+                .ToList();
+
+            this.neighbourhood.Action(mainPlayer, civilPlayers);
 
             StringBuilder sb = new StringBuilder();
 
-            if (this.civilPlayers.Any(p => !p.IsAlive))
+            if (mainPlayer.LifePoints == InitialMainPlayerHealthPoints &&
+                civilPlayers.Any(p => p.IsAlive))
             {
-                int deadCivilPlayersCount = this.civilPlayers.Count(p => !p.IsAlive);
+                return "Everything is okay!";
+            }
+            else
+            {
+
+                int deadCivilPlayersCount = civilPlayers.Count(p => !p.IsAlive);
+                int leftCivilPlayersCount = civilPlayers.Count(p => p.IsAlive);
 
                 sb.AppendLine("A fight happened:")
                     .AppendLine($"Tommy live points: {mainPlayer.LifePoints}!")
                     .AppendLine($"Tommy has killed: {deadCivilPlayersCount} players!")
-                    .AppendLine($"Left Civil Players: {this.civilPlayers.Count}!");
+                    .AppendLine($"Left Civil Players: {leftCivilPlayersCount}!");
+
             }
 
             return sb.ToString().TrimEnd();

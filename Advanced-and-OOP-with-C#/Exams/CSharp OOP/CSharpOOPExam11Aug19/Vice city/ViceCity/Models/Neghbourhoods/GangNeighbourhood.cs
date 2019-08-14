@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
+
+using ViceCity.Models.Guns.Contracts;
 using ViceCity.Models.Neghbourhoods.Contracts;
 using ViceCity.Models.Players.Contracts;
 
@@ -6,63 +9,56 @@ namespace ViceCity.Models.Neghbourhoods
 {
     public class GangNeighbourhood : INeighbourhood
     {
-        // TODO
         public void Action(IPlayer mainPlayer, ICollection<IPlayer> civilPlayers)
         {
-            foreach (var gun in mainPlayer.GunRepository.Models)
+            while (true)
             {
-                foreach (var player in civilPlayers)
-                {
-                    while (true)
-                    {
-                        player.TakeLifePoints(gun.Fire());
+                IGun gun = mainPlayer.GunRepository.Models
+                    .FirstOrDefault(g => g.CanFire == true);
 
-                        if (!player.IsAlive)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (!player.IsAlive)
-                    {
-                        break;
-                    }
-
-                    if (gun.TotalBullets == 0)
-                    {
-                        break;
-                    }
-                }
-
-                if (gun.TotalBullets == 0)
+                if (gun == null)
                 {
                     break;
                 }
+
+                IPlayer target = civilPlayers
+                    .FirstOrDefault(t => t.IsAlive == true);
+
+                if (target == null)
+                {
+                    break;
+                }
+
+                int damagePoints = gun.Fire();
+
+                target.TakeLifePoints(damagePoints);
             }
 
-            foreach (var civilPlayer in civilPlayers)
+            while (true)
             {
-                foreach (var gun in civilPlayer.GunRepository.Models)
+                IPlayer player = civilPlayers
+                    .FirstOrDefault(p => p.IsAlive == true);
+
+                if (player == null)
                 {
-                    while (true)
-                    {
-                        mainPlayer.TakeLifePoints(gun.Fire());
+                    break;
+                }
 
-                        if (!mainPlayer.IsAlive)
-                        {
-                            break;
-                        }
-                    }
+                IGun gun = player.GunRepository.Models
+                    .FirstOrDefault(g => g.CanFire == true);
 
-                    if (!mainPlayer.IsAlive)
-                    {
-                        break;
-                    }
+                if (gun == null)
+                {
+                    break;
+                }
 
-                    if (gun.TotalBullets == 0)
-                    {
-                        break;
-                    }
+                int damagePoints = gun.Fire();
+
+                mainPlayer.TakeLifePoints(damagePoints);
+
+                if (mainPlayer.IsAlive == false)
+                {
+                    break;
                 }
             }
         }
