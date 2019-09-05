@@ -1,12 +1,13 @@
-﻿using System;
-
-using ViceCity.Models.Guns.Contracts;
-using ViceCity.Models.Players.Contracts;
-using ViceCity.Repositories;
-using ViceCity.Repositories.Contracts;
-
-namespace ViceCity.Models.Players
+﻿namespace ViceCity.Models.Players
 {
+    using System;
+
+    using ViceCity.Repositories;
+    using ViceCity.Utilities.Messages;
+    using ViceCity.Models.Guns.Contracts;
+    using ViceCity.Repositories.Contracts;
+    using ViceCity.Models.Players.Contracts;
+
     public abstract class Player : IPlayer
     {
         private string name;
@@ -27,7 +28,7 @@ namespace ViceCity.Models.Players
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    throw new ArgumentNullException(nameof(value), "Player's name cannot be null or a whitespace!");
+                    throw new ArgumentNullException(nameof(value), ExceptionMessages.InvalidPlayerName);
                 }
 
                 this.name = value;
@@ -40,7 +41,7 @@ namespace ViceCity.Models.Players
             {
                 if (value < 0)
                 {
-                    throw new ArgumentException("Player life points cannot be below zero!");
+                    throw new ArgumentException(ExceptionMessages.InvalidPlayerLifePoints);
                 }
 
                 this.lifePoints = value;

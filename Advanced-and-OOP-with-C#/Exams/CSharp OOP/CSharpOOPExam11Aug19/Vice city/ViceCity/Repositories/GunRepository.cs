@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-
-using ViceCity.Models.Guns.Contracts;
-using ViceCity.Repositories.Contracts;
-
-namespace ViceCity.Repositories
+﻿namespace ViceCity.Repositories
 {
+    using System.Linq;
+    using System.Collections.Generic;
+
+    using ViceCity.Models.Guns.Contracts;
+    using ViceCity.Repositories.Contracts;
+
     public class GunRepository : IRepository<IGun>
     {
         private readonly List<IGun> guns;

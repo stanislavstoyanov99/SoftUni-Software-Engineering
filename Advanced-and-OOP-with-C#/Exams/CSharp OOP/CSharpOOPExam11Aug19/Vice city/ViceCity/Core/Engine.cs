@@ -1,11 +1,11 @@
-﻿using System;
-
-using ViceCity.Core.Contracts;
-using ViceCity.IO.Contracts;
-using ViceCity.IO;
-
-namespace ViceCity.Core
+﻿namespace ViceCity.Core
 {
+    using System;
+
+    using ViceCity.IO;
+    using ViceCity.IO.Contracts;
+    using ViceCity.Core.Contracts;
+
     public class Engine : IEngine
     {
         private readonly IReader reader;
@@ -18,8 +18,8 @@ namespace ViceCity.Core
             this.writer = new Writer();
 
             this.controller = new Controller();
-
         }
+
         public void Run()
         {
             while (true)

@@ -3,9 +3,10 @@
     public class MainPlayer : Player
     {
         private const int InitialLifePoints = 100;
+        private const string InitialPlayerName = "Tommy Vercetti";
 
         public MainPlayer() 
-            : base("Tommy Vercetti", InitialLifePoints)
+            : base(InitialPlayerName, InitialLifePoints)
         {
 
         }

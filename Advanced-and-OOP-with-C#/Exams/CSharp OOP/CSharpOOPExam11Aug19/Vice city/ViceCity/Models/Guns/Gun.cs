@@ -1,9 +1,10 @@
-﻿using System;
-
-using ViceCity.Models.Guns.Contracts;
-
-namespace ViceCity.Models.Guns
+﻿namespace ViceCity.Models.Guns
 {
+    using System;
+
+    using ViceCity.Utilities.Messages;
+    using ViceCity.Models.Guns.Contracts;
+
     public abstract class Gun : IGun
     {
         private string name;
@@ -24,7 +25,7 @@ namespace ViceCity.Models.Guns
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("Name cannot be null or a white space!");
+                    throw new ArgumentException(ExceptionMessages.InvalidGunName);
                 }
 
                 this.name = value;
@@ -38,7 +39,7 @@ namespace ViceCity.Models.Guns
             {
                 if (value < 0)
                 {
-                    throw new ArgumentException("Bullets cannot be below zero!");
+                    throw new ArgumentException(ExceptionMessages.InvalidBulletsCount);
                 }
 
                 this.bulletsPerBarrel = value;
@@ -52,7 +53,7 @@ namespace ViceCity.Models.Guns
             {
                 if (value < 0)
                 {
-                    throw new ArgumentException("Total bullets cannot be below zero!");
+                    throw new ArgumentException(ExceptionMessages.InvalidTotalBulletsCount);
                 }
 
                 this.totalBullets = value;

@@ -1,19 +1,19 @@
-﻿using System.Linq;
-using System.Text;
-using System.Collections.Generic;
-
-using ViceCity.Core.Contracts;
-using ViceCity.Models.Guns;
-using ViceCity.Models.Guns.Contracts;
-using ViceCity.Models.Neghbourhoods;
-using ViceCity.Models.Neghbourhoods.Contracts;
-using ViceCity.Models.Players;
-using ViceCity.Models.Players.Contracts;
-using ViceCity.Repositories;
-using ViceCity.Repositories.Contracts;
-
-namespace ViceCity.Core
+﻿namespace ViceCity.Core
 {
+    using System.Linq;
+    using System.Text;
+    using System.Collections.Generic;
+
+    using ViceCity.Repositories;
+    using ViceCity.Models.Players;
+    using ViceCity.Core.Contracts;
+    using ViceCity.Models.Neghbourhoods;
+    using ViceCity.Models.Guns.Contracts;
+    using ViceCity.Repositories.Contracts;
+    using ViceCity.Models.Players.Contracts;
+    using ViceCity.Models.Neghbourhoods.Contracts;
+    using ViceCity.Factories;
+
     public class Controller : IController
     {
         private readonly IPlayer mainPlayer;
@@ -21,6 +21,8 @@ namespace ViceCity.Core
 
         private readonly List<IPlayer> players;
         private readonly IRepository<IGun> gunRepository;
+
+        private readonly GunFactory gunFactory;
 
         private const string MainPlayerNameKey = "Vercetti";
         private const string FullNameMainPlayer = "Tommy Vercetti";
@@ -37,6 +39,7 @@ namespace ViceCity.Core
             };
 
             this.gunRepository = new GunRepository();
+            this.gunFactory = new GunFactory();
         }
 
         public string AddPlayer(string name)
@@ -50,20 +53,7 @@ namespace ViceCity.Core
 
         public string AddGun(string type, string name)
         {
-            IGun gun;
-
-            if (type == "Pistol")
-            {
-                gun = new Pistol(name);
-            }
-            else if (type == "Rifle")
-            {
-                gun = new Rifle(name);
-            }
-            else
-            {
-                return $"Invalid gun type!";
-            }
+            IGun gun = this.gunFactory.InitializeGun(type, name);
 
             this.gunRepository.Add(gun);
 
