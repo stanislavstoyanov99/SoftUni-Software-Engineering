@@ -4,6 +4,7 @@
     using System.Collections.Generic;
 
     using AnimalCentre.Models.Contracts;
+    using AnimalCentre.Utilities.Messages;
 
     public class Hotel : IHotel
     {
@@ -22,12 +23,13 @@
         {
             if (this.animals.Count == Capacity)
             {
-                throw new InvalidOperationException("Not enough capacity");
+                throw new InvalidOperationException(ExceptionMessages.InvalidHotelCapacity);
             }
 
             if (this.animals.ContainsKey(animal.Name))
             {
-                throw new ArgumentException($"Animal {animal.Name} already exist");
+                throw new ArgumentException(string.Format(ExceptionMessages.AnimalAlreadyExists,
+                    animal.Name));
             }
 
             this.animals.Add(animal.Name, animal);
@@ -37,7 +39,8 @@
         {
             if (!this.animals.ContainsKey(animalName))
             {
-                throw new ArgumentException($"Animal {animalName} does not exist");
+                throw new ArgumentException(string.Format(ExceptionMessages.AnimalDoesNotExist,
+                    animalName));
             }
 
             this.animals[animalName].Owner = owner;

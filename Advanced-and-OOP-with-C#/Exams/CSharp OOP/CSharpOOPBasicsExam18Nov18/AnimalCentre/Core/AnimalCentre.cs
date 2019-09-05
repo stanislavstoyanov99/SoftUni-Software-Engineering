@@ -6,6 +6,7 @@ using AnimalCentre.Core.Contracts;
 using AnimalCentre.Core.Factories;
 using AnimalCentre.Models.Contracts;
 using AnimalCentre.Models.Procedures;
+using AnimalCentre.Utilities.Messages;
 
 namespace AnimalCentre.Core
 {
@@ -47,7 +48,7 @@ namespace AnimalCentre.Core
         {
             if (!this.hotel.Animals.ContainsKey(name))
             {
-                throw new ArgumentException($"Animal {name} does not exist");
+                throw new ArgumentException(ExceptionMessages.AnimalDoesNotExist, name);
             }
 
             IAnimal animal = this.hotel.Animals
@@ -63,7 +64,7 @@ namespace AnimalCentre.Core
         {
             if (!this.hotel.Animals.ContainsKey(name))
             {
-                throw new ArgumentException($"Animal {name} does not exist");
+                throw new ArgumentException(ExceptionMessages.AnimalDoesNotExist, name);
             }
 
             IAnimal animal = this.hotel.Animals
@@ -79,7 +80,7 @@ namespace AnimalCentre.Core
         {
             if (!this.hotel.Animals.ContainsKey(name))
             {
-                throw new ArgumentException($"Animal {name} does not exist");
+                throw new ArgumentException(ExceptionMessages.AnimalDoesNotExist, name);
             }
 
             IAnimal animal = this.hotel.Animals
@@ -95,7 +96,7 @@ namespace AnimalCentre.Core
         {
             if (!this.hotel.Animals.ContainsKey(name))
             {
-                throw new ArgumentException($"Animal {name} does not exist");
+                throw new ArgumentException(ExceptionMessages.AnimalDoesNotExist, name);
             }
 
             IAnimal animal = this.hotel.Animals
@@ -111,7 +112,7 @@ namespace AnimalCentre.Core
         {
             if (!this.hotel.Animals.ContainsKey(name))
             {
-                throw new ArgumentException($"Animal {name} does not exist");
+                throw new ArgumentException(ExceptionMessages.AnimalDoesNotExist, name);
             }
 
             IAnimal animal = this.hotel.Animals
@@ -127,7 +128,7 @@ namespace AnimalCentre.Core
         {
             if (!this.hotel.Animals.ContainsKey(name))
             {
-                throw new ArgumentException($"Animal {name} does not exist");
+                throw new ArgumentException(ExceptionMessages.AnimalDoesNotExist, name);
             }
 
             IAnimal animal = this.hotel.Animals
@@ -147,7 +148,7 @@ namespace AnimalCentre.Core
 
             if (animal == null)
             {
-                throw new ArgumentException($"Animal {animalName} does not exist");
+                throw new ArgumentException(ExceptionMessages.AnimalDoesNotExist, animalName);
             }
 
             this.hotel.Adopt(animal.Name, owner);
@@ -170,29 +171,26 @@ namespace AnimalCentre.Core
         {
             string result = string.Empty;
 
-            if (type == "Chip")
+            switch (type)
             {
-                result = this.chip.History();
-            }
-            else if (type == "DentalCare")
-            {
-                result = this.dentalCare.History();
-            }
-            else if (type == "Fitness")
-            {
-                result = this.fitness.History();
-            }
-            else if (type == "NailTrim")
-            {
-                result = this.nailTrim.History();
-            }
-            else if (type == "Play")
-            {
-                result = this.play.History();
-            }
-            else if (type == "Vaccinate")
-            {
-                result = this.vaccinate.History();
+                case "Chip":
+                    result = this.chip.History();
+                    break;
+                case "DentalCare":
+                    result = this.dentalCare.History();
+                    break;
+                case "Fitness":
+                    result = this.fitness.History();
+                    break;
+                case "NailTrim":
+                    result = this.nailTrim.History();
+                    break;
+                case "Play":
+                    result = this.play.History();
+                    break;
+                case "Vaccinate":
+                    result = this.vaccinate.History();
+                    break;
             }
 
             return result;

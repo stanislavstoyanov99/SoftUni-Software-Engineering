@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 
 using AnimalCentre.Core.Contracts;
-using System.Linq;
 
 namespace AnimalCentre.Core
 {
     public class Engine : IEngine
     {
         private readonly AnimalCentre animalCentre;
-        private Dictionary<string, List<string>> adoptedAnimals;
+        private readonly Dictionary<string, List<string>> adoptedAnimals;
 
         public Engine()
         {

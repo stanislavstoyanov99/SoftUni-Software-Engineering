@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 
 using AnimalCentre.Models.Contracts;
+using AnimalCentre.Utilities.Messages;
 
 namespace AnimalCentre.Core.Factories
 {
@@ -17,7 +18,8 @@ namespace AnimalCentre.Core.Factories
 
             if (animalType == null)
             {
-                throw new ArgumentNullException(nameof(animalType), "Animal type could not be found.");
+                throw new ArgumentNullException(nameof(animalType),
+                    ExceptionMessages.AnimalTypeNotFound);
             }
 
             object[] parameters = new object[]

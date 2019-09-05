@@ -3,6 +3,7 @@
     using System;
 
     using AnimalCentre.Models.Contracts;
+    using AnimalCentre.Utilities.Messages;
 
     public abstract class Animal : IAnimal
     {
@@ -26,7 +27,7 @@
             {
                 if (value < 0 || value > 100)
                 {
-                    throw new ArgumentException("Invalid happiness");
+                    throw new ArgumentException(ExceptionMessages.InvalidHappinessValue);
                 }
 
                 this.happiness = value;
@@ -40,7 +41,7 @@
             {
                 if (value < 0 || value > 100)
                 {
-                    throw new ArgumentException("Invalid energy");
+                    throw new ArgumentException(ExceptionMessages.InvalidEnergyValue);
                 }
 
                 this.energy = value;
@@ -49,7 +50,6 @@
 
         public int ProcedureTime { get; set; }
 
-        //Not sure if these properties need setter
         public string Owner { get; set; } = "Centre";
 
         public bool IsAdopt { get; set; }

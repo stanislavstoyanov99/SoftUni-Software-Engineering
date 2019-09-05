@@ -4,6 +4,7 @@
     using System.Collections.Generic;
 
     using AnimalCentre.Models.Contracts;
+    using AnimalCentre.Utilities.Messages;
 
     public class NailTrim : Procedure
     {
@@ -17,7 +18,7 @@
             }
             else
             {
-                throw new ArgumentException("Animal doesn't have enough procedure time");
+                throw new ArgumentException(ExceptionMessages.InvalidProcedureTime);
             }
 
             if (!this.ProcedureHistory.ContainsKey("NailTrim"))
