@@ -6,7 +6,7 @@ CREATE TABLE People
   Height REAL,
   Weight REAL,
   Gender CHAR(1) NOT NULL,
-  Birthdate DATETIME NOT NULL,
+  Birthdate DATE NOT NULL,
   Biography TEXT
 )
 

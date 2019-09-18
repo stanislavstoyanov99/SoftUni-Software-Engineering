@@ -1,3 +1,3 @@
 ALTER TABLE Users
 ADD CONSTRAINT UC_Username
-CHECK (DATALENGTH(Username) >= 3)
+CHECK (LEN(Username) >= 3)
