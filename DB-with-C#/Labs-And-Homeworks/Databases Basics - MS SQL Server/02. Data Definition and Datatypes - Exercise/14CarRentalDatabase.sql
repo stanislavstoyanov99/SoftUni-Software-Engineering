@@ -43,17 +43,19 @@ CREATE TABLE RentalOrders (
   EmployeeId INT FOREIGN KEY REFERENCES Employees(Id),
   CustomerId INT FOREIGN KEY REFERENCES Customers(Id),
   CarId INT FOREIGN KEY REFERENCES Cars(Id),
-  TankLevel INT NOT NULL,
-  KilometrageStart INT NOT NULL,
-  KilometrageEnd INT NOT NULL,
-  TotalKilometrage INT NOT NULL,
+  TankLevel SMALLINT NOT NULL,
+  KilometrageStart SMALLINT NOT NULL,
+  KilometrageEnd SMALLINT NOT NULL,
+  TotalKilometrage SMALLINT NOT NULL,
   StartDate DATE NOT NULL,
   EndDate DATE NOT NULL,
   TotalDays INT NOT NULL,
   RateApplied BIT,
   TaxRate DECIMAL(4, 2) NOT NULL,
   OrderStatus BIT NOT NULL,
-  Notes NVARCHAR(max)
+  Notes NVARCHAR(max),
+  CHECK(TotalDays = DATEDIFF(day, StartDate, EndDate) + 1),
+  CHECK(TotalKilometrage = KilometrageEnd - KilometrageStart)
 )
 
 INSERT INTO Categories(CategoryName, DailyRate, WeeklyRate, MonthlyRate, WeekendRate) VALUES
@@ -77,6 +79,6 @@ INSERT INTO Customers(DriverLicenceNumber, FullName, [Address], City, ZIPCode, N
 (203050, 'Lora', 'Some address 3', 'Varna', 2200, 'Some text here and so on')
 
 INSERT INTO RentalOrders(EmployeeId, CustomerId, CarId, TankLevel, KilometrageStart, KilometrageEnd, TotalKilometrage, StartDate, EndDate, TotalDays, RateApplied, TaxRate, OrderStatus, Notes) VALUES
-(1, 1, 1, 130, 0, 260, 260, '2001-12-31', '2018-06-30', 4500, 1, 2, 0, 'Some text here'),
-(2, 2, 2, 150, 0, 300, 300, '2002-10-31', '2018-05-20', 5000, 0, 4, 1, 'Some text here, etc'),
-(3, 3, 3, 140, 0, 280, 280, '2003-09-31', '2018-03-10', 6000, 1, 6, 1, 'Some text here and so on')
+(1, 1, 1, 130, 0, 260, 260, '2001-12-30', '2001-12-31', 2, 1, 2, 0, 'Some text here'),
+(2, 2, 2, 150, 0, 300, 300, '2002-03-20', '2002-03-20', 1, 0, 4, 1, 'Some text here, etc'),
+(3, 3, 3, 140, 0, 280, 280, '2003-09-15', '2003-09-17', 3, 1, 6, 1, 'Some text here and so on')
