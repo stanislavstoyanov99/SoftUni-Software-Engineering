@@ -1,0 +1,1 @@
+sqlcmd -S DESKTOP-ANG7ES6\SQLEXPRESS -E -Q "EXEC sp_BackupDatabases @backupLocation='D:\SQLBackups\', @backupType='F'"
