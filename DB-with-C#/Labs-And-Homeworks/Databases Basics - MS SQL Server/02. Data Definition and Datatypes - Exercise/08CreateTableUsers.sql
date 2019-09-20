@@ -1,9 +1,10 @@
 CREATE TABLE Users
 (
-  Id INT PRIMARY KEY IDENTITY,
-  Username VARCHAR(30) NOT NULL,
-  Password VARCHAR(26) NOT NULL,
-  ProfilePicture BINARY(900),
+  Id BIGINT PRIMARY KEY IDENTITY,
+  Username VARCHAR(30) UNIQUE NOT NULL,
+  [Password] VARCHAR(26) NOT NULL,
+  ProfilePicture VARBINARY(max),
+  CHECK(DATALENGTH(ProfilePicture) <= 900000),
   LastLoginTime DATETIME,
   IsDeleted BIT
 )

@@ -15,7 +15,8 @@ CREATE TABLE Cars (
   CarYear INT NOT NULL,
   CategoryId INT FOREIGN KEY REFERENCES Categories(Id),
   Doors TINYINT NOT NULL,
-  Picture VARBINARY(7000) NOT NULL,
+  Picture VARBINARY(max) NOT NULL,
+  CHECK(DATALENGTH(Picture) <= 2000000),
   Condition NVARCHAR(10) NOT NULL,
   Available BIT NOT NULL
 )
