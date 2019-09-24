@@ -1,0 +1,2 @@
+SELECT RIGHT('Sales', 3)
+SELECT LEFT('Sales', 2)
