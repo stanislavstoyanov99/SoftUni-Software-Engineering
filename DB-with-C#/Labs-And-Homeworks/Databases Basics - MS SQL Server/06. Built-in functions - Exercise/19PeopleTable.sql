@@ -4,3 +4,5 @@ SELECT [Name],
 	   DATEDIFF(DAY, Birthdate, GETDATE()) AS [Age in Days],
 	   DATEDIFF(MINUTE, Birthdate, GETDATE()) AS [Age in Minutes]
   FROM People
+
+  SELECT DATENAME(

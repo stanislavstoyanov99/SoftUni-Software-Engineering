@@ -1,4 +1,5 @@
-  SELECT [Name],
+  SELECT [Name]
+      AS Game,
 	CASE
 	    WHEN DATEPART(HOUR, [Start]) BETWEEN 0 AND 11 THEN 'Morning'
 		WHEN DATEPART(HOUR, [Start]) BETWEEN 12 AND 17 THEN 'Afternoon'
