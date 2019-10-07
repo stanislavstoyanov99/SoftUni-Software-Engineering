@@ -5,4 +5,4 @@ SELECT TOP 50 e.EmployeeID,
 FROM Employees AS e
      LEFT JOIN Employees AS m ON m.EmployeeID = e.ManagerID
      LEFT JOIN Departments AS d ON d.DepartmentID = e.DepartmentID
-ORDER BY e.EmployeeID;
+ORDER BY e.EmployeeID
