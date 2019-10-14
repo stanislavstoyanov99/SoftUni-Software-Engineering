@@ -5,4 +5,5 @@ AS
 	  FROM Employees AS e
 	 WHERE dbo.ufn_GetSalaryLevel(e.Salary) = @salaryLevel
 GO
+
 EXEC usp_EmployeesBySalaryLevel 'high'

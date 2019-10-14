@@ -1,8 +1,9 @@
 CREATE FUNCTION ufn_GetSalaryLevel(@salary DECIMAL(18,4))
-RETURNS NVARCHAR(10)
+RETURNS VARCHAR(10)
 AS
 BEGIN
-	DECLARE @salaryLevel NVARCHAR(10);
+	DECLARE @salaryLevel VARCHAR(10);
+
 	IF(@salary < 30000)
 		BEGIN
 			SET @salaryLevel = 'Low'

@@ -4,8 +4,7 @@ AS
             ah.LastName AS [Last Name]
      FROM Accounts AS a
           JOIN AccountHolders AS ah ON a.AccountHolderId = ah.Id
-     GROUP BY a.AccountHolderId, 
-              ah.FirstName, 
+     GROUP BY ah.FirstName, 
               ah.LastName
      HAVING SUM(a.Balance) > @number
      ORDER BY ah.FirstName, 
