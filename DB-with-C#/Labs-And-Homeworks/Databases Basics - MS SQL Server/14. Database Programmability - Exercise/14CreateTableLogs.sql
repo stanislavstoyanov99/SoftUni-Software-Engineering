@@ -15,15 +15,15 @@ AS
      IF EXISTS
      (
          SELECT *
-           FROM Inserted
+           FROM inserted
      )
-         -- UPDATE Statement is executed
+         -- UPDATE Statement is execute
          INSERT INTO Logs(AccountId, OldSum, NewSum)
               SELECT d.Id, 
                      d.Balance, 
                      i.Balance
-                FROM Deleted AS d
-                     INNER JOIN Inserted AS i ON i.Id = d.Id;
+                FROM deleted AS d
+                     INNER JOIN inserted AS i ON i.Id = d.Id;
 
 GO
 
