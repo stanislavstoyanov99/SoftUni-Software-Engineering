@@ -30,7 +30,7 @@ BEGIN
               RETURN @resultMessage;
          END;
 
-      DECLARE @totalPrice DECIMAL(15, 2) =
+     DECLARE @totalPrice DECIMAL(15, 2) =
          (
              SELECT t.Price
              FROM Tickets AS t
@@ -39,9 +39,9 @@ BEGIN
                    AND f.Destination = @destination
          ) * @peopleCount;
 
-         SET @resultMessage = CONCAT('Total price ', @totalPrice);
+     SET @resultMessage = CONCAT('Total price ', @totalPrice);
 
-         RETURN @resultMessage;
+     RETURN @resultMessage;
 END;
 GO
 
