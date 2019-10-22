@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlConnection", "DBAppsIntroduction\SqlConnection.csproj", "{F19D3EB4-E70F-454A-9F82-F182A522B99B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlDataReader", "SqlDataReader\SqlDataReader.csproj", "{A01E52EB-3087-4850-BB64-D9BC748E6ACB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F19D3EB4-E70F-454A-9F82-F182A522B99B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F19D3EB4-E70F-454A-9F82-F182A522B99B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F19D3EB4-E70F-454A-9F82-F182A522B99B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F19D3EB4-E70F-454A-9F82-F182A522B99B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A01E52EB-3087-4850-BB64-D9BC748E6ACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A01E52EB-3087-4850-BB64-D9BC748E6ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A01E52EB-3087-4850-BB64-D9BC748E6ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A01E52EB-3087-4850-BB64-D9BC748E6ACB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D20B35B-F86E-4BBF-8D72-490389C9E442}
+	EndGlobalSection
+EndGlobal
