@@ -2,13 +2,10 @@
 {
     using System;
     using System.Data.SqlClient;
+    using _01InitialSetup;
 
     public class StartUp
     {
-        private const string DB_NAME = "MinionsDB";
-
-        private static string connectionString = @$"Server=.\SQLEXPRESS;Database={DB_NAME};Integrated Security=true";
-
         public static void Main(string[] args)
         {
             string input = Console.ReadLine()
@@ -24,29 +21,26 @@
 
             string villainName = villainInfo[1];
 
-            SqlConnection connection = new SqlConnection(connectionString);
+            SqlConnection connection = new SqlConnection(Configuration.ConnectionString);
 
             connection.Open();
 
             using (connection)
             {
                 // Town check
-                string townQueryForExistence = @"SELECT Id FROM Towns WHERE Name = @townName";
-
-                using SqlCommand townCmd = new SqlCommand(townQueryForExistence, connection);
+                using SqlCommand townCmd = new SqlCommand(Queries.TakeTownId, connection);
 
                 townCmd.Parameters.AddWithValue("@townName", minionTown);
 
                 object townId = townCmd.ExecuteScalar();
 
-                // Town does not exist in database
                 if (townId != null)
                 {
                     townId = (int)townId;
-
-                    string townQueryToAdd = @"INSERT INTO Towns (Name) VALUES (@townName)";
-
-                    using SqlCommand townCmdToAdd = new SqlCommand(townQueryToAdd, connection);
+                }
+                else
+                {
+                    using SqlCommand townCmdToAdd = new SqlCommand(Queries.InsertTownName, connection);
 
                     townCmdToAdd.Parameters.AddWithValue("@townName", minionTown);
 
@@ -55,6 +49,7 @@
                     Console.WriteLine($"Town {minionTown} was added to the database.");
                 }
 
+                // TODO - change methods logic
                 // Villain check
                 string villainQueryForExistence = @"SELECT Id FROM Villains WHERE Name = @Name";
 

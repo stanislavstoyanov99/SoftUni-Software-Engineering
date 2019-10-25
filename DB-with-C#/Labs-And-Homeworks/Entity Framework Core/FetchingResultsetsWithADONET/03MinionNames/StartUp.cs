@@ -2,26 +2,21 @@
 {
     using System;
     using System.Data.SqlClient;
+    using _01InitialSetup;
 
     public class StartUp
     {
-        private const string DB_NAME = "MinionsDB";
-
-        private static string connectionString = @$"Server=.\SQLEXPRESS;Database={DB_NAME};Integrated Security=true";
-
         public static void Main(string[] args)
         {
             int villainId = int.Parse(Console.ReadLine());
 
-            SqlConnection connection = new SqlConnection(connectionString);
+            SqlConnection connection = new SqlConnection(Configuration.ConnectionString);
 
             connection.Open();
 
             using (connection)
             {
-                string idQuery = @"SELECT [Name] FROM Villains WHERE Id = @Id";
-
-                using SqlCommand idCommand = new SqlCommand(idQuery, connection);
+                using SqlCommand idCommand = new SqlCommand(Queries.VillainsIdQuery, connection);
 
                 idCommand.Parameters.AddWithValue("@Id", villainId);
 
@@ -33,15 +28,7 @@
                     return;
                 }
 
-                string minionsQuery = @"SELECT ROW_NUMBER() OVER(ORDER BY [Name]) AS RowNumber, 
-                                               m.[Name] AS MinionName, 
-                                               m.Age AS MinionAge
-                                          FROM MinionsVillains AS mv
-                                               JOIN Minions AS m ON m.Id = mv.MinionId
-                                         WHERE mv.VillainId = @Id
-                                      ORDER BY m.[Name]";
-
-                using SqlCommand minionsCommand = new SqlCommand(minionsQuery, connection);
+                using SqlCommand minionsCommand = new SqlCommand(Queries.MinionsQuery, connection);
 
                 minionsCommand.Parameters.AddWithValue("@Id", villainId);
 
