@@ -6,6 +6,12 @@
 
     public class StartUp
     {
+        public static int TownId;
+        public static int MinionId;
+        public static int VillainId;
+
+        private const string DbName = "MinionsDB";
+
         public static void Main(string[] args)
         {
             string input = Console.ReadLine()
@@ -21,22 +27,23 @@
 
             string villainName = villainInfo[1];
 
-            SqlConnection connection = new SqlConnection(Configuration.ConnectionString);
+            SqlConnection connection = new SqlConnection(String.Format(Configuration.ConnectionString, DbName));
 
             connection.Open();
 
             using (connection)
             {
                 // Town check
+
                 using SqlCommand townCmd = new SqlCommand(Queries.TakeTownId, connection);
 
                 townCmd.Parameters.AddWithValue("@townName", minionTown);
 
-                object townId = townCmd.ExecuteScalar();
+                object targetTownId = townCmd.ExecuteScalar();
 
-                if (townId != null)
+                if (targetTownId != null)
                 {
-                    townId = (int)townId;
+                    TownId = (int)targetTownId;
                 }
                 else
                 {
@@ -49,24 +56,42 @@
                     Console.WriteLine($"Town {minionTown} was added to the database.");
                 }
 
-                // TODO - change methods logic
-                // Villain check
-                string villainQueryForExistence = @"SELECT Id FROM Villains WHERE Name = @Name";
+                // Minion check
+                using SqlCommand minionCmd = new SqlCommand(Queries.TakeMinionId, connection);
 
-                using SqlCommand villainCmd = new SqlCommand(villainQueryForExistence, connection);
+                minionCmd.Parameters.AddWithValue("@Name", minionName);
+
+                object targetMinionId = minionCmd.ExecuteScalar();
+
+                if (targetMinionId != null)
+                {
+                    MinionId = (int)targetMinionId;
+                }
+                else
+                {
+                    using SqlCommand minionCmdToAdd = new SqlCommand(Queries.InsertMinion, connection);
+
+                    minionCmdToAdd.Parameters.AddWithValue("@name", minionName);
+                    minionCmdToAdd.Parameters.AddWithValue("@age", minionAge);
+                    minionCmdToAdd.Parameters.AddWithValue("@townId", TownId);
+
+                    minionCmdToAdd.ExecuteNonQuery();
+                }
+
+                // Villain check
+                using SqlCommand villainCmd = new SqlCommand(Queries.TakeVillainId, connection);
 
                 villainCmd.Parameters.AddWithValue("@Name", villainName);
 
-                object villainId = villainCmd.ExecuteScalar();
+                object targetVillainId = villainCmd.ExecuteScalar();
 
-                // Villain does not exist in database
-                if (villainId != null)
+                if (targetVillainId != null)
                 {
-                    villainId = (int)villainId;
-
-                    string villainQueryToAdd = @"INSERT INTO Villains (Name, EvilnessFactorId)  VALUES (@villainName, 4)";
-
-                    using SqlCommand villainCmdToAdd = new SqlCommand(villainQueryToAdd, connection);
+                    VillainId = (int)targetVillainId;
+                }
+                else
+                {
+                    using SqlCommand villainCmdToAdd = new SqlCommand(Queries.InsertVillain, connection);
 
                     villainCmdToAdd.Parameters.AddWithValue("@villainName", villainName);
 
@@ -75,36 +100,11 @@
                     Console.WriteLine($"Villain {villainName} was added to the database.");
                 }
 
-                // Minion check
-                string minionQueryForExistence = @"SELECT Id FROM Minions WHERE Name = @Name";
-
-                using SqlCommand minionCmd = new SqlCommand(minionQueryForExistence, connection);
-
-                minionCmd.Parameters.AddWithValue("@Name", minionName);
-
-                object minionId = minionCmd.ExecuteScalar();
-
-                // Minion does not exist in database
-                if (minionId != null)
-                {
-                    minionId = (int)minionId;
-
-                    string minionQueryToAdd = @"INSERT INTO Minions (Name, Age, TownId) VALUES (@name, @age, @townId)";
-
-                    using SqlCommand minionCmdToAdd = new SqlCommand(minionQueryToAdd, connection);
-
-                    minionCmdToAdd.Parameters.AddWithValue("@name", minionName);
-                    minionCmdToAdd.Parameters.AddWithValue("@age", minionAge);
-                    minionCmdToAdd.Parameters.AddWithValue("@townId", townId);
-                    minionCmdToAdd.ExecuteNonQuery();
-                }
-
                 // Adding minion to be servant of villain
-                string servantOfVillain = @"INSERT INTO MinionsVillains (MinionId, VillainId) VALUES (@villainId, @minionId)";
+                using SqlCommand minionOfVillainCmd = new SqlCommand(Queries.InsertMinionVillain, connection);
+                minionOfVillainCmd.Parameters.AddWithValue("@villainId", VillainId);
+                minionOfVillainCmd.Parameters.AddWithValue("@minionId", MinionId);
 
-                using SqlCommand minionOfVillainCmd = new SqlCommand(servantOfVillain, connection);
-                minionOfVillainCmd.Parameters.AddWithValue("@villainId", villainId);
-                minionOfVillainCmd.Parameters.AddWithValue("@minionId", minionId);
                 minionOfVillainCmd.ExecuteNonQuery();
 
                 Console.WriteLine($"Successfully added {minionName} to be minion of {villainName}.");

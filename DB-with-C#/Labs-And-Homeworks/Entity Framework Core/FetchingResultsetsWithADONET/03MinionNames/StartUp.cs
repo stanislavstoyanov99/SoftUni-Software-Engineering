@@ -6,11 +6,13 @@
 
     public class StartUp
     {
+        private const string DbName = "MinionsDB";
+
         public static void Main(string[] args)
         {
             int villainId = int.Parse(Console.ReadLine());
 
-            SqlConnection connection = new SqlConnection(Configuration.ConnectionString);
+            SqlConnection connection = new SqlConnection(String.Format(Configuration.ConnectionString, DbName));
 
             connection.Open();
 

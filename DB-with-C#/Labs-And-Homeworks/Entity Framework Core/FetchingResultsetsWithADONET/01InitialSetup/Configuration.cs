@@ -2,13 +2,15 @@
 {
     public static class Configuration
     {
-        public const string ConnectionString = @"Server=.\SQLEXPRESS;Database=MinionsDB;Integrated Security=true";
+        public const string ConnectionString = @"Server=.\SQLEXPRESS;Database={0};Integrated Security=true";
 
         public const string CreateDatabase = "CREATE DATABASE MinionsDB";
 
+        public const string UseCurrentDatabase = "USE MinionsDB";
+
         public static string[] CreateTablesQueries =
         {
-            "CREATE TABLE Countries (Id INT PRIMARY KEY IDENTITY,Name VARCHAR(50))",
+             "CREATE TABLE Countries (Id INT PRIMARY KEY IDENTITY,Name VARCHAR(50))",
 
              "CREATE TABLE Towns(Id INT PRIMARY KEY IDENTITY, Name VARCHAR(50), CountryCode INT FOREIGN KEY REFERENCES Countries(Id))",
              

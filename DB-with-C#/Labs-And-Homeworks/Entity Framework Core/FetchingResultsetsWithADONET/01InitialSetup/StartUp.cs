@@ -7,7 +7,7 @@
     {
         public static void Main(string[] args)
         {
-            SqlConnection connection = new SqlConnection(Configuration.ConnectionString);
+            SqlConnection connection = new SqlConnection(String.Format(Configuration.ConnectionString, "master"));
 
             connection.Open();
 
@@ -26,6 +26,10 @@
                     return;
                 }
 
+                using SqlCommand useSqlCommand = new SqlCommand(Configuration.UseCurrentDatabase, connection);
+
+                useSqlCommand.ExecuteNonQuery();
+
                 foreach (var query in Configuration.CreateTablesQueries)
                 {
                     using SqlCommand createTableCmd = new SqlCommand(query, connection);
@@ -33,7 +37,7 @@
                     try
                     {
                         createTableCmd.ExecuteNonQuery();
-                        Console.WriteLine($"Successfully created tables");
+                        Console.WriteLine($"Successfully created table");
                     }
                     catch (Exception ex)
                     {
@@ -48,7 +52,7 @@
                     try
                     {
                         int affectedRows = insertCmd.ExecuteNonQuery();
-                        Console.WriteLine("Successfully inserted data into tables");
+                        Console.WriteLine("Successfully inserted data into table");
                         Console.WriteLine($"Affected rows: {affectedRows}");
                     }
                     catch (Exception ex)
