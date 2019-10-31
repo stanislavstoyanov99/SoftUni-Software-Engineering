@@ -49,6 +49,7 @@
                 var primaryKeyValues = GetPrimaryKeyValues(primaryKeys, proxyEntity)
                     .ToArray();
 
+                // Cannot find already deleted entity
                 var entity = dbset.Entities
                     .Single(e => GetPrimaryKeyValues(primaryKeys, e)
                     .SequenceEqual(primaryKeyValues));

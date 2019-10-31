@@ -92,6 +92,7 @@
 			var rows = new List<T>();
 
 			var escapedColumns = string.Join(", ", columnNames.Select(EscapeColumn));
+
 			var queryText = $@"SELECT {escapedColumns} FROM {tableName}";
 
 			using (var query = CreateCommand(queryText))

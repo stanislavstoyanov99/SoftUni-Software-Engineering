@@ -24,6 +24,8 @@
         // We implement this property, but don't use it!
         public bool IsReadOnly => this.Entities.IsReadOnly;
 
+        public bool Contains(TEntity item) => this.Entities.Contains(item);
+
         public void Add(TEntity item)
         {
             if (item == null)
@@ -43,8 +45,6 @@
                 this.Remove(entity);
             }
         }
-
-        public bool Contains(TEntity item) => this.Entities.Contains(item);
 
         // We implement this method, but don't use it!
         public void CopyTo(TEntity[] array, int arrayIndex) => this.Entities.CopyTo(array, arrayIndex);
@@ -68,7 +68,7 @@
 
         public void RemoveRange(IEnumerable<TEntity> entities)
         {
-            foreach (var entity in entities.ToArray())
+            foreach (var entity in entities)
             {
                 this.Remove(entity);
             }
