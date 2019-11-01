@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reflection;
+    using MiniORM.Utilities;
     using System.Collections;
     using System.Data.SqlClient;
     using System.Collections.Generic;
@@ -58,8 +59,8 @@
 
                 if (invalidEntities.Any())
                 {
-                    throw new InvalidOperationException(
-                        $"{invalidEntities.Length} Invalid entities found in {dbSet.GetType().Name}!");
+                    throw new InvalidOperationException(String.Format(
+                        ExceptionMessages.InvalidEntitiesFound, invalidEntities.Length, dbSet.GetType().Name));
                 }
             }
 
@@ -115,9 +116,11 @@
                 .ToArray();
 
             // Look for added entities in ChangeTracker Added collection and if there are any insert them in that collection (database)
+            // Clears Change Tracker Added collection
             if (dbSet.ChangeTracker.Added.Any())
             {
                 this.connection.InsertEntities(dbSet.ChangeTracker.Added, tableName, columns);
+                dbSet.ChangeTracker.ClearAdded();
             }
 
             TEntity[] modifiedEntities = dbSet
@@ -132,9 +135,11 @@
             }
 
             // Look for removed entities in ChangeTracker Removed entities and if there are delete them (database)
+            // Clears Change Tracker Removed collection
             if (dbSet.ChangeTracker.Removed.Any())
             {
                 this.connection.DeleteEntities(dbSet.ChangeTracker.Removed, tableName, columns);
+                dbSet.ChangeTracker.ClearRemoved();
             }
         }
 
@@ -254,7 +259,7 @@
             }
         }
 
-        // Hard method for implementing - TODO: PropertyInfo type might be Type because of the dynamically invoked method in MapRelations - It is correct
+        // Hard method for implementing - TODO: PropertyInfo type might be Type because of the dynamically invoked method in MapRelations
         private void MapCollection<TDbSet, TCollection>(DbSet<TDbSet> dbSet, Type collectionProperty)
             where TDbSet : class, new() 
             where TCollection : class, new()

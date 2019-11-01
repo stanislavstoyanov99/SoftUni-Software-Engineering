@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using MiniORM.Utilities;
     using System.Collections;
     using System.Collections.Generic;
 
@@ -30,7 +31,7 @@
         {
             if (item == null)
             {
-                throw new ArgumentNullException(nameof(item), "Item cannot be null!");
+                throw new ArgumentNullException(nameof(item), String.Format(ExceptionMessages.ItemCannotBeNull));
             }
 
             this.Entities.Add(item);
@@ -53,7 +54,7 @@
         {
             if (item == null)
             {
-                throw new ArgumentNullException(nameof(item), "Item cannot be null!");
+                throw new ArgumentNullException(nameof(item), String.Format(ExceptionMessages.ItemCannotBeNull));
             }
 
             bool isRemoved = this.Entities.Remove(item);

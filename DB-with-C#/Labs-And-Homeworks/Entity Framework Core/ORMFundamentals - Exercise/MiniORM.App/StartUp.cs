@@ -11,17 +11,24 @@
         public static void Main(string[] args)
         {
             var context = new SoftUniDbContext(connectionString);
+       
+            context.EmployeesProjects.Add(new EmployeesProjects { ProjectId = 2, EmployeeId = 2 });
 
-            context.Employees.Add(new Employees
-            {
-                FirstName = "Gosho",
-                LastName = "Inserted",
-                DepartmentId = context.Departments.First().Id,
-                IsEmployed = true
-            });
+            context.SaveChanges();
+            
+            var employeesProjects = context
+                .EmployeesProjects
+                .Where(ep => ep.ProjectId == 2)
+                .ToList();
 
-            Employees employee = context.Employees.Last();
-            context.Employees.Remove(employee);
+            var project = context.Projects
+                .FirstOrDefault(p => p.Id == 2);
+
+            context.EmployeesProjects.RemoveRange(employeesProjects);
+
+            context.SaveChanges();
+
+            context.Projects.Remove(project);
 
             context.SaveChanges();
         }

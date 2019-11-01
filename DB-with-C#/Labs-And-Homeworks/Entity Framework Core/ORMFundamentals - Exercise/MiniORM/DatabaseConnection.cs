@@ -1,10 +1,11 @@
 ﻿namespace MiniORM
 {
-	using System;
+    using System;
+	using System.Linq;
+    using MiniORM.Utilities;
+	using System.Data.SqlClient;
 	using System.Collections.Generic;
 	using System.ComponentModel.DataAnnotations;
-	using System.Data.SqlClient;
-	using System.Linq;
 
 	/// <summary>
 	/// Used for accessing a database, inserting/updating/deleting entities
@@ -157,7 +158,8 @@
 
 			if (insertedRows != entities.Count())
 			{
-				throw new InvalidOperationException($"Could not insert {entities.Count() - insertedRows} rows.");
+				throw new InvalidOperationException(String.Format(
+                    ExceptionMessages.InvalidInsertionEntities, entities.Count() - insertedRows));
 			}
 		}
 
@@ -204,7 +206,8 @@
 
 				if (updatedRows != 1)
 				{
-					throw new InvalidOperationException($"Update for table {tableName} failed.");
+					throw new InvalidOperationException(String.Format(
+                        ExceptionMessages.InvalidUpdateOperation, tableName));
 				}
 			}
 		}
@@ -237,7 +240,8 @@
 
 				if (deletedRows != 1)
 				{
-					throw new InvalidOperationException($"Delete for table {tableName} failed.");
+					throw new InvalidOperationException(String.Format(
+                        ExceptionMessages.InvalidDeleteOperation, tableName));
 				}
 			}
 		}

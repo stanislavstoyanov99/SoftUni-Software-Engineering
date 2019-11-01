@@ -23,18 +23,35 @@
             this.allEntities = CloneEntities(entities);
         }
 
-        public IReadOnlyCollection<T> AllEntities => 
+        public IReadOnlyCollection<T> AllEntities =>
             this.allEntities.AsReadOnly();
 
-        public IReadOnlyCollection<T> Added => 
+        public IReadOnlyCollection<T> Added =>
             this.added.AsReadOnly();
 
-        public IReadOnlyCollection<T> Removed => 
+        public IReadOnlyCollection<T> Removed =>
             this.removed.AsReadOnly();
 
         public void Add(T item) => this.added.Add(item);
 
-        public void Remove(T item) => this.removed.Add(item);
+        public void Remove(T item)
+        {
+            this.removed.Add(item);
+
+            var entityToDelete = this.GetEntityToDelete(item);
+
+            this.allEntities.Remove(entityToDelete);
+        }
+
+        public void ClearAdded()
+        {
+            this.added.Clear();
+        }
+
+        public void ClearRemoved()
+        {
+            this.removed.Clear();
+        }
 
         public IEnumerable<T> GetModifiedEntities(DbSet<T> dbset)
         {
@@ -49,12 +66,12 @@
                 var primaryKeyValues = GetPrimaryKeyValues(primaryKeys, proxyEntity)
                     .ToArray();
 
-                // Cannot find already deleted entity
                 var entity = dbset.Entities
                     .Single(e => GetPrimaryKeyValues(primaryKeys, e)
                     .SequenceEqual(primaryKeyValues));
 
                 bool isModified = IsModified(proxyEntity, entity);
+
                 if (isModified)
                 {
                     modifiedEntities.Add(entity);
@@ -62,6 +79,22 @@
             }
 
             return modifiedEntities;
+        }
+
+        private T GetEntityToDelete(T item)
+        {
+            PropertyInfo[] primaryKeys = typeof(T)
+                .GetProperties()
+                .Where(pi => pi.HasAttribute<KeyAttribute>())
+                .ToArray();
+
+            IEnumerable<object> itemPrimaryKeyValues = GetPrimaryKeyValues(primaryKeys, item);
+
+            T itemToDelete = this.AllEntities
+                .Single(e => GetPrimaryKeyValues(primaryKeys, e)
+                .SequenceEqual(itemPrimaryKeyValues));
+
+            return itemToDelete;
         }
 
         private static bool IsModified(T proxyEntity, T realEntity)
