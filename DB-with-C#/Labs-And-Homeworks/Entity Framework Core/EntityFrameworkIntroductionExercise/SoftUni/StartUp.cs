@@ -15,11 +15,11 @@
 
             using (database)
             {
-                Console.WriteLine(GetEmployeesFromResearchAndDevelopment(database));
+                Console.WriteLine(AddNewAddressToEmployee(database));
             }
         }
 
-        // Problem - 03.	Employees Full Information
+        // Problem - 03. Employees Full Information
         public static string GetEmployeesFullInformation(SoftUniContext db)
         {
             var employees = db.Employees
@@ -51,7 +51,7 @@
             return sb.ToString().TrimEnd();
         }
 
-        // Problem - 04.	Employees with Salary Over 50 000 
+        // Problem - 04. Employees with Salary Over 50 000 
         public static string GetEmployeesWithSalaryOver50000(SoftUniContext db)
         {
             var employees = db.Employees
@@ -95,6 +95,41 @@
             foreach (var employee in employees)
             {
                 sb.AppendLine($"{employee.FirstName} {employee.LastName} from {employee.DepartmentName} - ${employee.Salary:F2}");
+            }
+
+            return sb.ToString().TrimEnd();
+        }
+
+        // Problem - 06. Adding a New Address and Updating Employee 
+        public static string AddNewAddressToEmployee(SoftUniContext db)
+        {
+            Address address = new Address
+            {
+                TownId = 4,
+                AddressText = "Vitoshka 15"
+            };
+
+            Employee foundEmployee = db.Employees
+                .FirstOrDefault(e => e.LastName == "Nakov");
+
+            foundEmployee.Address = address;
+
+            db.SaveChanges();
+
+            var employees = db.Employees
+                .OrderByDescending(e => e.Address.AddressId)
+                .Select(e => new
+                {
+                    AddressText = e.Address.AddressText
+                })
+                .Take(10)
+                .ToList();
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var employee in employees)
+            {
+                sb.AppendLine($"{employee.AddressText}");
             }
 
             return sb.ToString().TrimEnd();
