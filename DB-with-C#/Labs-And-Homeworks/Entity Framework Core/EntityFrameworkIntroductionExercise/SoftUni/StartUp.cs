@@ -16,7 +16,7 @@
 
             using (database)
             {
-                Console.WriteLine(GetEmployeesFullInformation(database));
+                Console.WriteLine(RemoveTown(database));
             }
         }
 
@@ -33,8 +33,7 @@
                     LastName = e.LastName,
                     JobTitle = e.JobTitle,
                     Salary = e.Salary
-                })
-                .ToList();
+                });
 
             StringBuilder sb = new StringBuilder();
 
@@ -111,14 +110,14 @@
             };
 
             Employee foundEmployee = db.Employees
-                .FirstOrDefault(e => e.LastName == "Nakov");
+                .First(e => e.LastName == "Nakov");
 
             foundEmployee.Address = address;
 
             db.SaveChanges();
 
             var employees = db.Employees
-                .OrderByDescending(e => e.Address.AddressId)
+                .OrderByDescending(e => e.AddressId)
                 .Select(e => new
                 {
                     AddressText = e.Address.AddressText
@@ -340,6 +339,7 @@
         public static string GetEmployeesByFirstNameStartingWithSa(SoftUniContext db)
         {
             var employees = db.Employees
+                .Where(e => e.FirstName.StartsWith("Sa"))
                 .Select(e => new
                 {
                     FirstName = e.FirstName,
@@ -347,7 +347,6 @@
                     JobTitle = e.JobTitle,
                     Salary = e.Salary
                 })
-                .Where(e => e.FirstName.StartsWith("Sa"))
                 .OrderBy(e => e.FirstName)
                 .ThenBy(e => e.LastName)
                 .ToList();
@@ -404,8 +403,7 @@
             foreach (var address in addressesToDelete)
             {
                 var employeesInCurrentAddress = db.Employees
-                    .Where(e => e.Address.AddressId == address.AddressId)
-                    .ToList();
+                    .Where(e => e.Address.AddressId == address.AddressId);
 
                 foreach (var employee in employeesInCurrentAddress)
                 {
