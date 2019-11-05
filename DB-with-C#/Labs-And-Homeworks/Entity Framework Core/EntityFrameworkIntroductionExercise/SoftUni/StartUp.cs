@@ -16,7 +16,7 @@
 
             using (database)
             {
-                Console.WriteLine(RemoveTown(database));
+                Console.WriteLine(GetEmployeesFullInformation(database));
             }
         }
 
@@ -24,6 +24,7 @@
         public static string GetEmployeesFullInformation(SoftUniContext db)
         {
             var employees = db.Employees
+                .OrderBy(e => e.EmployeeId)
                 .Select(e => new
                 {
                     EmployeeId = e.EmployeeId,
@@ -33,7 +34,6 @@
                     JobTitle = e.JobTitle,
                     Salary = e.Salary
                 })
-                .OrderBy(e => e.EmployeeId)
                 .ToList();
 
             StringBuilder sb = new StringBuilder();
