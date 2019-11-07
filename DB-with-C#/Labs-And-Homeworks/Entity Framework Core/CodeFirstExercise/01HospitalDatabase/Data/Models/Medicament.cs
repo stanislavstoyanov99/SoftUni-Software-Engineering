@@ -10,6 +10,7 @@
     {
         public int MedicamentId { get; set; }
 
+        [Required]
         [MaxLength(MaxNameLength)]
         public string Name { get; set; }
 

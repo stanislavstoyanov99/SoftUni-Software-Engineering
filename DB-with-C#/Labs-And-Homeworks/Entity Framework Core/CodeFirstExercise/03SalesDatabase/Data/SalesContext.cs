@@ -8,6 +8,17 @@
 
     public class SalesContext : DbContext
     {
+        public SalesContext()
+        {
+
+        }
+
+        public SalesContext(DbContextOptions options) 
+            : base(options)
+        {
+
+        }
+
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Customer> Customers { get; set; }
@@ -23,6 +34,8 @@
                 optionsBuilder
                     .UseSqlServer(DataSettings.DefaultConnection);
             }
+
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

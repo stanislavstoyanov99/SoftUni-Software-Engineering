@@ -9,8 +9,10 @@
     {
         public int VisitationId { get; set; }
 
+        [Required]
         public DateTime Date { get; set; }
 
+        [Required]
         [MaxLength(MaxCommentLength)]
         public string Comments { get; set; }
 

@@ -24,6 +24,7 @@
         [MaxLength(MaxEmailLength)]
         public string Email { get; set; }
 
+        [Required]
         public bool HasInsurance { get; set; }
 
         public ICollection<Visitation> Visitations { get; set; } 
