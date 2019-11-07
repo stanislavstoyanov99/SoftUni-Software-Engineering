@@ -1,6 +1,5 @@
 ﻿namespace P_03SalesDatabase
 {
-    using System.Linq;
     using Microsoft.EntityFrameworkCore;
 
     using P03_SalesDatabase.Data;
