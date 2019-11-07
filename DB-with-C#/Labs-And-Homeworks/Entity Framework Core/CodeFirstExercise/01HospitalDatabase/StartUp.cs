@@ -1,7 +1,5 @@
 ﻿namespace P01_HospitalDatabase
 {
-    using System;
-    using System.Linq;
     using Microsoft.EntityFrameworkCore;
 
     using P01_HospitalDatabase.Data;
@@ -15,26 +13,37 @@
 
             db.Database.Migrate();
 
-            Patient patient = new Patient
+            Patient[] patients = new Patient[]
             {
-                FirstName = "Pesho",
-                LastName = "Peshov",
-                Address = "Radomir town",
-                Email = "slavkata_99@abv.bg",
-                HasInsurance = true
+                new Patient
+                {
+                    FirstName = "Kiril",
+                    LastName = "Petrov",
+                    Address = "Sofia town",
+                    Email = "kiril77@gmail.com",
+                    HasInsurance = true
+                },
+                new Patient
+                {
+                    FirstName = "Stanislav",
+                    LastName = "Stoyanov",
+                    Address = "Pernik town",
+                    Email = "slavi_biserov@mail.bg",
+                    HasInsurance = false
+                },
+                new Patient
+                {
+                    FirstName = "Stamat",
+                    LastName = "Stamatov",
+                    Address = "Plovdiv town",
+                    Email = "stamat_stamatov@mail.bg",
+                    HasInsurance = true
+                }
             };
 
-            db.Patients.Add(patient);
+            db.Patients.AddRange(patients);
 
             db.SaveChanges();
-
-            var patients = db.Patients
-                .ToList();
-
-            foreach (var pa in patients)
-            {
-                Console.WriteLine(pa.FirstName + " " + pa.LastName + " " + pa.Email);
-            }
         }
     }
 }

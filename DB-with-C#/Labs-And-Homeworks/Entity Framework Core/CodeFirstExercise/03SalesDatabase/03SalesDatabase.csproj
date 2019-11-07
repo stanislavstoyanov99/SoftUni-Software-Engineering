@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RootNamespace>P03_SalesDatabase</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20191107172537_SalesAddDateDefault.cs" />
+    <Compile Remove="Migrations\20191107172537_SalesAddDateDefault.Designer.cs" />
+    <Compile Remove="Migrations\20191107172922_SalesAddDateDefault.cs" />
+    <Compile Remove="Migrations\20191107172922_SalesAddDateDefault.Designer.cs" />
+    <Compile Remove="Migrations\20191107173430_SalesAddDateDefault.cs" />
+    <Compile Remove="Migrations\20191107173430_SalesAddDateDefault.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
