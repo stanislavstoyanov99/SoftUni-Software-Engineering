@@ -9,8 +9,6 @@
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
-            builder.ToTable("Customers");
-
             builder
                 .Property(p => p.Email)
                 .IsUnicode(false);

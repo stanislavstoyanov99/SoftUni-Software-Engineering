@@ -42,41 +42,130 @@
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Below are one-to-many relationships
-            modelBuilder
-                .Entity<Visitation>()
-                .HasOne(v => v.Patient)
-                .WithMany(p => p.Visitations)
-                .HasForeignKey(v => v.PatientId);
+            modelBuilder.Entity<Patient>(entity =>
+            {
+                entity.HasKey(p => p.PatientId);
 
-            modelBuilder
-                .Entity<Visitation>()
-                .HasOne(v => v.Doctor)
-                .WithMany(d => d.Visitations)
-                .HasForeignKey(v => v.DoctorId);
+                entity
+                    .Property(p => p.FirstName)
+                    .HasMaxLength(50)
+                    .IsRequired(true)
+                    .IsUnicode(true);
 
-            modelBuilder
-                .Entity<Diagnose>()
-                .HasOne(d => d.Patient)
-                .WithMany(p => p.Diagnoses)
-                .HasForeignKey(d => d.PatientId);
+                entity
+                    .Property(p => p.LastName)
+                    .HasMaxLength(50)
+                    .IsRequired(true)
+                    .IsUnicode(true);
 
-            // Below are many-to-many relationships
-            modelBuilder
-                .Entity<PatientMedicament>()
-                .HasKey(pm => new { pm.PatientId, pm.MedicamentId });
+                entity
+                    .Property(p => p.Address)
+                    .HasMaxLength(250)
+                    .IsRequired(true)
+                    .IsUnicode(true);
 
-            modelBuilder
-                .Entity<PatientMedicament>()
-                .HasOne(pm => pm.Patient)
-                .WithMany(p => p.Prescriptions)
-                .HasForeignKey(pm => pm.PatientId);
+                entity
+                    .Property(p => p.Email)
+                    .HasMaxLength(80)
+                    .IsRequired(true)
+                    .IsUnicode(false);
 
-            modelBuilder
-                .Entity<PatientMedicament>()
-                .HasOne(pm => pm.Medicament)
-                .WithMany(m => m.Prescriptions)
-                .HasForeignKey(pm => pm.MedicamentId);
+                entity
+                    .Property(p => p.HasInsurance)
+                    .IsRequired(true);
+            });
+
+            modelBuilder.Entity<Visitation>(entity =>
+            {
+                entity.HasKey(v => v.VisitationId);
+
+                entity
+                    .Property(v => v.Date)
+                    .IsRequired(true)
+                    .HasColumnType("DATETIME2");
+
+                entity
+                    .Property(v => v.Comments)
+                    .IsRequired(true)
+                    .HasMaxLength(250)
+                    .IsUnicode(true);
+
+                entity
+                    .HasOne(v => v.Patient)
+                    .WithMany(p => p.Visitations)
+                    .HasForeignKey(v => v.PatientId);
+
+                entity
+                    .HasOne(v => v.Doctor)
+                    .WithMany(d => d.Visitations)
+                    .HasForeignKey(v => v.DoctorId);
+            });
+
+            modelBuilder.Entity<Diagnose>(entity =>
+            {
+                entity.HasKey(d => d.DiagnoseId);
+
+                entity
+                    .Property(d => d.Name)
+                    .IsRequired(true)
+                    .HasMaxLength(50)
+                    .IsUnicode(true);
+
+                entity
+                    .Property(d => d.Comments)
+                    .IsRequired(true)
+                    .HasMaxLength(250)
+                    .IsUnicode(true);
+
+                entity
+                    .HasOne(d => d.Patient)
+                    .WithMany(p => p.Diagnoses)
+                    .HasForeignKey(d => d.PatientId);
+            });
+
+            modelBuilder.Entity<Doctor>(entity =>
+            {
+                entity.HasKey(d => d.DoctorId);
+
+                entity
+                    .Property(d => d.Name)
+                    .IsRequired(true)
+                    .HasMaxLength(100)
+                    .IsUnicode(true);
+
+                entity
+                    .Property(d => d.Specialty)
+                    .IsRequired(true)
+                    .HasMaxLength(100)
+                    .IsUnicode(true);
+            });
+
+            modelBuilder.Entity<Medicament>(entity =>
+            {
+                entity.HasKey(m => m.MedicamentId);
+
+                entity
+                    .Property(m => m.Name)
+                    .IsRequired(true)
+                    .HasMaxLength(50)
+                    .IsUnicode(true);
+            });
+
+            modelBuilder.Entity<PatientMedicament>(entity =>
+            {
+                // Below are many-to-many relationships
+                entity.HasKey(pm => new { pm.PatientId, pm.MedicamentId });
+
+                entity
+                    .HasOne(pm => pm.Patient)
+                    .WithMany(p => p.Prescriptions)
+                    .HasForeignKey(pm => pm.PatientId);
+
+                entity
+                    .HasOne(pm => pm.Medicament)
+                    .WithMany(m => m.Prescriptions)
+                    .HasForeignKey(pm => pm.MedicamentId);
+            });
         }
     }
 }

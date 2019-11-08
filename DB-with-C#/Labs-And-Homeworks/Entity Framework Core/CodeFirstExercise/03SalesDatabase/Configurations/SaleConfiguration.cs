@@ -9,8 +9,6 @@
     {
         public void Configure(EntityTypeBuilder<Sale> builder)
         {
-            builder.ToTable("Sales");
-
             builder
                 .HasOne(s => s.Product)
                 .WithMany(p => p.Sales)
@@ -28,7 +26,7 @@
 
             builder
                 .Property(p => p.Date)
-                .HasDefaultValueSql("getdate()");
+                .HasDefaultValueSql("GETDATE()");
         }
     }
 }

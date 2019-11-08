@@ -10,8 +10,9 @@
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder
-                .ToTable("Products")
                 .Property(p => p.Description)
+                .IsRequired(false)
+                .IsUnicode(true)
                 .HasDefaultValue("No description");
         }
     }

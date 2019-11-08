@@ -2,9 +2,9 @@
 {
     using Microsoft.EntityFrameworkCore;
 
-    using P03_SalesDatabase.Configurations;
-    using P03_SalesDatabase.Data.Models;
     using P03_SalesDatabase.Seeding;
+    using P03_SalesDatabase.Data.Models;
+    using P03_SalesDatabase.Configurations;
 
     public class SalesContext : DbContext
     {
