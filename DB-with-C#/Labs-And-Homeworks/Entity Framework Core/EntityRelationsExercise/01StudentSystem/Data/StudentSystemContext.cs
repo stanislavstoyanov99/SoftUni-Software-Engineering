@@ -1,11 +1,11 @@
 ﻿namespace P01_StudentSystem.Data
 {
     using Microsoft.EntityFrameworkCore;
-
-    using P01_StudentSystem.Configurations;
-    using P01_StudentSystem.Data.Models;
-    using P01_StudentSystem.Seeding;
     using System.Reflection;
+
+    using P01_StudentSystem.Seeding;
+    using P01_StudentSystem.Data.Models;
+    using P01_StudentSystem.Configurations;
 
     public class StudentSystemContext : DbContext
     {
@@ -37,6 +37,8 @@
                 optionsBuilder
                     .UseSqlServer(DataSettings.DefaultConnection);
             }
+
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
