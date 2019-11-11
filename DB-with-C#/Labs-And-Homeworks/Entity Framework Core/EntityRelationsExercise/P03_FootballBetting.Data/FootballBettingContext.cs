@@ -4,6 +4,7 @@
     using Microsoft.EntityFrameworkCore;
 
     using P03_FootballBetting.Data.Models;
+    using P03_FootballBetting.Data.Seeding;
 
     public class FootballBettingContext : DbContext
     {
@@ -52,6 +53,11 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            DataSeeder.CountrySeed(modelBuilder);
+            DataSeeder.ColorSeed(modelBuilder);
+            DataSeeder.TownSeed(modelBuilder);
+            DataSeeder.PositionSeed(modelBuilder);
         }
     }
 }

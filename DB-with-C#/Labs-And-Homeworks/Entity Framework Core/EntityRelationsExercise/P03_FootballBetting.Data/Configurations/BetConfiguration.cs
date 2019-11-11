@@ -22,6 +22,7 @@
 
             builder
                 .Property(b => b.DateTime)
+                .HasColumnType("DATETIME2")
                 .IsRequired(true);
 
             // Relationships

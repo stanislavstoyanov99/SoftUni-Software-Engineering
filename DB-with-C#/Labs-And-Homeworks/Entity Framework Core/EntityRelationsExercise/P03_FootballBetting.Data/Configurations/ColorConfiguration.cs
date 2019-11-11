@@ -15,7 +15,7 @@
                 .Property(c => c.Name)
                 .IsRequired(true)
                 .HasMaxLength(20)
-                .IsUnicode(false);
+                .IsUnicode(true);
         }
     }
 }

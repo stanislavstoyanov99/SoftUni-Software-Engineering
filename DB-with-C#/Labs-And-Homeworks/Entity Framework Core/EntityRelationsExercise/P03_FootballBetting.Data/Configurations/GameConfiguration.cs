@@ -10,8 +10,6 @@
         public void Configure(EntityTypeBuilder<Game> builder)
         {
             // Property validations
-            builder.HasKey(g => g.GameId);
-
             builder
                 .Property(g => g.HomeTeamGoals)
                 .IsRequired(true);
@@ -42,6 +40,8 @@
                 .IsRequired(true);
 
             //Relationships
+            builder.HasKey(g => g.GameId);
+
             builder
                 .HasOne(g => g.HomeTeam)
                 .WithMany(ht => ht.HomeGames)

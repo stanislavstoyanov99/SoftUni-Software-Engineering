@@ -9,8 +9,6 @@
     {
         public void Configure(EntityTypeBuilder<Resource> builder)
         {
-            builder.HasKey(r => r.ResourceId);
-
             builder
                 .Property(r => r.Name)
                 .IsRequired(true)
@@ -22,10 +20,13 @@
                 .IsUnicode(false);
 
             //Relationships
+            builder.HasKey(r => r.ResourceId);
+
             builder
                 .HasOne(r => r.Course)
                 .WithMany(c => c.Resources)
-                .HasForeignKey(r => r.CourseId);
+                .HasForeignKey(r => r.CourseId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -8,7 +8,7 @@
 
         public string Name { get; set; }
 
-        public int SquadNumber { get; set; }
+        public byte SquadNumber { get; set; }
 
         public int TeamId { get; set; }
 

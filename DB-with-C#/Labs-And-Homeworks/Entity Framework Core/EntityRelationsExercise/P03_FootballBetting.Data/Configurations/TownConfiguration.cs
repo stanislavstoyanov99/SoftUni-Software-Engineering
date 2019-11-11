@@ -15,7 +15,7 @@
             builder
                 .Property(t => t.Name)
                 .IsRequired(true)
-                .HasMaxLength(30)
+                .HasMaxLength(50)
                 .IsUnicode(true);
 
             // Relationships

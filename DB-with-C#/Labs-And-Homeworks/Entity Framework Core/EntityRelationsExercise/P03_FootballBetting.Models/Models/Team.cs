@@ -27,11 +27,11 @@
 
         public Town Town { get; set; }
 
-        [InverseProperty("HomeTeam")]
+        // Instead of Fluent API -> [InverseProperty("HomeTeam")]
         public ICollection<Game> HomeGames { get; set; }
             = new HashSet<Game>();
 
-        [InverseProperty("AwayTeam")]
+        // Instead of Fluent API -> [InverseProperty("AwayTeam")]
         public ICollection<Game> AwayGames { get; set; }
             = new HashSet<Game>();
 

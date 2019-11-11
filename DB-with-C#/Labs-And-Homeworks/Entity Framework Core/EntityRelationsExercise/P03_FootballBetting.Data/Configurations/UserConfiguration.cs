@@ -32,8 +32,8 @@
             builder
                 .Property(u => u.Name)
                 .IsRequired(true)
-                .HasMaxLength(50)
-                .IsUnicode(false);
+                .HasMaxLength(100)
+                .IsUnicode(true);
 
             builder
                 .Property(u => u.Balance)

@@ -9,11 +9,11 @@
 
         public string Name { get; set; }
 
-        [InverseProperty("PrimaryKitColor")]
+        // Instead of Fluent API -> [InverseProperty("PrimaryKitColor")]
         public ICollection<Team> PrimaryKitTeams { get; set; }
             = new HashSet<Team>();
 
-        [InverseProperty("SecondaryKitColor")]
+        // Instead of Fluent API -> [InverseProperty("SecondaryKitColor")]
         public ICollection<Team> SecondaryKitTeams { get; set; }
             = new HashSet<Team>();
     }

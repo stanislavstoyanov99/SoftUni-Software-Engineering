@@ -20,15 +20,15 @@
 
             builder
                 .Property(t => t.LogoUrl)
-                .IsRequired(true)
-                .HasMaxLength(30)
+                .IsRequired(false)
+                .HasMaxLength(250)
                 .IsUnicode(false);
 
             builder
                 .Property(t => t.Initials)
                 .IsRequired(true)
-                .HasMaxLength(10)
-                .IsUnicode(false);
+                .HasMaxLength(4)
+                .IsUnicode(true);
 
             builder
                 .Property(t => t.Budget)

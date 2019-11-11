@@ -10,16 +10,15 @@
         public void Configure(EntityTypeBuilder<Player> builder)
         {
             // Property validations
-            builder.HasKey(p => p.PlayerId);
-
             builder
                 .Property(p => p.Name)
                 .IsRequired(true)
-                .HasMaxLength(50)
+                .HasMaxLength(100)
                 .IsUnicode(true);
 
             builder
                 .Property(p => p.SquadNumber)
+                .HasMaxLength(3)
                 .IsRequired(true);
 
             builder
@@ -27,6 +26,8 @@
                 .IsRequired(true);
 
             // Relationships
+            builder.HasKey(p => p.PlayerId);
+
             builder
                 .HasOne(p => p.Team)
                 .WithMany(t => t.Players)

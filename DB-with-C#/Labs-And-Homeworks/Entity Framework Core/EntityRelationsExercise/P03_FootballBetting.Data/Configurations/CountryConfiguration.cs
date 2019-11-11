@@ -14,8 +14,8 @@
             builder
                 .Property(c => c.Name)
                 .IsRequired(true)
-                .HasMaxLength(30)
-                .IsUnicode(false);
+                .HasMaxLength(50)
+                .IsUnicode(true);
         }
     }
 }

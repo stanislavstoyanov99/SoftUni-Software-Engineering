@@ -3,8 +3,8 @@
     using System;
     using Microsoft.EntityFrameworkCore;
 
-    using P01_StudentSystem.Data.Enumerations;
     using P01_StudentSystem.Data.Models;
+    using P01_StudentSystem.Data.Enumerations;
 
     public static class DatabaseSeeder
     {

@@ -2,13 +2,15 @@
 {
     using System;
 
+    using P03_FootballBetting.Models.Enumerations;
+
     public class Bet
     {
         public int BetId { get; set; }
 
         public decimal Amount { get; set; }
 
-        public string Prediction { get; set; }
+        public PredictionType Prediction { get; set; }
 
         public DateTime DateTime { get; set; }
 

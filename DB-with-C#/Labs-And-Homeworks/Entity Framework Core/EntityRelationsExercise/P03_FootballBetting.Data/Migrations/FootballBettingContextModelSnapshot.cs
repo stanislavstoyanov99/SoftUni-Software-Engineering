@@ -27,12 +27,12 @@ namespace P03_FootballBetting.Data.Migrations
 
                     b.Property<decimal>("Amount");
 
-                    b.Property<DateTime>("DateTime");
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("DATETIME2");
 
                     b.Property<int>("GameId");
 
-                    b.Property<string>("Prediction")
-                        .IsRequired()
+                    b.Property<int>("Prediction")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
@@ -56,11 +56,28 @@ namespace P03_FootballBetting.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .IsUnicode(false);
+                        .IsUnicode(true);
 
                     b.HasKey("ColorId");
 
                     b.ToTable("Colors");
+
+                    b.HasData(
+                        new
+                        {
+                            ColorId = 1,
+                            Name = "Black"
+                        },
+                        new
+                        {
+                            ColorId = 2,
+                            Name = "White"
+                        },
+                        new
+                        {
+                            ColorId = 3,
+                            Name = "Red"
+                        });
                 });
 
             modelBuilder.Entity("P03_FootballBetting.Data.Models.Country", b =>
@@ -71,12 +88,29 @@ namespace P03_FootballBetting.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .IsUnicode(false);
+                        .HasMaxLength(50)
+                        .IsUnicode(true);
 
                     b.HasKey("CountryId");
 
                     b.ToTable("Countries");
+
+                    b.HasData(
+                        new
+                        {
+                            CountryId = 1,
+                            Name = "Bulgaria"
+                        },
+                        new
+                        {
+                            CountryId = 2,
+                            Name = "USA"
+                        },
+                        new
+                        {
+                            CountryId = 3,
+                            Name = "Italy"
+                        });
                 });
 
             modelBuilder.Entity("P03_FootballBetting.Data.Models.Game", b =>
@@ -123,12 +157,13 @@ namespace P03_FootballBetting.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(100)
                         .IsUnicode(true);
 
                     b.Property<int>("PositionId");
 
-                    b.Property<int>("SquadNumber");
+                    b.Property<byte>("SquadNumber")
+                        .HasMaxLength(3);
 
                     b.Property<int>("TeamId");
 
@@ -168,12 +203,24 @@ namespace P03_FootballBetting.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(30)
                         .IsUnicode(false);
 
                     b.HasKey("PositionId");
 
                     b.ToTable("Positions");
+
+                    b.HasData(
+                        new
+                        {
+                            PositionId = 1,
+                            Name = "attacker"
+                        },
+                        new
+                        {
+                            PositionId = 2,
+                            Name = "deffender"
+                        });
                 });
 
             modelBuilder.Entity("P03_FootballBetting.Data.Models.Team", b =>
@@ -184,12 +231,11 @@ namespace P03_FootballBetting.Data.Migrations
 
                     b.Property<string>("Initials")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .IsUnicode(false);
+                        .HasMaxLength(4)
+                        .IsUnicode(true);
 
                     b.Property<string>("LogoUrl")
-                        .IsRequired()
-                        .HasMaxLength(30)
+                        .HasMaxLength(250)
                         .IsUnicode(false);
 
                     b.Property<string>("Name")
@@ -222,7 +268,7 @@ namespace P03_FootballBetting.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
+                        .HasMaxLength(50)
                         .IsUnicode(true);
 
                     b.HasKey("TownId");
@@ -230,6 +276,20 @@ namespace P03_FootballBetting.Data.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("Towns");
+
+                    b.HasData(
+                        new
+                        {
+                            TownId = 1,
+                            CountryId = 1,
+                            Name = "Sofia"
+                        },
+                        new
+                        {
+                            TownId = 2,
+                            CountryId = 2,
+                            Name = "Los Angelis"
+                        });
                 });
 
             modelBuilder.Entity("P03_FootballBetting.Data.Models.User", b =>
@@ -247,8 +307,8 @@ namespace P03_FootballBetting.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
+                        .HasMaxLength(100)
+                        .IsUnicode(true);
 
                     b.Property<string>("Password")
                         .IsRequired()
