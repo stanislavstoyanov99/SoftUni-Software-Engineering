@@ -15,7 +15,8 @@
         {
             using var db = new BookShopContext();
 
-            Console.WriteLine(RemoveBooks(db));
+            string input = Console.ReadLine();
+            Console.WriteLine(GetBooksByAuthor(db, input));
         }
 
         // Problem 01. Age Restriction
@@ -45,15 +46,14 @@
         public static string GetGoldenBooks(BookShopContext context)
         {
             var goldenEditionBooks = context.Books
+                .OrderBy(b => b.BookId)
                 .Select(b => new
                 {
-                    b.BookId,
                     b.Title,
                     b.EditionType,
                     b.Copies
                 })
                 .Where(b => b.EditionType == EditionType.Gold && b.Copies < 5000)
-                .OrderBy(b => b.BookId)
                 .ToList();
 
             StringBuilder sb = new StringBuilder();
@@ -91,14 +91,13 @@
         public static string GetBooksNotReleasedIn(BookShopContext context, int year)
         {
             var notReleasedBooks = context.Books
+                .OrderBy(b => b.BookId)
                 .Select(b => new
                 {
-                    b.BookId,
                     b.Title,
                     b.ReleaseDate
                 })
                 .Where(b => b.ReleaseDate.Value.Year != year)
-                .OrderBy(b => b.BookId)
                 .ToList();
 
             StringBuilder sb = new StringBuilder();
@@ -238,13 +237,12 @@
                 .Books
                 .Where(b => b.Author.LastName
                 .StartsWith(input, StringComparison.InvariantCultureIgnoreCase))
+                .OrderBy(b => b.BookId)
                 .Select(b => new
                 {
-                    b.BookId,
                     b.Title,
                     AuthorFullName = b.Author.FirstName + " " + b.Author.LastName
                 })
-                .OrderBy(b => b.BookId)
                 .ToList();
 
             StringBuilder sb = new StringBuilder();
@@ -330,8 +328,8 @@
                                         cb.Book.Title, 
                                         cb.Book.ReleaseDate 
                                     })
-                                    .OrderByDescending(cb => cb.ReleaseDate)
                                     .Take(3)
+                                    .OrderByDescending(cb => cb.ReleaseDate)
                                     .ToList()
                 })
                 .OrderBy(c => c.Name)
