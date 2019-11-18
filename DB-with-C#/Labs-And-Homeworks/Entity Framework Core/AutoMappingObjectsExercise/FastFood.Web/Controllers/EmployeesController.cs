@@ -35,10 +35,10 @@
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Error", "Home");
+                return this.RedirectToAction("Error", "Home");
             }
 
-            var employee = this.mapper.Map<Employee>(model);
+            Employee employee = this.mapper.Map<Employee>(model);
 
             this.context.Employees.Add(employee);
 
@@ -50,7 +50,7 @@
         public IActionResult All()
         {
             var employees = this.context.Employees
-                .ProjectTo<EmployeesAllViewModel>(mapper.ConfigurationProvider)
+                .ProjectTo<EmployeesAllViewModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
             return this.View(employees);

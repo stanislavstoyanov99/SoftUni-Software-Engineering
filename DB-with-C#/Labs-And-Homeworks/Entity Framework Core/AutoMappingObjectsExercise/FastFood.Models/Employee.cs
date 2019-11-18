@@ -12,7 +12,7 @@ namespace FastFood.Models
 		public string Name { get; set; }
 
 		[Required]
-		[Range(15, 80)]
+		[Range(16, 70)]
 		public int Age { get; set; }
 
 	    [Required]

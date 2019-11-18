@@ -8,6 +8,8 @@
     using FastFood.Models;
     using ViewModels.Orders;
     using AutoMapper.QueryableExtensions;
+    using System;
+    using FastFood.Models.Enums;
 
     public class OrdersController : Controller
     {
@@ -46,6 +48,15 @@
             }
 
             var order = this.mapper.Map<Order>(model);
+
+            order.DateTime = DateTime.UtcNow;
+            order.Type = Enum.Parse<OrderType>(model.OrderType);
+            order.OrderItems.Add(new OrderItem
+            {
+                ItemId = model.ItemId,
+                Order = order,
+                Quantity = model.Quantity
+            });
 
             this.context.Orders.Add(order);
 

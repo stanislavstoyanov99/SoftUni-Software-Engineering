@@ -19,10 +19,8 @@
                 .ForMember(x => x.Name, y => y.MapFrom(s => s.PositionName));
 
             this.CreateMap<Position, PositionsAllViewModel>()
-                .ForMember(x => x.Name, y => y.MapFrom(s => s.Name));
-
-            this.CreateMap<Position, RegisterEmployeeViewModel>()
-                .ForMember(src => src.PositionId, dest => dest.MapFrom(src => src.Id));
+                .ForMember(x => x.Name, y => y.MapFrom(s => s.Name))
+                .ForMember(x => x.PositionId, y => y.MapFrom(s => s.Id));
 
             //Orders - WHY??
             this.CreateMap<CreateOrderInputModel, Order>();
@@ -35,7 +33,7 @@
                 .ForMember(src => src.OrderId, dest => dest.MapFrom(src => src.Id))
                 .ForMember(src => src.Customer, dest => dest.MapFrom(src => src.Customer))
                 .ForMember(src => src.Employee, dest => dest.MapFrom(src => src.Employee.Name))
-                .ForMember(src => src.DateTime, dest => dest.MapFrom(src => src.DateTime.ToString()));
+                .ForMember(src => src.DateTime, dest => dest.MapFrom(src => src.DateTime.ToString("g")));
 
             //Items
             this.CreateMap<CreateItemInputModel, Item>()
@@ -43,29 +41,29 @@
                 .ForMember(src => src.Price, dest => dest.MapFrom(src => src.Price))
                 .ForMember(src => src.CategoryId, dest => dest.MapFrom(src => src.CategoryId));
 
-            this.CreateMap<Category, CreateItemViewModel>()
-                .ForMember(src => src.CategoryId, dest => dest.MapFrom(src => src.Id));
-
             this.CreateMap<Item, ItemsAllViewModels>()
                 .ForMember(src => src.Name, dest => dest.MapFrom(src => src.Name))
                 .ForMember(src => src.Price, dest => dest.MapFrom(src => src.Price))
                 .ForMember(src => src.Category, dest => dest.MapFrom(src => src.Category));
 
-            //Employees - WHY??
+            this.CreateMap<Category, CreateItemViewModel>()
+                .ForMember(src => src.CategoryId, dest => dest.MapFrom(src => src.Id));
+
+            //Employees
             this.CreateMap<RegisterEmployeeInputModel, Employee>();
 
+            this.CreateMap<Position, RegisterEmployeeViewModel>()
+                .ForMember(src => src.PositionId, dest => dest.MapFrom(src => src.Id))
+                .ForMember(src => src.PositionName, dest => dest.MapFrom(src => src.Name));
+
             this.CreateMap<Employee, EmployeesAllViewModel>()
-                .ForMember(src => src.Name, dest => dest.MapFrom(src => src.Name))
-                .ForMember(src => src.Age, dest => dest.MapFrom(src => src.Age))
-                .ForMember(src => src.Address, dest => dest.MapFrom(src => src.Address))
                 .ForMember(src => src.Position, dest => dest.MapFrom(src => src.Position.Name));
 
             //Categories
             this.CreateMap<CreateCategoryInputModel, Category>()
                 .ForMember(src => src.Name, dest => dest.MapFrom(src => src.CategoryName));
 
-            this.CreateMap<Category, CategoryAllViewModel>()
-                .ForMember(src => src.Name, dest => dest.MapFrom(src => src.Name));
+            this.CreateMap<Category, CategoryAllViewModel>();
         }
     }
 }

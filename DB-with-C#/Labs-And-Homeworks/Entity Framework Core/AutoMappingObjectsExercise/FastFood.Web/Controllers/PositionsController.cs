@@ -46,6 +46,7 @@
         {
             var categories = this.context.Positions
                 .ProjectTo<PositionsAllViewModel>(mapper.ConfigurationProvider)
+                .OrderBy(p => p.PositionId)
                 .ToList();
 
             return this.View(categories);
