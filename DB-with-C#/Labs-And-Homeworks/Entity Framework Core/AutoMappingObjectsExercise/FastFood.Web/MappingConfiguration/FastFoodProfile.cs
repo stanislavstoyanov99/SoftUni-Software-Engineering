@@ -23,12 +23,14 @@
                 .ForMember(x => x.PositionId, y => y.MapFrom(s => s.Id));
 
             //Orders
-            this.CreateMap<CreateOrderInputModel, Order>();
+            this.CreateMap<CreateOrderInputModel, Order>()
+                .ForMember(src => src.Type, dest => dest.MapFrom(src => src.OrderType));
 
             this.CreateMap<Order, OrderAllViewModel>()
                 .ForMember(src => src.OrderId, dest => dest.MapFrom(src => src.Id))
                 .ForMember(src => src.Employee, dest => dest.MapFrom(src => src.Employee.Name))
-                .ForMember(src => src.DateTime, dest => dest.MapFrom(src => src.DateTime.ToString("g")));
+                .ForMember(src => src.DateTime, dest => dest.MapFrom(src => src.DateTime.ToString("g")))
+                .ForMember(src => src.OrderType, dest => dest.MapFrom(src => src.Type.ToString()));
 
             //Items
             this.CreateMap<CreateItemInputModel, Item>();

@@ -18,7 +18,7 @@ namespace FastFood.Models
 		public DateTime DateTime { get; set; }
 
 		[Required]
-		public OrderType? Type { get; set; }
+		public OrderType Type { get; set; }
 
 		[NotMapped]
 		public decimal TotalPrice { get; set; }

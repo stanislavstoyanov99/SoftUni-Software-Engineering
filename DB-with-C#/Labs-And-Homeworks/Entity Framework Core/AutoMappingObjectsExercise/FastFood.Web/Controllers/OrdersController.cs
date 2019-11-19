@@ -55,7 +55,7 @@
             var order = this.mapper.Map<Order>(model);
 
             order.DateTime = DateTime.UtcNow;
-            order.Type = Enum.Parse<OrderType>(model.OrderType);
+            order.Type = Enum.Parse<OrderType>(model.OrderType, true);
 
             order.OrderItems.Add(new OrderItem
             {
@@ -63,6 +63,11 @@
                 Order = order,
                 Quantity = model.Quantity
             });
+
+            var employee = this.context.Employees
+                .FirstOrDefault(e => e.Name == model.EmployeeName);
+
+            order.EmployeeId = employee.Id;
 
             this.context.Orders.Add(order);
 

@@ -16,6 +16,7 @@
         [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
 
+        [Required]
         public string OrderType { get; set; }
     }
 }
