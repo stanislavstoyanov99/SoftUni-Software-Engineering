@@ -28,11 +28,11 @@
             {
                 Items = this.context
                 .Items
-                .Select(x => x.Id)
+                .Select(x => x.Name)
                 .ToList(),
                 Employees = this.context
                 .Employees
-                .Select(x => x.Id)
+                .Select(x => x.Name)
                 .ToList(),
             };
 
@@ -42,6 +42,11 @@
         [HttpPost]
         public IActionResult Create(CreateOrderInputModel model)
         {
+            var item = this.context.Items
+                .FirstOrDefault(i => i.Name == model.ItemName);
+
+            model.ItemId = item.Id;
+
             if (!ModelState.IsValid)
             {
                 return RedirectToAction("Error", "Home");
@@ -51,6 +56,7 @@
 
             order.DateTime = DateTime.UtcNow;
             order.Type = Enum.Parse<OrderType>(model.OrderType);
+
             order.OrderItems.Add(new OrderItem
             {
                 ItemId = model.ItemId,

@@ -12,7 +12,7 @@
     </div>
     <div class="form-group">
         <label for="age">Age</label>
-        <input type="number" step="1" min="18" class="form-control" id="age" placeholder="Enter age" name="age">
+        <input type="number" step="1" min="16" max="70" class="form-control" id="age" placeholder="Enter age" name="age">
     </div>
     <div class="form-group">
         <label for="position">Position Name</label>
@@ -30,5 +30,6 @@
     <hr class="bg-secondary half-width" />
     <div class="button-holder d-flex justify-content-center">
         <button type="submit" class="btn ">Register</button>
+        <button type="submit" class="btn btn-primary" asp-controller="Employees" asp-action="All">View all employees</button>
     </div>
 </form>
