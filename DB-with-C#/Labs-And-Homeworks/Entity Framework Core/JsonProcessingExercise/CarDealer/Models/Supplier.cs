@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CarDealer.Models
+﻿namespace CarDealer.Models
 {
+    using System.Collections.Generic;
+
     public class Supplier
     {
         public int Id { get; set; }
@@ -12,6 +10,6 @@ namespace CarDealer.Models
 
         public bool IsImporter { get; set; }
 
-        public ICollection<Part> Parts { get; set; }
+        public ICollection<Part> Parts { get; set; } = new HashSet<Part>();
     }
 }

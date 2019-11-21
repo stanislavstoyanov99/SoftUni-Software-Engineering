@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-
-namespace CarDealer.Models
+﻿namespace CarDealer.Models
 {
+    using System.Collections.Generic;
+
     public class Car
     {
         public int Id { get; set; }
@@ -15,8 +12,8 @@ namespace CarDealer.Models
 
         public long TravelledDistance { get; set; }
 
-        public ICollection<Sale> Sales { get; set; }
+        public ICollection<Sale> Sales { get; set; } = new HashSet<Sale>();
 
-        public ICollection<PartCar> PartCars { get; set; } = new List<PartCar>();
+        public ICollection<PartCar> PartCars { get; set; } = new HashSet<PartCar>();
     }
 }

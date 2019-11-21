@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
+using System.Collections.Generic;
+
 using AutoMapper;
+
 using CarDealer.Models;
 
 namespace CarDealer
