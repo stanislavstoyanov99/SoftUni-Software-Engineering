@@ -1,21 +1,24 @@
 ﻿namespace ProductShop
 {
     using System;
-    using System.IO;
     using System.Linq;
-    using System.Collections.Generic;
 
+    using AutoMapper;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
     using ProductShop.Data;
     using ProductShop.Models;
+    using ProductShop.Dtos.Export;
+    using AutoMapper.QueryableExtensions;
 
     public class StartUp
     {
         public static void Main(string[] args)
         {
             using var db = new ProductShopContext();
+
+            Mapper.Initialize(cfg => cfg.AddProfile<ProductShopProfile>());
 
             //string inputJson = File.ReadAllText(@"./../../../Datasets/categories-products.json");
 
@@ -86,6 +89,14 @@
                 })
                 .ToList();
 
+            // Dto solution
+            /*var productsDto = context.Products
+                .Where(p => p.Price >= 500 && p.Price <= 1000)
+                .OrderBy(p => p.Price)
+                .ProjectTo<ProductInfoDto>()
+                .ToList();
+                */
+
             // Second solution
             /*DefaultContractResolver contractResolver = new DefaultContractResolver()
             {
@@ -130,6 +141,15 @@
                     .ToList()
                 })
                 .ToList();
+              
+            // Dto solution
+            /*var usersDto = context.Users
+                .Where(u => u.ProductsSold.Any(u => u.Buyer != null))
+                .OrderBy(u => u.LastName)
+                .ThenBy(u => u.FirstName)
+                .ProjectTo<UsersInfoDto>()
+                .ToArray();
+                */
 
             string jsonExport = JsonConvert.SerializeObject(users, new JsonSerializerSettings() 
             {
@@ -153,6 +173,13 @@
                 })
                 .OrderByDescending(c => c.ProductsCount)
                 .ToList();
+
+            // Dto solution
+            /*var categoriesDto = context.Categories
+               .ProjectTo<CategoriesInfoDto>()
+               .OrderByDescending(c => c.ProductsCount)
+               .ToArray();
+               */
 
             string jsonExport = JsonConvert.SerializeObject(categories, new JsonSerializerSettings()
             {
@@ -189,13 +216,17 @@
                 })
                 .ToList();
 
-            var resultView = new
-            {
-                UsersCount = users.Count,
-                Users = users
-            };
+            // Dto solution
+            /*var usersDto = context.Users
+                .Where(u => u.ProductsSold.Any(p => p.Buyer != null))
+                .OrderByDescending(u => u.ProductsSold.Count(p => p.Buyer != null))
+                .ProjectTo<UsersDto>()
+                .ToArray();
 
-            string jsonExport = JsonConvert.SerializeObject(resultView, new JsonSerializerSettings()
+            var resultOutput = Mapper.Map<UserOutputDto>(usersDto);
+            */
+
+            string jsonExport = JsonConvert.SerializeObject(users, new JsonSerializerSettings()
             {
                 ContractResolver = new CamelCasePropertyNamesContractResolver(),
                 NullValueHandling = NullValueHandling.Ignore,
