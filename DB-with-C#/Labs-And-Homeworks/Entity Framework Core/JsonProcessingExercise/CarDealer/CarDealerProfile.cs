@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using AutoMapper;
 
 using CarDealer.Models;
+using CarDealer.DTO.Export;
 
 namespace CarDealer
 {
@@ -12,7 +13,7 @@ namespace CarDealer
     {
         public CarDealerProfile()
         {
-        
+
         }
     }
 }
