@@ -5,11 +5,6 @@ namespace CarDealer.Models
 
     public class Part
     {
-        public Part()
-        {
-            this.PartCars = new HashSet<PartCar>();    
-        }
-
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -19,8 +14,10 @@ namespace CarDealer.Models
         public int Quantity { get; set; }
 
         public int SupplierId { get; set; }
+
         public Supplier Supplier { get; set; }
 
         public ICollection<PartCar> PartCars { get; set; }
+            = new HashSet<PartCar>();
     }
 }

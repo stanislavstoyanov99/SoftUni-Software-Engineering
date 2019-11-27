@@ -9,25 +9,34 @@
         public CarDealerContext(DbContextOptions options)
             : base(options)
         {
+
         }
 
         public CarDealerContext()
         {
+
         }
 
         public DbSet<Car> Cars { get; set; }
+
         public DbSet<Customer> Customers { get; set; }
+
         public DbSet<Part> Parts { get; set; }
+
         public DbSet<PartCar> PartCars { get; set; }
+
         public DbSet<Sale> Sales { get; set; }
+
         public DbSet<Supplier> Suppliers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=.;Database=CarDealer;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(DataConfiguration.DefaultConnection);
             }
+
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
