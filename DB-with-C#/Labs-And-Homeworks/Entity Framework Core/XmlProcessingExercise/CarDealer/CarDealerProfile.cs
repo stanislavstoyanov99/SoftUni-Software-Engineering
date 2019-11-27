@@ -9,9 +9,11 @@
     {
         public CarDealerProfile()
         {
-            this.CreateMap<ImportSupplier, Supplier>();
-            this.CreateMap<ImportPart, Part>();
-            this.CreateMap<ImportCar, Car>();
+            this.CreateMap<ImportSupplierDto, Supplier>();
+            this.CreateMap<ImportPartDto, Part>();
+            this.CreateMap<ImportCarDto, Car>();
+            this.CreateMap<ImportCustomerDto, Customer>();
+            this.CreateMap<ImportSaleDto, Sale>();
         }
     }
 }
