@@ -5,8 +5,6 @@
     using System.Xml;
     using System.Text;
     using System.Linq;
-    using System.Collections.Generic;
-    using System.Xml.Linq;
     using System.Xml.Serialization;
 
     using AutoMapper;
@@ -135,13 +133,13 @@
             var productsInRange = context.Products
                 .Where(p => p.Price >= 500 && p.Price <= 1000)
                 .OrderBy(p => p.Price)
+                .Take(10)
                 .Select(p => new ProductInRangeDto
                 {
                     Name = p.Name,
                     Price = p.Price,
                     Buyer = p.Buyer.FirstName + " " + p.Buyer.LastName
                 })
-                .Take(10)
                 .ToArray();
 
             var rootAttribute = new XmlRootAttribute("Products");
@@ -161,6 +159,9 @@
         {
             var users = context.Users
                 .Where(u => u.ProductsSold.Any(p => p.Buyer != null))
+                .OrderBy(u => u.LastName)
+                .ThenBy(u => u.FirstName)
+                .Take(5)
                 .Select(u => new UserSoldProductDto
                 {
                     FirstName = u.FirstName,
@@ -173,9 +174,6 @@
                     })
                     .ToArray()
                 })
-                .OrderBy(u => u.LastName)
-                .ThenBy(u => u.FirstName)
-                .Take(5)
                 .ToArray();
 
             var rootAttribute = new XmlRootAttribute("Users");
@@ -223,6 +221,7 @@
             var usersWithProducts = context.Users
                 .Where(u => u.ProductsSold.Any(ps => ps.Buyer != null))
                 .OrderByDescending(u => u.ProductsSold.Count(p => p.Buyer != null))
+                .Take(10)
                 .Select(u => new UserInfoDto
                 {
                     FirstName = u.FirstName,
@@ -242,7 +241,6 @@
                             .ToArray()
                     }
                 })
-                .Take(10)
                 .ToArray();
 
             var usersAndProducts = new UsersOutputDto

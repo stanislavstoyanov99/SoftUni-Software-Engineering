@@ -9,7 +9,6 @@
     using System.Collections.Generic;
 
     using AutoMapper;
-    using AutoMapper.Configuration;
 
     using Data;
     using Models;
@@ -165,15 +164,15 @@
         {
             var carsWithDistance = context.Cars
                 .Where(c => c.TravelledDistance > 2_000_000)
+                .OrderBy(c => c.Make)
+                .ThenBy(c => c.Model)
+                .Take(10)
                 .Select(c => new CarInfoDto
                 {
                     Make = c.Make,
                     Model = c.Model,
                     TravelledDistance = c.TravelledDistance
                 })
-                .OrderBy(c => c.Make)
-                .ThenBy(c => c.Model)
-                .Take(10)
                 .ToArray();
 
             var rootAttribute = new XmlRootAttribute("cars");
@@ -247,6 +246,9 @@
         public static string GetCarsWithTheirListOfParts(CarDealerContext context)
         {
             var carsWithParts = context.Cars
+                .OrderByDescending(c => c.TravelledDistance)
+                .ThenBy(c => c.Model)
+                .Take(5)
                 .Select(c => new CarsWithPartsDto
                 {
                     Make = c.Make,
@@ -261,9 +263,6 @@
                         .OrderByDescending(pc => pc.Price)
                         .ToArray()
                 })
-                .OrderByDescending(c => c.TravelledDistance)
-                .ThenBy(c => c.Model)
-                .Take(5)
                 .ToArray();
 
             var rootAttribute = new XmlRootAttribute("cars");

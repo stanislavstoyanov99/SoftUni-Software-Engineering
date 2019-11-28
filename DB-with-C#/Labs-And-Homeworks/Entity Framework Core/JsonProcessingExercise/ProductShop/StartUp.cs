@@ -1,6 +1,7 @@
 ﻿namespace ProductShop
 {
     using System;
+    using System.IO;
     using System.Linq;
 
     using AutoMapper;
@@ -20,7 +21,7 @@
 
             Mapper.Initialize(cfg => cfg.AddProfile<ProductShopProfile>());
 
-            //string inputJson = File.ReadAllText(@"./../../../Datasets/categories-products.json");
+            string inputJson = File.ReadAllText(@"./../../../Datasets/categories-products.json");
 
             Console.WriteLine(GetUsersWithProducts(db));
         }
