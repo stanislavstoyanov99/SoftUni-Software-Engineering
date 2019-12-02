@@ -1,9 +1,13 @@
 ﻿namespace Cinema.Data
 {
+    using System.Linq;
     using System.Reflection;
+    using System.ComponentModel.DataAnnotations;
+
     using Microsoft.EntityFrameworkCore;
 
     using Cinema.Data.Models;
+    using System.Collections.Generic;
 
     public class CinemaContext : DbContext
     {

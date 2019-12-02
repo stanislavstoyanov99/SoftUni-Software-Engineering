@@ -89,7 +89,7 @@
                     continue;
                 }
 
-                // Fill seats table with seat for the current hall
+                // Fill seats table with a seat for the current hall
                 for (int i = 0; i < hallDto.SeatsCount; i++)
                 {
                     hall.Seats.Add(new Seat());
@@ -145,8 +145,10 @@
 
                 bool isProjectionValid = IsValid(projection);
 
-                var hall = context.Halls.FirstOrDefault(h => h.Id == projection.HallId);
-                var movie = context.Movies.FirstOrDefault(m => m.Id == projection.MovieId);
+                var hall = context.Halls
+                    .FirstOrDefault(h => h.Id == projection.HallId);
+                var movie = context.Movies
+                    .FirstOrDefault(m => m.Id == projection.MovieId);
 
                 if (isProjectionValid == false || hall == null || movie == null)
                 {
@@ -228,7 +230,10 @@
 
         private static bool IsValid(object obj)
         {
-            var validationContext = new System.ComponentModel.DataAnnotations.ValidationContext(obj);
+            var validationContext = new System
+                .ComponentModel
+                .DataAnnotations
+                .ValidationContext(obj);
 
             var validationResult = new List<ValidationResult>();
 

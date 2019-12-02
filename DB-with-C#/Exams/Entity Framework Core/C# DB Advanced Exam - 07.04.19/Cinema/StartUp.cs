@@ -16,7 +16,7 @@
 
             Mapper.Initialize(config => config.AddProfile<CinemaProfile>());
 
-            ResetDatabase(context, shouldDropDatabase: true);
+            //ResetDatabase(context, shouldDropDatabase: true);
 
             var projectDir = GetProjectDirectory();
 
