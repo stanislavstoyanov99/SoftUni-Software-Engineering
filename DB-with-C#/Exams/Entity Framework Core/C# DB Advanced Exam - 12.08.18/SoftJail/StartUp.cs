@@ -10,22 +10,20 @@
     {
         public static void Main(string[] args)
         {
-            var context = new SoftJailDbContext();
+            using var context = new SoftJailDbContext();
 
             Mapper.Initialize(config => config.AddProfile<SoftJailProfile>());
 
-            ResetDatabase(context, shouldDropDatabase: false);
+            ResetDatabase(context, shouldDropDatabase: true);
 
             var projectDir = GetProjectDirectory();
 
-            ImportEntities(context, projectDir + @"Datasets/", projectDir + @"ImportResults/");
-            ExportEntities(context, projectDir + @"ExportResults/");
+            //ImportEntities(context, projectDir + @"Datasets/", projectDir + @"ImportResults/");
+            //ExportEntities(context, projectDir + @"ExportResults/");
 
-            using (var transaction = context.Database.BeginTransaction())
-            {
-                BonusTask(context);
-                transaction.Rollback();
-            }
+            using var transaction = context.Database.BeginTransaction();
+            BonusTask(context);
+            transaction.Rollback();
         }
 
         private static void BonusTask(SoftJailDbContext context)
