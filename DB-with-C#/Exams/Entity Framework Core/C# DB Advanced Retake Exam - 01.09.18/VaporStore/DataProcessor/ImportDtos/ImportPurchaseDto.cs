@@ -7,6 +7,7 @@
     public class ImportPurchaseDto
     {
         [XmlAttribute("title")]
+        [Required]
         public string Title { get; set; }
 
         [Required]

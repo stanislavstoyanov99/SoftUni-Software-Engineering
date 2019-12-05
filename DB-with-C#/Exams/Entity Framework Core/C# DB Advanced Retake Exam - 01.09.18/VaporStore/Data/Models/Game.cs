@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Game
     {
@@ -24,6 +25,7 @@
         public Developer Developer { get; set; }
 
         [Required]
+        [ForeignKey(nameof(Genre))]
         public int GenreId { get; set; }
 
         public Genre Genre { get; set; }

@@ -15,6 +15,7 @@
     using VaporStore.Data.Models;
     using VaporStore.DataProcessor.ImportDtos;
     using VaporStore.Data.Models.Enumerations;
+    using Microsoft.EntityFrameworkCore;
 
     public static class Deserializer
 	{
@@ -162,22 +163,28 @@
                 bool isPurchaseTypeValid = Enum.IsDefined(typeof(PurchaseType), purchaseDto.Type);
                 bool isPurchaseDtoValid = IsValid(purchasesDto);
 
-                if (isPurchaseTypeValid == false || isPurchaseDtoValid == false)
+                var purchaseGame = context.Games
+                    .FirstOrDefault(g => g.Name == purchaseDto.Title);
+                var purchaseCard = context.Cards
+                    .Include(c => c.User)
+                    .Single(c => c.Number == purchaseDto.Card);
+
+                if (isPurchaseTypeValid == false ||
+                    isPurchaseDtoValid == false || 
+                    purchaseGame == null ||
+                    purchaseCard == null)
                 {
                     sb.AppendLine(ErrorMessage);
                     continue;
                 }
 
-                var purchaseUser = context.Users
-                    .First(u => u.Cards
-                        .Any(c => c.Number == purchaseDto.Card));
 
                 var purchase = new Purchase
                 {
                     Type = Enum.Parse<PurchaseType>(purchaseDto.Type),
                     ProductKey = purchaseDto.Key,
-                    Game = context.Games.First(g => g.Name == purchaseDto.Title),
-                    Card = context.Cards.First(c => c.Number == purchaseDto.Card),
+                    Game = purchaseGame,
+                    Card = purchaseCard,
                     Date = DateTime.ParseExact(purchaseDto.Date, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture),
                 };
 
@@ -185,7 +192,7 @@
 
                 sb.AppendLine(String.Format(SuccessfullyAddedPurchase,
                     purchase.Game.Name,
-                    purchaseUser.Username));
+                    purchase.Card.User.Username));
             }
 
             context.SaveChanges();

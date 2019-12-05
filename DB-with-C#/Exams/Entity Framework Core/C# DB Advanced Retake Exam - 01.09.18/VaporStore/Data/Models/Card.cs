@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
+    using System.ComponentModel.DataAnnotations.Schema;
     using VaporStore.Data.Models.Enumerations;
 
     public class Card
@@ -21,6 +21,7 @@
         public CardType Type { get; set; }
 
         [Required]
+        [ForeignKey(nameof(User))]
         public int UserId { get; set; }
 
         public User User { get; set; }
