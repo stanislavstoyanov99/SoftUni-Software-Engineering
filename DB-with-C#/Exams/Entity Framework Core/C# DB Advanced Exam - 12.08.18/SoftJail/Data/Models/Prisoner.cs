@@ -14,7 +14,7 @@
         public string FullName { get; set; }
 
         [Required]
-        [RegularExpression(@"^\The [A-Z][a-z]+$")]
+        [RegularExpression(@"^The [A-Z][a-z]+$")]
         public string Nickname { get; set; }
 
         [Required]

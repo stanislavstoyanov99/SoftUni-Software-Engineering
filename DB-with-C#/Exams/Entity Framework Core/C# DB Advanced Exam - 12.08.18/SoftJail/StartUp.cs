@@ -14,7 +14,7 @@
 
             Mapper.Initialize(config => config.AddProfile<SoftJailProfile>());
 
-            ResetDatabase(context, shouldDropDatabase: true);
+            //ResetDatabase(context, shouldDropDatabase: true);
 
             var projectDir = GetProjectDirectory();
 
@@ -58,6 +58,7 @@
             Console.WriteLine(xmlOutput);
             File.WriteAllText(exportDir + "PrisonersInbox.xml", xmlOutput);
         }
+
         private static void ResetDatabase(SoftJailDbContext context, bool shouldDropDatabase = false)
         {
             if (shouldDropDatabase)
