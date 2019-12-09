@@ -52,8 +52,6 @@
 		public static string ExportUserPurchasesByType(VaporStoreDbContext context, string storeType)
 		{
             var users = context.Users
-                .Where(u => u.Cards
-                    .Any(c => c.Purchases.Any(p => p.Type.ToString() == storeType)))
                 .Select(u => new ExportUserDto
                 {
                     Username = u.Username,
@@ -73,12 +71,13 @@
                                 }
                             })
                             .OrderBy(p => p.Date)
-                        .ToArray(),
+                            .ToArray(),
                     TotalSpent = u.Cards
                         .Sum(c => c.Purchases
                             .Where(p => p.Type.ToString() == storeType)
                             .Sum(p => p.Game.Price))
                 })
+                .Where(u => u.Purchases.Any())
                 .OrderByDescending(u => u.TotalSpent)
                 .ThenBy(u => u.Username)
                 .ToArray();
