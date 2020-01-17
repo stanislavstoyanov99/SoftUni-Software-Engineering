@@ -19,6 +19,8 @@
 
         public decimal Price { get; set; }
 
+        public decimal DistributorPrice { get; set; }
+
         public DateTime ExpirationDate { get; set; }
 
         public int BrandId { get; set; }
