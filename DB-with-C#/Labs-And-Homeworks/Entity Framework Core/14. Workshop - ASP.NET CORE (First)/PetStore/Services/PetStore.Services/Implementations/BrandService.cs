@@ -9,8 +9,8 @@
     using Models.Toy;
     using Models.Brand;
 
-    using PetStore.Data;
-    using PetStore.Data.Models;
+    using Data;
+    using Data.Models;
 
     public class BrandService : IBrandService
     {

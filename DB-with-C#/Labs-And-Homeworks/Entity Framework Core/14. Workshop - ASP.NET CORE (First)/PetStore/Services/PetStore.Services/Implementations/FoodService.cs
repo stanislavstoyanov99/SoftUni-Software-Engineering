@@ -3,12 +3,12 @@
     using System;
     using System.Linq;
 
-    using Models.Food;
     using Utilities;
+    using Models.Food;
 
-    using PetStore.Data;
-    using PetStore.Data.Models;
-    using PetStore.Data.Models.Enumerations;
+    using Data;
+    using Data.Models;
+    using Data.Models.Enumerations;
 
     public class FoodService : IFoodService
     {
@@ -26,13 +26,13 @@
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentException(string.Format(ExceptionMessages.InvalidName));
+                throw new ArgumentException(ExceptionMessages.InvalidName);
             }
 
             // Profit should be in range 0-500%
             if (profit < 0 || profit > 5)
             {
-                throw new ArgumentException(string.Format(ExceptionMessages.InvalidProfitValue));
+                throw new ArgumentException(ExceptionMessages.InvalidProfitValue);
             }
 
             var food = new Food()
@@ -54,12 +54,12 @@
         {
             if (string.IsNullOrWhiteSpace(model.Name))
             {
-                throw new ArgumentException(String.Format(ExceptionMessages.InvalidName));
+                throw new ArgumentException(ExceptionMessages.InvalidName);
             }
 
             if (model.Profit < 0 || model.Profit > 5)
             {
-                throw new ArgumentException(string.Format(ExceptionMessages.InvalidProfitValue));
+                throw new ArgumentException(ExceptionMessages.InvalidProfitValue);
             }
 
             var food = new Food()
@@ -78,14 +78,14 @@
 
         public void SellFoodToUser(int foodId, int userId)
         {
-            if (!this.data.Food.Any(f => f.Id == foodId))
+            if (!this.Exists(foodId))
             {
-                throw new ArgumentException(string.Format(ExceptionMessages.FoodDoesNotExist));
+                throw new ArgumentException(string.Format(ExceptionMessages.FoodDoesNotExist, foodId));
             }
 
             if (!this.userService.Exists(userId))
             {
-                throw new ArgumentException(string.Format(ExceptionMessages.UserDoesNotExist));
+                throw new ArgumentException(string.Format(ExceptionMessages.UserDoesNotExist, userId));
             }
 
             var order = new Order()
@@ -105,6 +105,11 @@
             this.data.FoodOrders.Add(foodOrder);
 
             this.data.SaveChanges();
+        }
+
+        public bool Exists(int foodId)
+        {
+            return this.data.Food.Any(f => f.Id == foodId);
         }
     }
 }

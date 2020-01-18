@@ -3,40 +3,41 @@
     using System;
     using System.Linq;
 
-    using Utilities;
-
     using Data;
+    using Utilities;
     using Data.Models;
 
-    public class UserService : IUserService
+    public class CategoryService : ICategoryService
     {
         private readonly PetStoreDbContext data;
 
-        public UserService(PetStoreDbContext data)
+        public CategoryService(PetStoreDbContext data)
         {
             this.data = data;
         }
 
-        public void Register(string name, string email)
+        public int Add(string name, string description)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentException(ExceptionMessages.InvalidName);
             }
 
-            var user = new User()
+            var category = new Category()
             {
                 Name = name,
-                Email = email
+                Description = description
             };
 
-            this.data.Users.Add(user);
+            this.data.Categories.Add(category);
             this.data.SaveChanges();
+
+            return category.Id;
         }
 
-        public bool Exists(int userId)
+        public bool Exists(int categoryId)
         {
-            return this.data.Users.Any(u => u.Id == userId);
+            return this.data.Categories.Any(c => c.Id == categoryId);
         }
     }
 }

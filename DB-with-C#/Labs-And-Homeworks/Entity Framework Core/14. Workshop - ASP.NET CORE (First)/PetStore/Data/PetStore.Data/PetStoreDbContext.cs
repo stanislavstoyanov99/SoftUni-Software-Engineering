@@ -24,6 +24,8 @@
 
         public DbSet<FoodOrder> FoodOrders { get; set; }
 
+        public DbSet<ToyOrder> ToyOrders { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             if (!builder.IsConfigured)

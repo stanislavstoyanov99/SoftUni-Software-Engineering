@@ -1,7 +1,7 @@
 ﻿namespace PetStore.Services.Implementations
 {
-    using PetStore.Data;
-    using PetStore.Data.Models.Enumerations;
+    using Data;
+    using Data.Models.Enumerations;
 
     public class OrderService : IOrderService
     {

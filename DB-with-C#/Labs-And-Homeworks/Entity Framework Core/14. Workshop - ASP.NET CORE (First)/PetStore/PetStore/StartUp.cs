@@ -3,6 +3,8 @@
     using System;
 
     using Data;
+    using Data.Models.Enumerations;
+
     using Services.Implementations;
 
     public class StartUp
@@ -11,15 +13,13 @@
         {
             using var petStoreDbContext = new PetStoreDbContext();
 
-            // BrandService brandService = new BrandService(petStoreDbContext);
-            // brandService.Create("Purrina");
+            var breedService = new BreedService(petStoreDbContext);
+            var categoryService = new CategoryService(petStoreDbContext);
+            var userService = new UserService(petStoreDbContext);
 
-            // var brandWithToys = brandService.FindByIdWithToys(1);
-            // FoodService foodService = new FoodService(petStoreDbContext);
-            // foodService.BuyFromDistributor("Whiskas 2", 0.350, 1.1m, 0.2, DateTime.Now, 2, 1);
-
-            ToyService toyService = new ToyService(petStoreDbContext);
-            toyService.BuyFromDistributor("Ball", null, 3.50m, 0.3, 1, 1);
+            var petService = new PetService(petStoreDbContext, breedService, categoryService, userService);
+            petService.BuyPet(Gender.Male, DateTime.Now, 0m, null, 1, 1);
+            petService.SellPet(1, 1);
         }
     }
 }
