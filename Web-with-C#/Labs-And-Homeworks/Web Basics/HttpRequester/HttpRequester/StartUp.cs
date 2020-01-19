@@ -24,11 +24,11 @@
                 int bytesRead = networkStream.Read(requestBytes, 0, requestBytes.Length);
                 string request = Encoding.UTF8.GetString(requestBytes, 0, bytesRead);
 
-                string responseText = @"<form action ='/Account/Login>
-                                        <input type=date name='date' />
-                                        <input type=text name='username' />
-                                        <input type=password name='password' />
-                                        <input type=submit value='Login' />
+                string responseText = @"<form action ='/Account/Login' method='post'>
+                                        <input type='date' name='date' />
+                                        <input type='text' name='username' />
+                                        <input type='password' name='password' />
+                                        <input type='submit' value='Login' />
                                         </form>";
 
                 string response = "HTTP/1.0 200 OK" + NewLine +
