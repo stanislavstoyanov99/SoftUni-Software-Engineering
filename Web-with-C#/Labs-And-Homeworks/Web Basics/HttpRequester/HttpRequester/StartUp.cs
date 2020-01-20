@@ -1,17 +1,16 @@
 ﻿namespace HttpRequester
 {
-    using System;
     using System.Net;
-    using System.Text;
     using System.Net.Sockets;
 
     public class StartUp
     {
         public static void Main(string[] args)
         {
+            /* First version of code
             const string NewLine = "\r\n";
 
-            TcpListener tcpListener = new TcpListener(IPAddress.Loopback, 1234);
+            TcpListener tcpListener = new TcpListener(IPAddress.Loopback, 80);
             tcpListener.Start();
 
             while (true)
@@ -25,10 +24,10 @@
                 string request = Encoding.UTF8.GetString(requestBytes, 0, bytesRead);
 
                 string responseText = @"<form action ='/Account/Login' method='post'>
-                                        <input type='date' name='date' />
-                                        <input type='text' name='username' />
-                                        <input type='password' name='password' />
-                                        <input type='submit' value='Login' />
+                                        <input type=date name='date' />
+                                        <input type=text name='username' />
+                                        <input type=password name='password' />
+                                        <input type=submit value='Login' />
                                         </form>";
 
                 string response = "HTTP/1.0 200 OK" + NewLine +
@@ -45,6 +44,12 @@
                 Console.WriteLine(request);
                 Console.WriteLine(new string('=', 60));
             }
+            */
+
+            // OOP Solution
+            TcpListener tcpListener = new TcpListener(IPAddress.Loopback, 1020);
+            MyHttpRequester myHttpRequester = new MyHttpRequester(tcpListener);
+            myHttpRequester.StartServer();
         }
     }
 }
