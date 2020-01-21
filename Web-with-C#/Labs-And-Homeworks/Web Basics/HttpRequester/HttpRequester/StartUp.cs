@@ -2,10 +2,11 @@
 {
     using System.Net;
     using System.Net.Sockets;
+    using System.Threading.Tasks;
 
     public class StartUp
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             /* First version of code
             const string NewLine = "\r\n";
@@ -47,9 +48,16 @@
             */
 
             // OOP Solution
-            TcpListener tcpListener = new TcpListener(IPAddress.Loopback, 1020);
-            MyHttpRequester myHttpRequester = new MyHttpRequester(tcpListener);
-            myHttpRequester.StartServer();
+            TcpListener tcpListener = new TcpListener(IPAddress.Loopback, 80);
+            tcpListener.Start();
+
+            while (true)
+            {
+                TcpClient tcpClient = await tcpListener.AcceptTcpClientAsync();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                Task.Run(() => MyHttpRequester.StartServer(tcpClient));
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            }
         }
     }
 }
