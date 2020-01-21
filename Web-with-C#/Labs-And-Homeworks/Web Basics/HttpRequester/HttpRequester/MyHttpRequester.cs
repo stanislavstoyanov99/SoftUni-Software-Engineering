@@ -2,6 +2,7 @@
 {
     using System;
     using System.Text;
+    using System.Net.Http;
     using System.Net.Sockets;
     using System.Threading.Tasks;
 
@@ -40,6 +41,15 @@
                 Console.WriteLine(request);
                 Console.WriteLine(new string('=', 60));
             }
+        }
+
+        public static async Task MakeRequest()
+        {
+            string myJson = "{'Username': 'myusername','Password':'pass'}";
+
+            using HttpClient client = new HttpClient();
+            var response = await 
+                client.PostAsync("http://localhost", new StringContent(myJson, Encoding.UTF8, "application/json"));
         }
     }
 }
