@@ -1,5 +1,7 @@
 ﻿namespace HttpRequester
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Sockets;
@@ -52,6 +54,9 @@
             TcpListener tcpListener = new TcpListener(IPAddress.Loopback, 80);
             tcpListener.Start();
 
+            var tasks = new List<Task>();
+
+            int counter = 0;
             while (true)
             {
                 TcpClient tcpClient = await tcpListener.AcceptTcpClientAsync();
@@ -59,13 +64,20 @@
                 Task.Run(() => MyHttpRequester.StartServer(tcpClient));
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-                var totalRequests = Enumerable.Range(0, 10000).ToList();
-                Parallel.For(0, totalRequests.Count, i =>
+                for (int i = 0; i < 100; i++)
                 {
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                    Task.Run(() => MyHttpRequester.MakeRequest());
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                });
+                    var request = new Task(async () => await MyHttpRequester.MakeRequest());
+                    tasks.Add(request);
+                }
+
+                Task.Run(() => tasks.ForEach(t => t.Start()));
+                counter++;
+                //Parallel.ForEach(tasks, t => t.Start())
+
+                if (counter == 100)
+                {
+                    Console.WriteLine(counter);
+                }
             }
         }
     }

@@ -5,6 +5,7 @@
     using System.Net.Http;
     using System.Net.Sockets;
     using System.Threading.Tasks;
+    using System.IO;
 
     public class MyHttpRequester
     {
@@ -45,11 +46,11 @@
 
         public static async Task MakeRequest()
         {
-            string myJson = "{'Username': 'myusername','Password':'pass'}";
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync("http://localhost:80");
+            string result = await response.Content.ReadAsStringAsync();
 
-            using HttpClient client = new HttpClient();
-            var response = await 
-                client.PostAsync("http://localhost", new StringContent(myJson, Encoding.UTF8, "application/json"));
+            //File.WriteAllText("../../../test.html", result, Encoding.UTF8);
         }
     }
 }
