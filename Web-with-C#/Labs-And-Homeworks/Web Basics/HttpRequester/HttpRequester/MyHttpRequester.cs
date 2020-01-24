@@ -50,7 +50,7 @@
             HttpResponseMessage response = await client.GetAsync("http://localhost:80");
             string result = await response.Content.ReadAsStringAsync();
 
-            //File.WriteAllText("../../../test.html", result, Encoding.UTF8);
+            // File.WriteAllText("../../../test.html", result, Encoding.UTF8);
         }
     }
 }

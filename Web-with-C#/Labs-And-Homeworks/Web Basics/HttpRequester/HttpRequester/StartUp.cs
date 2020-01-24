@@ -1,11 +1,11 @@
 ﻿namespace HttpRequester
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
     using System.Net.Sockets;
+    using System.Diagnostics;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     public class StartUp
     {
@@ -54,9 +54,8 @@
             TcpListener tcpListener = new TcpListener(IPAddress.Loopback, 80);
             tcpListener.Start();
 
-            var tasks = new List<Task>();
-
             int counter = 0;
+
             while (true)
             {
                 TcpClient tcpClient = await tcpListener.AcceptTcpClientAsync();
@@ -64,19 +63,32 @@
                 Task.Run(() => MyHttpRequester.StartServer(tcpClient));
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-                for (int i = 0; i < 100; i++)
+                var tasks = new List<Task>();
+
+                var stopWatch = Stopwatch.StartNew();
+
+                for (int i = 0; i < 10000; i++)
                 {
                     var request = new Task(async () => await MyHttpRequester.MakeRequest());
                     tasks.Add(request);
+                    counter++;
                 }
 
-                Task.Run(() => tasks.ForEach(t => t.Start()));
-                counter++;
-                //Parallel.ForEach(tasks, t => t.Start())
-
-                if (counter == 100)
+                /*Time: 00:00:00.0102309
+                foreach (var task in tasks)
                 {
+                    task.Start();
+                }
+                */
+
+                // Time : 00:00:01.2310627
+                Parallel.ForEach(tasks, t => t.Start());
+
+                if (counter == 10000)
+                {
+                    Console.WriteLine(stopWatch.Elapsed);
                     Console.WriteLine(counter);
+                    break; // Break the while so that server stops making requests
                 }
             }
         }
