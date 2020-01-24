@@ -5,7 +5,6 @@
     using System.Net.Http;
     using System.Net.Sockets;
     using System.Threading.Tasks;
-    using System.IO;
 
     public class MyHttpRequester
     {
