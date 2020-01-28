@@ -106,6 +106,7 @@
 
         public IList<Cookie> Cookies { get; set; }
 
+        // TODO - to set properly the body
         public string Body { get; set; }
     }
 }
