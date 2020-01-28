@@ -1,10 +1,13 @@
 ﻿namespace DemoApp
 {
     using System;
+    using System.Threading.Tasks;
+
+    using SIS.HTTP;
 
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main()
         {
             // Actions:
             // / => response IndexPage(request)
@@ -12,10 +15,8 @@
             // GET /Contact => response ShowContactForm(request)
             // POST /Contact => response FillContactForm(request)
 
-            // new HttpServer(80, actions)
-            // .Start()
-
-
+            var httpServer = new HttpServer(80);
+            await httpServer.StartAsync();
         }
     }
 }
