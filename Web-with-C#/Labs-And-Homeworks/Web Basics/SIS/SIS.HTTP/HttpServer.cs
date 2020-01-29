@@ -9,17 +9,20 @@
     using System.Collections.Generic;
 
     using Contracts;
+    using Constants;
     using Enumerations;
 
     public class HttpServer : IHttpServer
     {
         private readonly TcpListener tcpListener;
         private readonly IList<Route> routeTable;
+        private readonly IDictionary<string, IDictionary<string, string>> sessions;
 
         public HttpServer(int port, IList<Route> routeTable)
         {
             this.tcpListener = new TcpListener(IPAddress.Loopback, port);
             this.routeTable = routeTable;
+            this.sessions = new Dictionary<string, IDictionary<string, string>>();
         }
 
         public async Task ResetAsync()
@@ -57,6 +60,22 @@
                 string requestAsString = Encoding.UTF8.GetString(requestBytes, 0, bytesRead);
 
                 var request = new HttpRequest(requestAsString);
+                string newSessionId = null;
+                var sessionCookie = request
+                    .Cookies
+                    .FirstOrDefault(c => c.Name == HttpConstants.SessionIdCookieName);
+                if (sessionCookie != null && this.sessions.ContainsKey(sessionCookie.Value))
+                {
+                    request.SessionData = this.sessions[sessionCookie.Value];
+                }
+                else
+                {
+                    newSessionId = Guid.NewGuid().ToString();
+                    var dictionary = new Dictionary<string, string>();
+                    this.sessions.Add(newSessionId, dictionary);
+                    request.SessionData = dictionary;
+                }
+
                 Console.WriteLine($"{request.Method} {request.Path}");
                 Console.WriteLine(new string('=', 30));
 
@@ -74,11 +93,15 @@
                 }
 
                 response.Headers.Add(new Header("Server", "SoftUniServer/1.0"));
-                response.Cookies.Add(new ResponseCookie("sid", Guid.NewGuid().ToString())
+
+                if (newSessionId != null)
                 {
-                    HttpOnly = true,
-                    MaxAge = 3600
-                });
+                    response.Cookies.Add(new ResponseCookie(HttpConstants.SessionIdCookieName, newSessionId)
+                    {
+                        HttpOnly = true,
+                        MaxAge = 3600 * 30
+                    });
+                }
 
                 byte[] responseBytes = Encoding.UTF8.GetBytes(response.ToString());
 

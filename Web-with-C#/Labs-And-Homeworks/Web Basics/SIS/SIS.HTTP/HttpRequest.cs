@@ -94,6 +94,8 @@
                     bodyBuilder.AppendLine(line);
                 }
             }
+
+            this.Body = bodyBuilder.ToString();
         }
 
         public HttpMethodType Method { get; set; }
@@ -106,7 +108,8 @@
 
         public IList<Cookie> Cookies { get; set; }
 
-        // TODO - to set properly the body
         public string Body { get; set; }
+
+        public IDictionary<string, string> SessionData { get; set; }
     }
 }
