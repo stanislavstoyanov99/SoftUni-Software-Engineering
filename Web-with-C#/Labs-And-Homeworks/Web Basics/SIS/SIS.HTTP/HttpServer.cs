@@ -70,7 +70,7 @@
                 }
                 else
                 {
-                    newSessionId = Guid.NewGuid().ToString();
+                    newSessionId = Guid.NewGuid().ToString(); 
                     var dictionary = new Dictionary<string, string>();
                     this.sessions.Add(newSessionId, dictionary);
                     request.SessionData = dictionary;
