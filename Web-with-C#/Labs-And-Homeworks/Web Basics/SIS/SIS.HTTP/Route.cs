@@ -1,7 +1,6 @@
 ﻿namespace SIS.HTTP
 {
     using System;
-    using System.Threading.Tasks;
 
     using Enumerations;
 

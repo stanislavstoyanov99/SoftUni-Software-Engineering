@@ -64,6 +64,7 @@
                 var sessionCookie = request
                     .Cookies
                     .FirstOrDefault(c => c.Name == HttpConstants.SessionIdCookieName);
+
                 if (sessionCookie != null && this.sessions.ContainsKey(sessionCookie.Value))
                 {
                     request.SessionData = this.sessions[sessionCookie.Value];
@@ -77,7 +78,7 @@
                 }
 
                 Console.WriteLine($"{request.Method} {request.Path}");
-                Console.WriteLine(new string('=', 30));
+                Console.WriteLine(new string('=', 20));
 
                 var route = this.routeTable
                     .FirstOrDefault(x => x.HttpMethod == request.Method && x.Path == request.Path);
