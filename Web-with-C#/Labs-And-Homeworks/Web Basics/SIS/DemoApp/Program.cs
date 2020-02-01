@@ -11,14 +11,18 @@
     using SIS.HTTP.Response;
     using SIS.HTTP.Constants;
     using SIS.HTTP.Enumerations;
+    using System.Linq;
 
     public class Program
     {
         public static async Task Main()
         {
+            var db = new ApplicationDbContext();
+
             var routeTable = new List<Route>();
             routeTable.Add(new Route(HttpMethodType.Get, "/", Index));
             routeTable.Add(new Route(HttpMethodType.Post, "/", LoggedUser));
+            routeTable.Add(new Route(HttpMethodType.Post, "/Tweets/Create", CreateTweet));
             routeTable.Add(new Route(HttpMethodType.Get, "/users/login", Login));
             routeTable.Add(new Route(HttpMethodType.Post, "/users/login", DoLogin));
             routeTable.Add(new Route(HttpMethodType.Get, "/favicon.ico", FavIcon));
@@ -27,6 +31,54 @@
 
             var httpServer = new HttpServer(80, routeTable);
             await httpServer.StartAsync();
+        }
+
+        // HomeController
+        private static HttpResponse Index(HttpRequest request)
+        {
+            var username = request
+                .SessionData
+                .ContainsKey("Username") ? request.SessionData["Username"] : "Anonymous";
+
+            var db = new ApplicationDbContext();
+            var tweets = db.Tweets
+                .Select(x => new
+                {
+                    x.CreatedOn,
+                    x.Creator,
+                    x.Content
+                })
+                .ToList();
+
+            StringBuilder html = new StringBuilder();
+            html.Append("<table><tr><th>Date</th><th>Creator</th><th>Content</th></tr>");
+            foreach (var tweet in tweets)
+            {
+                html.Append($"<tr><td>{tweet.CreatedOn}</td><td>{tweet.Creator}</td><td>{tweet.Content}</td></tr>");
+            }
+
+            html.Append("</table>");
+            html.Append($"<h1>Home page. Hello, {username}</h1>" +
+                $"<a href='/users/login'>Go to login page</a>" +
+                $"<form action='/Tweets/Create' method='post'><input name='creator' /><br /><textarea name='tweetName'></textarea><br /><input type='submit'/></form>");
+
+            return new HtmlResponse(html.ToString());
+        }
+
+        // /Tweets => Index
+        // /Tweets/Create => Create
+        private static HttpResponse CreateTweet(HttpRequest request)
+        {
+            var db = new ApplicationDbContext();
+            db.Tweets.Add(new Tweet
+            {
+                CreatedOn = DateTime.UtcNow,
+                Creator = request.FormData["creator"],
+                Content = request.FormData["tweetName"]
+            });
+            db.SaveChanges();
+
+            return new RedirectResponse("/");
         }
 
         // GET 
@@ -61,17 +113,6 @@
             htmlBuilder.AppendLine(@"<form action=""/users/folders""> <input type=""submit"" value=""Go to Folders Page""></form>");
 
             return new HtmlResponse(htmlBuilder.ToString());
-        }
-
-        // GET
-        private static HttpResponse Index(HttpRequest request)
-        {
-            var username = request
-                .SessionData
-                .ContainsKey("Username") ? request.SessionData["Username"] : "Anonymous";
-
-            return new HtmlResponse($"<h1>Home page. Hello, {username}</h1>" +
-                $"<a href='/users/login'>Go to login page</a>");
         }
 
         // POST
