@@ -78,7 +78,7 @@
                 }
 
                 Console.WriteLine($"{request.Method} {request.Path}");
-                Console.WriteLine(new string('=', 20));
+                Console.WriteLine(new string('=', 30));
 
                 var route = this.routeTable
                     .FirstOrDefault(x => x.HttpMethod == request.Method && x.Path == request.Path);

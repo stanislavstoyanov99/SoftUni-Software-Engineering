@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SulsApp.Controllers
+﻿namespace SulsApp.Controllers
 {
-    public class ProblemsController
+    using SIS.MvcFramework;
+
+    public class ProblemsController : Controller
     {
 
     }

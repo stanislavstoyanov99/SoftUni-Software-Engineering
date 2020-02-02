@@ -1,13 +1,13 @@
 ﻿namespace SulsApp.Controllers
 {
     using SIS.HTTP;
-    using SIS.HTTP.Response;
+    using SIS.MvcFramework;
 
-    public class HomeController
+    public class HomeController : Controller
     {
         public HttpResponse Index(HttpRequest request)
         {
-            return new HtmlResponse("<h1>Hello</h1>");
+            return this.View();
         }
     }
 }
