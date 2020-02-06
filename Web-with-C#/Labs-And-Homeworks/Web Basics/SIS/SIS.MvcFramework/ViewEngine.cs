@@ -15,8 +15,8 @@
         public string GetHtml(string templateHtml, object model)
         {
             var methodCode = PrepareCSharpCode(templateHtml);
-            var typeName = model.GetType().FullName;
-            if (model.GetType().IsGenericType)
+            var typeName = model?.GetType().FullName ?? "object";
+            if (model?.GetType().IsGenericType == true)
             {
                 typeName = model.GetType().Name.Replace("`1", string.Empty) + "<"
                     + model.GetType().GenericTypeArguments.First().Name + ">";
@@ -34,6 +34,7 @@ namespace AppViewNamespace
         public string GetHtml(object model)
         {{
             var Model = model as {typeName};
+            object User = null;
             var html = new StringBuilder();
 
 {methodCode}
@@ -54,8 +55,13 @@ namespace AppViewNamespace
             var compilation = CSharpCompilation.Create("AppViewAssembly")
                .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                .AddReferences(MetadataReference.CreateFromFile(typeof(IView).Assembly.Location))
-               .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
-               .AddReferences(MetadataReference.CreateFromFile(model.GetType().Assembly.Location));
+               .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location));
+
+            if (model != null)
+            {
+                compilation = compilation.AddReferences(MetadataReference.CreateFromFile(model.GetType().Assembly.Location));
+            }
+
             var libraries = Assembly.Load(new AssemblyName("netstandard")).GetReferencedAssemblies();
 
             foreach (var library in libraries)
@@ -92,7 +98,7 @@ namespace AppViewNamespace
             var supportedOpperators = new[] { "if", "for", "foreach", "else" };
 
             StringBuilder cSharpCode = new StringBuilder();
-            StringReader reader = new StringReader(templateHtml);
+            using StringReader reader = new StringReader(templateHtml);
 
             string line;
             while ((line = reader.ReadLine()) != null)
@@ -110,7 +116,7 @@ namespace AppViewNamespace
                 }
                 else
                 {
-                    var currentCSharpLine = new StringBuilder("html.AppendLine(@\"");
+                    var currentCSharpLine = new StringBuilder("html.AppendLine(@\""); // start of line
 
                     while (line.Contains("@"))
                     {
@@ -124,7 +130,7 @@ namespace AppViewNamespace
                         line = after;
                     }
 
-                    currentCSharpLine.Append(line.Replace("\"", "\"\"") + "\");");
+                    currentCSharpLine.Append(line.Replace("\"", "\"\"") + "\");"); // end of line
                     cSharpCode.AppendLine(currentCSharpLine.ToString());
                 }
             }
