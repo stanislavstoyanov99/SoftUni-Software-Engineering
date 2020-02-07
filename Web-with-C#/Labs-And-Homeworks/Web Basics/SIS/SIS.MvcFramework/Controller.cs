@@ -1,27 +1,24 @@
 ﻿namespace SIS.MvcFramework
 {
     using System.IO;
+    using System.Text;
     using System.Runtime.CompilerServices;
+    using System.Security.Cryptography;
 
     using HTTP;
     using HTTP.Response;
 
     public abstract class Controller
     {
+        public HttpRequest Request { get; set; }
+
         protected HttpResponse View<TModel>(TModel viewModel = null, [CallerMemberName]string viewName = null)
             where TModel : class
         {
-            IViewEngine viewEngine = new ViewEngine();
-
             var controllerName = this.GetType().Name.Replace("Controller", string.Empty);
-            var html = File.ReadAllText("Views/" + controllerName + "/" + viewName + ".html");
-            html = viewEngine.GetHtml(html, viewModel);
+            var viewPath = "Views/" + controllerName + "/" + viewName + ".html";
 
-            var layout = File.ReadAllText("Views/Shared/_Layout.html");
-            var bodyWithLayout = layout.Replace("@RenderBody()", html);
-            bodyWithLayout = viewEngine.GetHtml(bodyWithLayout, viewModel);
-
-            return new HtmlResponse(bodyWithLayout);
+            return this.ViewByName<TModel>(viewPath, viewModel);
         }
 
         protected HttpResponse View([CallerMemberName]string viewName = null)
@@ -29,11 +26,40 @@
             return this.View<object>(null, viewName);
         }
 
-        protected HttpResponse CssFileView(string fileName)
+        private HttpResponse ViewByName<T>(string viewPath, object viewModel)
         {
-            var fileContent = File.ReadAllBytes("wwwroot/css/" + $"{fileName}" + ".css"); 
+            IViewEngine viewEngine = new ViewEngine();
+            var html = File.ReadAllText(viewPath);
+            html = viewEngine.GetHtml(html, viewModel);
 
-            return new FileResponse(fileContent, "text/css");
+            var layout = File.ReadAllText("Views/Shared/_Layout.html");
+            var bodyWithLayout = layout.Replace("@RenderBody()", html);
+            bodyWithLayout = viewEngine.GetHtml(bodyWithLayout, viewModel);
+            return new HtmlResponse(bodyWithLayout);
+        }
+
+        protected HttpResponse Error(string error)
+        {
+            return this.ViewByName<ErrorViewModel>("Views/Shared/Error.html", new ErrorViewModel { Error = error });
+        }
+
+        protected HttpResponse Redirect(string url)
+        {
+            return new RedirectResponse(url);
+        }
+
+        protected string Hash(string input)
+        {
+            var crypt = new SHA256Managed();
+            var hash = new StringBuilder();
+            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+            foreach (byte theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+
+            return hash.ToString();
         }
     }
 }
