@@ -30,11 +30,11 @@
         {
             IViewEngine viewEngine = new ViewEngine();
             var html = File.ReadAllText(viewPath);
-            html = viewEngine.GetHtml(html, viewModel);
+            html = viewEngine.GetHtml(html, viewModel, this.User);
 
             var layout = File.ReadAllText("Views/Shared/_Layout.html");
             var bodyWithLayout = layout.Replace("@RenderBody()", html);
-            bodyWithLayout = viewEngine.GetHtml(bodyWithLayout, viewModel);
+            bodyWithLayout = viewEngine.GetHtml(bodyWithLayout, viewModel, this.User);
             return new HtmlResponse(bodyWithLayout);
         }
 
@@ -48,18 +48,18 @@
             return new RedirectResponse(url);
         }
 
-        protected string Hash(string input)
+        protected void SignIn(string userId)
         {
-            var crypt = new SHA256Managed();
-            var hash = new StringBuilder();
-            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-            foreach (byte theByte in crypto)
-            {
-                hash.Append(theByte.ToString("x2"));
-            }
-
-            return hash.ToString();
+            this.Request.SessionData["UserId"] = userId;
         }
+
+        protected void SignOut()
+        {
+            this.Request.SessionData["UserId"] = null;
+        }
+
+        public string User =>
+            this.Request.SessionData.ContainsKey("UserId") ?
+            this.Request.SessionData["UserId"] : null;
     }
 }

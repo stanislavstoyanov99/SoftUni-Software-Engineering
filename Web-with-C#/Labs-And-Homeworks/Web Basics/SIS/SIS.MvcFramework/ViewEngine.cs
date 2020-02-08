@@ -12,7 +12,7 @@
 
     public class ViewEngine : IViewEngine
     {
-        public string GetHtml(string templateHtml, object model)
+        public string GetHtml(string templateHtml, object model, string user)
         {
             var methodCode = PrepareCSharpCode(templateHtml);
             var typeName = model?.GetType().FullName ?? "object";
@@ -31,10 +31,10 @@ namespace AppViewNamespace
 {{
     public class AppViewCode : IView
     {{
-        public string GetHtml(object model)
+        public string GetHtml(object model, string user)
         {{
             var Model = model as {typeName};
-            object User = null;
+            var User = user;
             var html = new StringBuilder();
 
 {methodCode}
@@ -45,7 +45,7 @@ namespace AppViewNamespace
 }}";
 
             IView view = GetInstanceFromCode(code, model);
-            string html = view.GetHtml(model);
+            string html = view.GetHtml(model, user);
 
             return html;
         }

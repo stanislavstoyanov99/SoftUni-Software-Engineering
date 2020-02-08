@@ -6,11 +6,19 @@
     using SIS.HTTP;
     using SIS.MvcFramework;
 
-    using SulsApp.Data;
-    using SulsApp.Models;
+    using SulsApp.Services;
 
     public class UsersController : Controller
     {
+        private readonly IUsersService usersService;
+        private readonly ILogger logger;
+
+        public UsersController()
+        {
+            this.usersService = new UsersService();
+            this.logger = new ConsoleLogger();
+        }
+
         [HttpGet]
         public HttpResponse Login()
         {
@@ -20,7 +28,19 @@
         [HttpPost("/Users/Login")]
         public HttpResponse DoLogin()
         {
-            return this.View();
+            var username = this.Request.FormData["username"];
+            var password = this.Request.FormData["password"];
+
+            var userId = this.usersService.GetUserId(username, password);
+
+            if (userId == null)
+            {
+                return this.Redirect("/Users/Login");
+            }
+
+            this.SignIn(userId);
+            this.logger.Log($"User logged in: {username}");
+            return this.Redirect("/");      
         }
 
         [HttpGet]
@@ -57,17 +77,15 @@
                 return this.Error("Invalid email!");
             }
 
-            var user = new User
-            {
-                Username = username,
-                Password = this.Hash(password),
-                Email = email
-            };
+            this.usersService.CreateUser(username, email, password);
+            this.logger.Log($"New user: {username}");
 
-            var db = new ApplicationDbContext();
-            db.Users.Add(user);
-            db.SaveChanges();
+            return this.Redirect("/Users/Login");
+        }
 
+        public HttpResponse Logout()
+        {
+            this.SignOut();
             return this.Redirect("/");
         }
 
