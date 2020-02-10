@@ -8,6 +8,7 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
+    using Logging;
     using Contracts;
     using Constants;
     using Enumerations;
@@ -16,12 +17,14 @@
     {
         private readonly TcpListener tcpListener;
         private readonly IList<Route> routeTable;
+        private readonly ILogger logger;
         private readonly IDictionary<string, IDictionary<string, string>> sessions;
 
-        public HttpServer(int port, IList<Route> routeTable)
+        public HttpServer(int port, IList<Route> routeTable, ILogger logger)
         {
             this.tcpListener = new TcpListener(IPAddress.Loopback, port);
             this.routeTable = routeTable;
+            this.logger = logger;
             this.sessions = new Dictionary<string, IDictionary<string, string>>();
         }
 

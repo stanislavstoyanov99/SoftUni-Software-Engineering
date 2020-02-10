@@ -4,6 +4,8 @@
     using System.Net.Mail;
 
     using SIS.HTTP;
+    using SIS.HTTP.Logging;
+
     using SIS.MvcFramework;
 
     using SulsApp.Services;
@@ -13,10 +15,10 @@
         private readonly IUsersService usersService;
         private readonly ILogger logger;
 
-        public UsersController()
+        public UsersController(IUsersService usersService, ILogger logger)
         {
-            this.usersService = new UsersService();
-            this.logger = new ConsoleLogger();
+            this.usersService = usersService;
+            this.logger = logger;
         }
 
         [HttpGet]

@@ -1,9 +1,7 @@
 ﻿namespace SIS.MvcFramework
 {
     using System.IO;
-    using System.Text;
     using System.Runtime.CompilerServices;
-    using System.Security.Cryptography;
 
     using HTTP;
     using HTTP.Response;

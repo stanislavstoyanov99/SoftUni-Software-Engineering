@@ -8,16 +8,18 @@
     using SIS.MvcFramework;
 
     using Data;
+    using Services;
 
     public class Startup : IMvcApplication
     {
-        public void ConfigureServices() // IServiceCollection serviceCollection
+        public void ConfigureServices(IServiceCollection serviceCollection)
         {
-            // TODO : Add dependency container
+            serviceCollection.Add<IUsersService, UsersService>();
         }
 
         public void Configure(IList<Route> routeTable)
         {
+            // Middleware
             var db = new ApplicationDbContext();
             db.Database.Migrate();
         }

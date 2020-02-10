@@ -13,9 +13,9 @@
     {
         private readonly ApplicationDbContext db;
 
-        public UsersService()
+        public UsersService(ApplicationDbContext db)
         {
-            this.db = new ApplicationDbContext();
+            this.db = db;
         }
 
         public void ChangePassword(string username, string newPassword)
