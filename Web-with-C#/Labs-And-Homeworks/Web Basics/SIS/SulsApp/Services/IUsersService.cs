@@ -8,6 +8,10 @@
 
         void ChangePassword(string username, string newPassword);
 
+        bool IsUserNameUsed(string username);
+
+        bool IsEmailUsed(string email);
+
         int CountUsers();
     }
 }

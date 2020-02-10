@@ -62,6 +62,16 @@
             return userId;
         }
 
+        public bool IsEmailUsed(string email)
+        {
+            return this.db.Users.Any(x => x.Email == email);
+        }
+
+        public bool IsUserNameUsed(string username)
+        {
+            return this.db.Users.Any(x => x.Username == username);
+        }
+
         private string Hash(string input)
         {
             var crypt = new SHA256Managed();

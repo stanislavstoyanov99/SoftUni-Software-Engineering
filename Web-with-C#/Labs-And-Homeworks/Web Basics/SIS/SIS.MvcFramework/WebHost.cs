@@ -87,6 +87,7 @@
             var controller = serviceCollection.CreateInstance(controllerType) as Controller;
             controller.Request = request;
             var response = actionMethod.Invoke(controller, new object[] { }) as HttpResponse;
+            // TODO : add parameters to action in controller
 
             return response;
         }

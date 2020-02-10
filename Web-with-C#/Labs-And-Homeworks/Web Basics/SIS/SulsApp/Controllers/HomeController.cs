@@ -4,8 +4,7 @@
 
     using SIS.HTTP;
     using SIS.MvcFramework;
-
-    using SulsApp.ViewModels;
+    using SulsApp.ViewModels.Home;
 
     public class HomeController : Controller
     {

@@ -56,6 +56,11 @@
             this.Request.SessionData["UserId"] = null;
         }
 
+        protected bool IsUserLoggedIn()
+        {
+            return this.User != null;
+        }
+
         public string User =>
             this.Request.SessionData.ContainsKey("UserId") ?
             this.Request.SessionData["UserId"] : null;
