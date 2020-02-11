@@ -26,14 +26,14 @@
             AutoRegisterActionRoutes(routeTable, application, serviceCollection);
 
             var logger = serviceCollection.CreateInstance<ILogger>();
-            Console.WriteLine("Registered routes:");
+
+            logger.Log("Registered routes:");
             foreach (var route in routeTable)
             {
-                Console.WriteLine(route);
+                logger.Log(route.ToString());
             }
 
-            Console.WriteLine();
-            Console.WriteLine("Requests:");
+            logger.Log("Requests:");
 
             var httpServer = new HttpServer(80, routeTable, logger);
             await httpServer.StartAsync();
@@ -86,10 +86,58 @@
         {
             var controller = serviceCollection.CreateInstance(controllerType) as Controller;
             controller.Request = request;
-            var response = actionMethod.Invoke(controller, new object[] { }) as HttpResponse;
-            // TODO : add parameters to action in controller
 
+            var actionParameterValues = new List<object>();
+            var actionParameters = actionMethod.GetParameters();
+
+            foreach (var parameter in actionParameters)
+            {
+                object value =
+                    Convert.ChangeType(
+                        GetValueFromRequest(request, parameter.Name),
+                        parameter.ParameterType);
+
+                // The code below is for complex paramaters such as classes
+                if (value == null && parameter.ParameterType != typeof(string))
+                {
+                    var parameterValue = Activator
+                        .CreateInstance(parameter.ParameterType);
+
+                    foreach (var property in parameter.ParameterType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                    {
+                        var propertyValue = GetValueFromRequest(request, property.Name);
+                        property.SetValue(parameterValue, Convert.ChangeType(propertyValue, property.PropertyType));
+                    }
+
+                    actionParameterValues.Add(parameterValue);
+                }
+                else
+                {
+                    actionParameterValues.Add(value);
+                }
+            }
+
+            var response = actionMethod.Invoke(controller, actionParameterValues.ToArray()) as HttpResponse;
             return response;
+        }
+
+        private static object GetValueFromRequest(HttpRequest request, string parameterName)
+        {
+            object value = null;
+            parameterName = parameterName.ToLower();
+
+            if (request.QueryData.Any(x => x.Key.ToLower() == parameterName))
+            {
+                value = request.QueryData
+                    .FirstOrDefault(x => x.Key.ToLower() == parameterName).Value;
+            }
+            else if (request.FormData.Any(x => x.Key.ToLower() == parameterName))
+            {
+                value = request.FormData
+                    .FirstOrDefault(x => x.Key.ToLower() == parameterName).Value;
+            }
+
+            return value;
         }
 
         private static void AutoRegisterStaticFileRoutes(IList<Route> routeTable)

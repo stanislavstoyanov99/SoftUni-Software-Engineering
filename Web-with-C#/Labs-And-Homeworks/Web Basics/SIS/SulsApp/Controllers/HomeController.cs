@@ -1,23 +1,43 @@
 ﻿namespace SulsApp.Controllers
 {
-    using System;
+    using System.Linq;
 
     using SIS.HTTP;
     using SIS.MvcFramework;
-    using SulsApp.ViewModels.Home;
+
+    using Data;
+    using ViewModels.Home;
 
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext db;
+
+        public HomeController(ApplicationDbContext db)
+        {
+            this.db = db;
+        }
+
         [HttpGet("/")]
         public HttpResponse Index()
         {
-            var viewModel = new IndexViewModel
+            if (!this.IsUserLoggedIn())
             {
-                Message = "Welcome to SULS Platform!",
-                Year = DateTime.UtcNow.Year
+                return this.View();
+            }
+
+            var problems = this.db.Problems.Select(x => new IndexProblemViewModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Count = x.Submissions.Count
+            }).ToList();
+
+            var loggedInViewModel = new LoggedInViewModel
+            {
+                Problems = problems
             };
 
-            return this.View(viewModel);
+            return this.View(loggedInViewModel, "IndexLoggedIn");
         }
     }
 }

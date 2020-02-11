@@ -13,6 +13,11 @@
     {
         public HttpRequest(string httpRequestAsString)
         {
+            if (string.IsNullOrWhiteSpace(httpRequestAsString))
+            {
+                return;
+            }
+
             this.Headers = new List<Header>();
             this.Cookies = new List<Cookie>();
             this.SessionData = new Dictionary<string, string>();

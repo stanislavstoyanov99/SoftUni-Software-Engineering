@@ -2,13 +2,28 @@
 {
     using System;
 
+    using Data;
+    using Models;
+
     public class ProblemsService : IProblemsService
     {
-        public void CreateProblem(string name, int points)
+        private readonly ApplicationDbContext db;
+
+        public ProblemsService(ApplicationDbContext db)
         {
-            throw new NotImplementedException();
+            this.db = db;
         }
 
-        // TODO - Make service
+        public void CreateProblem(string name, int points)
+        {
+            var problem = new Problem
+            {
+                Name = name,
+                Points = points
+            };
+
+            this.db.Problems.Add(problem);
+            this.db.SaveChanges();
+        }
     }
 }

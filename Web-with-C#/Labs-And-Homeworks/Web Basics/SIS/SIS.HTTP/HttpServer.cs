@@ -80,8 +80,7 @@
                     request.SessionData = dictionary;
                 }
 
-                Console.WriteLine($"{request.Method} {request.Path}");
-                Console.WriteLine(new string('=', 30));
+                logger.Log($"{request.Method} {request.Path}");
 
                 var route = this.routeTable
                     .FirstOrDefault(x => x.HttpMethod == request.Method && string.Compare(x.Path, request.Path, true) == 0);

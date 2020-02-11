@@ -4,8 +4,8 @@
     using System.Text;
     using System.Security.Cryptography;
 
-    using SulsApp.Data;
-    using SulsApp.Models;
+    using Data;
+    using Models;
 
     using SIS.MvcFramework;
 

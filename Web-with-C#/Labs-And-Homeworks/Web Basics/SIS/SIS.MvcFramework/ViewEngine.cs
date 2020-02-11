@@ -15,11 +15,12 @@
         public string GetHtml(string templateHtml, object model, string user)
         {
             var methodCode = PrepareCSharpCode(templateHtml);
-            var typeName = model?.GetType().FullName ?? "object";
-            if (model?.GetType().IsGenericType == true)
+            var modelType = model?.GetType() ?? typeof(object);
+            var typeName = modelType.FullName;
+
+            if (modelType.IsGenericType)
             {
-                typeName = model.GetType().Name.Replace("`1", string.Empty) + "<"
-                    + model.GetType().GenericTypeArguments.First().Name + ">";
+                typeName = GetGenericTypeFullName(modelType);
             }
 
             var code = @$"using System;
@@ -48,6 +49,27 @@ namespace AppViewNamespace
             string html = view.GetHtml(model, user);
 
             return html;
+        }
+
+        private string GetGenericTypeFullName(Type modelType)
+        {
+            var argumentCountBeginning = modelType.Name.LastIndexOf('`');
+            var genericModelTypeName = modelType.Name.Substring(0, argumentCountBeginning);
+            var genericTypeFullName = $"{modelType.Namespace}.{genericModelTypeName}";
+            var genericTypeArguments = modelType.GenericTypeArguments.Select(GetGenericTypeArgumentFullName);
+            var modelTypeName = $"{genericTypeFullName}<{string.Join(", ", genericTypeArguments)}>";
+
+            return modelTypeName;
+        }
+
+        private string GetGenericTypeArgumentFullName(Type genericTypeArgument)
+        {
+            if (genericTypeArgument.IsGenericType)
+            {
+                return GetGenericTypeFullName(genericTypeArgument);
+            }
+
+            return genericTypeArgument.FullName;
         }
 
         private IView GetInstanceFromCode(string code, object model)
