@@ -4,6 +4,7 @@
 
     using HTTP.Enumerations;
 
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public abstract class HttpMethodAttribute : Attribute
     {
         protected HttpMethodAttribute()

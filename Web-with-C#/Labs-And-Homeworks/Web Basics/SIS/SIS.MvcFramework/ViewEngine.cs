@@ -116,7 +116,7 @@ namespace AppViewNamespace
 
         private string PrepareCSharpCode(string templateHtml)
         {
-            var cSharpExpressionRegex = new Regex(@"[^\<\""\s]+", RegexOptions.Compiled);
+            var cSharpExpressionRegex = new Regex(@"[^\<\""\s&]+", RegexOptions.Compiled);
             var supportedOpperators = new[] { "if", "for", "foreach", "else" };
 
             StringBuilder cSharpCode = new StringBuilder();

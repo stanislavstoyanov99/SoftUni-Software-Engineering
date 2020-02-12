@@ -1,23 +1,17 @@
 ﻿namespace SulsApp.Controllers
 {
-    using System.Linq;
-
     using SIS.HTTP;
     using SIS.MvcFramework;
 
-    using Data;
     using Services;
-    using ViewModels.Problems;
 
     public class ProblemsController : Controller
     {
         private readonly IProblemsService problemsService;
-        private readonly ApplicationDbContext db;
 
-        public ProblemsController(IProblemsService problemsService, ApplicationDbContext db)
+        public ProblemsController(IProblemsService problemsService)
         {
             this.problemsService = problemsService;
-            this.db = db;
         }
 
         [HttpGet]
@@ -50,6 +44,7 @@
             }
 
             this.problemsService.CreateProblem(name, points);
+
             return this.Redirect("/");
         }
 
@@ -61,22 +56,7 @@
                 return this.Redirect("/Users/Login");
             }
 
-            var viewModel = this.db.Problems
-                .Where(x => x.Id == id)
-                .Select(x => new DetailsViewModel
-                {
-                    Name = x.Name,
-                    Problems = x.Submissions.Select(x => new ProblemSubmissionViewModel
-                    {
-                        Username = x.User.Username,
-                        AchievedResult = x.AchievedResult,
-                        MaxPoints = x.Problem.Points,
-                        CreatedOn = x.CreatedOn,
-                        SubmissionId = x.Id
-                    })
-                    .ToList()
-                })
-                .FirstOrDefault();
+            var viewModel = this.problemsService.GetDetailsProblems(id);
 
             return this.View(viewModel);
         }

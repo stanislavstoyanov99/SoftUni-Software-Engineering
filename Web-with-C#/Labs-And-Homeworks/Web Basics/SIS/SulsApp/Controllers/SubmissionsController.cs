@@ -1,23 +1,17 @@
 ﻿namespace SulsApp.Controllers
 {
-    using System.Linq;
-
     using SIS.HTTP;
     using SIS.MvcFramework;
 
-    using Data;
     using Services;
-    using ViewModels.Submissions;
 
     public class SubmissionsController : Controller
     {
         private readonly ISubmissionsService submissionsService;
-        private readonly ApplicationDbContext db;
 
-        public SubmissionsController(ISubmissionsService submissionsService, ApplicationDbContext db)
+        public SubmissionsController(ISubmissionsService submissionsService)
         {
             this.submissionsService = submissionsService;
-            this.db = db;
         }
 
         [HttpGet]
@@ -28,13 +22,7 @@
                 return this.Redirect("/Users/Login");
             }
 
-            var problem = this.db.Problems
-                .Where(x => x.Id == id)
-                .Select(x => new SubmissionViewModel
-                {
-                    Name = x.Name,
-                    ProblemId = x.Id
-                }).FirstOrDefault();
+            var problem = this.submissionsService.GetProblem(id);
 
             if (problem == null)
             {
@@ -57,7 +45,7 @@
                 return this.Redirect("/Submissions/Create");
             }
 
-            this.submissionsService.CreateSubmission(code, problemId, this.User);
+            this.submissionsService.Create(code, problemId, this.User);
             return this.Redirect("/");
         }
 
@@ -69,7 +57,7 @@
                 return this.Redirect("/Users/Login");
             }
 
-            this.submissionsService.DeleteSubmission(id);
+            this.submissionsService.Delete(id);
             return this.Redirect("/");
         }
     }

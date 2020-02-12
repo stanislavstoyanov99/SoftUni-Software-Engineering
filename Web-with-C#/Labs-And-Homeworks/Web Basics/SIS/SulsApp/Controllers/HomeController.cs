@@ -1,19 +1,18 @@
 ﻿namespace SulsApp.Controllers
 {
-    using System.Linq;
-
     using SIS.HTTP;
     using SIS.MvcFramework;
 
-    using Data;
+    using Services;
     using ViewModels.Home;
+
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext db;
+        private readonly IProblemsService problemsService;
 
-        public HomeController(ApplicationDbContext db)
+        public HomeController(IProblemsService problemsService)
         {
-            this.db = db;
+            this.problemsService = problemsService;
         }
 
         [HttpGet("/")]
@@ -24,12 +23,7 @@
                 return this.View();
             }
 
-            var problems = this.db.Problems.Select(x => new IndexProblemViewModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Count = x.Submissions.Count
-            }).ToList();
+            var problems = this.problemsService.GetProblems();
 
             var loggedInViewModel = new LoggedInViewModel
             {

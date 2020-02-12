@@ -1,9 +1,13 @@
 ﻿namespace SulsApp.Services
 {
+    using ViewModels.Submissions;
+
     public interface ISubmissionsService
     {
-        void CreateSubmission(string code, string problemId, string userId);
+        void Create(string code, string problemId, string userId);
 
-        void DeleteSubmission(string submissionId);
+        void Delete(string submissionId);
+
+        SubmissionViewModel GetProblem(string id);
     }
 }

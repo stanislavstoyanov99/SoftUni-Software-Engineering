@@ -5,6 +5,7 @@
 
     using Data;
     using Models;
+    using ViewModels.Submissions;
 
     public class SubmissionsService : ISubmissionsService
     {
@@ -17,7 +18,7 @@
             this.random = random;
         }
 
-        public void CreateSubmission(string code, string problemId, string userId)
+        public void Create(string code, string problemId, string userId)
         {
             var problem = this.db.Problems.FirstOrDefault(x => x.Id == problemId);
 
@@ -34,11 +35,24 @@
             this.db.SaveChanges();
         }
 
-        public void DeleteSubmission(string submissionId)
+        public void Delete(string submissionId)
         {
             var submission = this.db.Submissions.FirstOrDefault(x => x.Id == submissionId);
             this.db.Submissions.Remove(submission);
             this.db.SaveChanges();
+        }
+
+        public SubmissionViewModel GetProblem(string id)
+        {
+            var problem = this.db.Problems
+                .Where(x => x.Id == id)
+                .Select(x => new SubmissionViewModel
+                {
+                    Name = x.Name,
+                    ProblemId = x.Id
+                }).FirstOrDefault();
+
+            return problem;
         }
     }
 }
