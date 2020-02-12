@@ -7,7 +7,6 @@
 
     using Data;
     using ViewModels.Home;
-
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext db;

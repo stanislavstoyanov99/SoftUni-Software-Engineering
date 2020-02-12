@@ -25,6 +25,11 @@
         [HttpGet]
         public HttpResponse Login()
         {
+            if (this.IsUserLoggedIn())
+            {
+                return this.Error("You are already logged in.");
+            }
+
             return this.View();
         }
 
@@ -46,6 +51,11 @@
         [HttpGet]
         public HttpResponse Register()
         {
+            if (this.IsUserLoggedIn())
+            {
+                return this.Error("You are already registered.");
+            }
+
             return this.View();
         }
 
