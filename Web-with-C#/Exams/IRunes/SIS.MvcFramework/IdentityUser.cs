@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace SIS.MvcFramework
+﻿namespace SIS.MvcFramework
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class IdentityUser<T>
     {
         public T Id { get; set; }
 
-        [MaxLength(20)]
         [Required]
+        [MaxLength(10)]
         public string Username { get; set; }
 
         [Required]

@@ -5,8 +5,15 @@
     <a class="btn btn-success text-white" href="/Albums/Create">Create Album</a>
     <hr class="bg-success" style="height: 2px" />
     <div id="albums">
-        <h3>
-            <a href="/Albums/Details?id=@album.Id">Name</a>
-        </h3>
+        @if (Model.Albums.Count == 0)
+        {
+            <a class="bg-danger">There are currently no albums.</a>
+        }
+        @foreach(var album in Model.Albums)
+        {
+            <h3>
+                <a href="/Albums/Details?id=@album.Id">@album.Name</a>
+            </h3>
+        }
     </div>
 </main>

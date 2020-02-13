@@ -2,16 +2,12 @@
 {
     using System.Text;
 
-    /// <summary>
-    /// Represents an HTML Response with properties for the <c>Response Status Line</c>, <c>Response Headers</c> and <c>Response Body</c>.
-    /// </summary>
+    using Enumerations;
+
     public class HtmlResponse : HttpResponse
     {
-        /// <summary>
-        /// Initializes a new <see cref="HtmlResponse"/> class.
-        /// </summary>
-        /// <param name="html">HTML text</param>
         public HtmlResponse(string html)
+            : base()
         {
             this.StatusCode = HttpResponseCode.Ok;
             byte[] byteData = Encoding.UTF8.GetBytes(html);

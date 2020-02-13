@@ -1,34 +1,34 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
-namespace SIS.MvcFramework
+﻿namespace SIS.MvcFramework
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+    using System.Collections.Generic;
+    using System.Collections.Concurrent;
+
     public class ServiceCollection : IServiceCollection
     {
-        private IDictionary<Type, Type> dependecyContainer =
+        private readonly IDictionary<Type, Type> dependencyContainer =
             new ConcurrentDictionary<Type, Type>();
 
         public void Add<TSource, TDestination>()
             where TDestination : TSource
         {
-            dependecyContainer[typeof(TSource)] = typeof(TDestination);
+            dependencyContainer[typeof(TSource)] = typeof(TDestination);
         }
 
         public object CreateInstance(Type type)
         {
-            if (dependecyContainer.ContainsKey(type))
+            if (dependencyContainer.ContainsKey(type))
             {
-                type = dependecyContainer[type];
+                type = dependencyContainer[type];
             }
 
-            var constructor =
-                type.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
+            var constructor = type.GetConstructors(BindingFlags.Public | BindingFlags.Instance)
                 .OrderBy(x => x.GetParameters().Count()).FirstOrDefault();
 
             var parameterValues = new List<object>();
+
             foreach (var parameter in constructor.GetParameters())
             {
                 var instance = CreateInstance(parameter.ParameterType);

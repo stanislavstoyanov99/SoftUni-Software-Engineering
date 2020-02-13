@@ -1,5 +1,6 @@
 ﻿namespace SIS.HTTP.Response
 {
+    using Enumerations;
     public class RedirectResponse : HttpResponse
     {
         public RedirectResponse(string newLocation)

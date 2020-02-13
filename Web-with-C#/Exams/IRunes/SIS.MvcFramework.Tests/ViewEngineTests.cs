@@ -1,9 +1,10 @@
-using System.Collections.Generic;
-using System.IO;
-using Xunit;
-
 namespace SIS.MvcFramework.Tests
 {
+    using System.IO;
+    using System.Collections.Generic;
+
+    using Xunit;
+
     public class ViewEngineTests
     {
         [Theory]
@@ -14,9 +15,9 @@ namespace SIS.MvcFramework.Tests
         {
             var viewModel = new TestViewModel()
             {
-                Name = "Niki",
+                Name = "Slavi",
                 Year = 2020,
-                Numbers = new List<int> { 1, 10, 100, 1000, 10000 },
+                Numbers = new List<int> { 1, 10, 100, 1000, 10_000 }
             };
 
             var viewContent = File.ReadAllText($"ViewTests/{testName}.html");
@@ -44,6 +45,58 @@ namespace SIS.MvcFramework.Tests
 <p>3</p>
 ";
 
+            IViewEngine viewEngine = new ViewEngine();
+            var actualResult = viewEngine.GetHtml(viewContent, viewModel, null);
+
+            Assert.Equal(expectedResultContent, actualResult);
+        }
+
+        [Fact]
+        public void TestGetHtmlWithGenericTemplateModel()
+        {
+            var viewModel = new Dictionary<string, Dictionary<string, int>>()
+            {
+                {
+                    "Pesho",
+                    new Dictionary<string, int>
+                    {
+                        { "C# Basics", 100 },
+                        { "C# Web", 75 },
+                    }
+                },
+                {
+                    "Gosho",
+                    new Dictionary<string, int>
+                    {
+                        { "JavaScript Advanced", 30 },
+                        { "PHP Web", 50 },
+                    }
+                }
+            };
+
+            var viewContent = @"
+@foreach (var student in Model)
+{
+<p> User: @student.Key </p>
+<ul>
+@foreach (var course in student.Value)
+{
+<li> @course.Key -> @course.Value </li>
+}
+</ul>
+}";
+            var expectedResultContent = @"
+<p> User: Pesho </p>
+<ul>
+<li> C# Basics -> 100 </li>
+<li> C# Web -> 75 </li>
+</ul>
+<p> User: Gosho </p>
+<ul>
+<li> JavaScript Advanced -> 30 </li>
+<li> PHP Web -> 50 </li>
+</ul>
+";
             IViewEngine viewEngine = new ViewEngine();
             var actualResult = viewEngine.GetHtml(viewContent, viewModel, null);
 

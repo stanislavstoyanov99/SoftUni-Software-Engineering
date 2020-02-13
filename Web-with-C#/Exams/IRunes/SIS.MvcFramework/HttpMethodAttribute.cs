@@ -1,10 +1,10 @@
-﻿using SIS.HTTP;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SIS.MvcFramework
+﻿namespace SIS.MvcFramework
 {
+    using System;
+
+    using HTTP.Enumerations;
+
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public abstract class HttpMethodAttribute : Attribute
     {
         protected HttpMethodAttribute()

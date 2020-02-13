@@ -7,7 +7,11 @@
     using System.Net.Sockets;
     using System.Threading.Tasks;
     using System.Collections.Generic;
-    using SIS.HTTP.Logging;
+
+    using Logging;
+    using Contracts;
+    using Constants;
+    using Enumerations;
 
     public class HttpServer : IHttpServer
     {
@@ -24,21 +28,16 @@
             this.sessions = new Dictionary<string, IDictionary<string, string>>();
         }
 
-        /// <summary>
-        /// Resets the HTTP Server asynchronously.
-        /// </summary>
         public async Task ResetAsync()
         {
             this.Stop();
             await this.StartAsync();
         }
 
-        /// <summary>
-        /// Starts the HTTP Server asynchronously.
-        /// </summary>
         public async Task StartAsync()
         {
             this.tcpListener.Start();
+
             while (true)
             {
                 TcpClient tcpClient = await tcpListener.AcceptTcpClientAsync();
@@ -48,22 +47,15 @@
             }
         }
 
-        /// <summary>
-        /// Stops the HTTP Server.
-        /// </summary>
         public void Stop()
         {
             this.tcpListener.Stop();
         }
 
-        /// <summary>
-        /// Processes the <see cref="TcpClient"/> asynchronously and returns HTTP Response for the browser.
-        /// </summary>
-        /// <param name="tcpClient">TCP Client</param>
-        /// <returns></returns>
         private async Task ProcessClientAsync(TcpClient tcpClient)
         {
             using NetworkStream networkStream = tcpClient.GetStream();
+
             try
             {
                 byte[] requestBytes = new byte[1000000]; // TODO: Use buffer
@@ -72,23 +64,27 @@
 
                 var request = new HttpRequest(requestAsString);
                 string newSessionId = null;
-                var sessionCookie = request.Cookies.FirstOrDefault(x => x.Name == HttpConstants.SessionIdCookieName);
+                var sessionCookie = request
+                    .Cookies
+                    .FirstOrDefault(c => c.Name == HttpConstants.SessionIdCookieName);
+
                 if (sessionCookie != null && this.sessions.ContainsKey(sessionCookie.Value))
                 {
                     request.SessionData = this.sessions[sessionCookie.Value];
                 }
                 else
                 {
-                    newSessionId = Guid.NewGuid().ToString();
+                    newSessionId = Guid.NewGuid().ToString(); 
                     var dictionary = new Dictionary<string, string>();
                     this.sessions.Add(newSessionId, dictionary);
                     request.SessionData = dictionary;
                 }
 
-                this.logger.Log($"{request.Method} {request.Path}");
+                logger.Log($"{request.Method} {request.Path}");
 
-                var route = this.routeTable.FirstOrDefault(
-                    x => x.HttpMethod == request.Method && string.Compare(x.Path, request.Path, true) == 0);
+                var route = this.routeTable
+                    .FirstOrDefault(x => x.HttpMethod == request.Method && string.Compare(x.Path, request.Path, true) == 0);
+
                 HttpResponse response;
                 if (route == null)
                 {
@@ -103,22 +99,25 @@
 
                 if (newSessionId != null)
                 {
-                    response.Cookies.Add(
-                        new ResponseCookie(HttpConstants.SessionIdCookieName, newSessionId)
-                            { HttpOnly = true, MaxAge = 30*3600, });
+                    response.Cookies.Add(new ResponseCookie(HttpConstants.SessionIdCookieName, newSessionId)
+                    {
+                        HttpOnly = true,
+                        MaxAge = 3600 * 30
+                    });
                 }
 
                 byte[] responseBytes = Encoding.UTF8.GetBytes(response.ToString());
+
                 await networkStream.WriteAsync(responseBytes, 0, responseBytes.Length);
                 await networkStream.WriteAsync(response.Body, 0, response.Body.Length);
             }
             catch (Exception ex)
             {
-                var errorResponse = new HttpResponse(
-                    HttpResponseCode.InternalServerError,
+                var errorResponse = new HttpResponse(HttpResponseCode.InternalServerError,
                     Encoding.UTF8.GetBytes(ex.ToString()));
                 errorResponse.Headers.Add(new Header("Content-Type", "text/plain"));
                 byte[] responseBytes = Encoding.UTF8.GetBytes(errorResponse.ToString());
+
                 await networkStream.WriteAsync(responseBytes, 0, responseBytes.Length);
                 await networkStream.WriteAsync(errorResponse.Body, 0, errorResponse.Body.Length);
             }
