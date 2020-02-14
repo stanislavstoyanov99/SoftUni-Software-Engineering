@@ -5,7 +5,7 @@
     <a class="btn btn-success text-white" href="/Albums/Create">Create Album</a>
     <hr class="bg-success" style="height: 2px" />
     <div id="albums">
-        @if (Model.Albums.Count == 0)
+        @if (Model.Albums.Count() == 0)
         {
             <a class="bg-danger">There are currently no albums.</a>
         }

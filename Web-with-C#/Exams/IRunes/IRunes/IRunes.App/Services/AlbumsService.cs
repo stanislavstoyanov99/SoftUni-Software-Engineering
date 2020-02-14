@@ -30,6 +30,20 @@
             this.db.SaveChanges();
         }
 
+        public IEnumerable<AlbumInfoViewModel> GetAll()
+        {
+            var allAlbums = this.db.Albums
+                .Select(x => new AlbumInfoViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .ToList();
+
+            return allAlbums;
+        }
+
+        /* Interesting way
         public IList<T> GetAll<T>(Func<Album, T> selectFunc)
         {
             var allAlbums = this.db.Albums
@@ -38,6 +52,7 @@
 
             return allAlbums;
         }
+        */
 
         public DetailsViewModel GetDetails(string id)
         {

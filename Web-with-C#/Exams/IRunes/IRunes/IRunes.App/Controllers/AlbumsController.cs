@@ -25,11 +25,7 @@
 
             var viewModel = new AllAlbumsViewModel
             {
-                Albums = this.albumsService.GetAll(x => new AlbumInfoViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                })
+                Albums = this.albumsService.GetAll(),
             };
 
             return this.View(viewModel);

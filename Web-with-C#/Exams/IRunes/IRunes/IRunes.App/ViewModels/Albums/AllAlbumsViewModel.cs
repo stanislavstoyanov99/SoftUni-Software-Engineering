@@ -4,6 +4,6 @@
 
     public class AllAlbumsViewModel
     {
-        public IList<AlbumInfoViewModel> Albums { get; set; }
+        public IEnumerable<AlbumInfoViewModel> Albums { get; set; }
     }
 }
