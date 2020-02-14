@@ -14,9 +14,10 @@
             this.db = db;
         }
 
-        public LoggedInViewModel GetUsername()
+        public LoggedInViewModel GetUsername(string id)
         {
             var username = this.db.Users
+                .Where(x => x.Id == id)
                 .Select(x => new LoggedInViewModel
                 {                  
                     Username = x.Username

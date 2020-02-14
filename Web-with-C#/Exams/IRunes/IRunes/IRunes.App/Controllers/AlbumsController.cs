@@ -49,6 +49,11 @@
         [HttpPost]
         public HttpResponse Create(CreateInputModel inputModel)
         {
+            if (!this.IsUserLoggedIn())
+            {
+                return this.Redirect("/Users/Login");
+            }
+
             if (inputModel.Name?.Length < 4 || inputModel.Name?.Length > 20)
             {
                 return this.Redirect("/Albums/Create");

@@ -4,6 +4,6 @@
 
     public interface IHomeService
     {
-        LoggedInViewModel GetUsername();
+        LoggedInViewModel GetUsername(string id);
     }
 }

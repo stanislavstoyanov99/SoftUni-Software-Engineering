@@ -23,7 +23,7 @@
                 return this.Redirect("/Users/Login");
             }
 
-            var viewModel = new CreateTrackViewModel
+            var viewModel = new CreateViewModel
             {
                 AlbumId = albumId
             };
@@ -40,20 +40,30 @@
                 return this.Redirect($"/Tracks/Create?albumId={inputModel.AlbumId}");
             }
 
+            if (!inputModel.Link.StartsWith("http"))
+            {
+                return this.Error("Invalid link.");
+            }
+
+            if (inputModel.Price < 0)
+            {
+                return this.Error("Price should be a positive number.");
+            }
+
             this.tracksService.Create(inputModel.AlbumId, inputModel.Name, inputModel.Link, inputModel.Price);
 
             return this.Redirect($"/Albums/Details?id={inputModel.AlbumId}");
         }
 
         [HttpGet]
-        public HttpResponse Details(string albumId, string trackId)
+        public HttpResponse Details(string trackId)
         {
             if (!this.IsUserLoggedIn())
             {
                 return this.Redirect("/Users/Login");
             }
 
-            var viewModel = this.tracksService.GetDetails(albumId, trackId);
+            var viewModel = this.tracksService.GetDetails(trackId);
 
             return this.View(viewModel);
         }

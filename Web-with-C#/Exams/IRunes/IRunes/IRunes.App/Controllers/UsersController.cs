@@ -74,6 +74,16 @@
                 return this.Error("Email is already used.");
             }
 
+            if (string.IsNullOrEmpty(inputModel.Email))
+            {
+                return this.Error("Email cannot be empty.");
+            }
+
+            if (inputModel.Password != inputModel.ConfirmPassword)
+            {
+                return this.Error("Passwords should match.");
+            }
+
             this.usersService.CreateUser(inputModel.Username, inputModel.Email, inputModel.Password);
 
             return this.Redirect("/Users/Login");

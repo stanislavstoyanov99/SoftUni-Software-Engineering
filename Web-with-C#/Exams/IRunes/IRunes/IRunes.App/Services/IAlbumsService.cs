@@ -12,6 +12,8 @@
 
         IList<T> GetAll<T>(Func<Album, T> selectFunc);
 
+        // IEnumerable<AlbumInfoViewModel> GetAll();
+
         DetailsViewModel GetDetails (string id);
     }
 }

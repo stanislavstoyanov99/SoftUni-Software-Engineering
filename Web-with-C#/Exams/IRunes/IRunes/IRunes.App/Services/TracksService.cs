@@ -38,10 +38,10 @@
             this.db.SaveChanges();
         }
 
-        public DetailsViewModel GetDetails(string albumId, string trackId)
+        public DetailsViewModel GetDetails(string trackId)
         {
             var viewModel = this.db.Tracks
-                .Where(x => x.Id == trackId && x.AlbumId == albumId)
+                .Where(x => x.Id == trackId)
                 .Select(x => new DetailsViewModel
                 {
                     AlbumId = x.AlbumId,

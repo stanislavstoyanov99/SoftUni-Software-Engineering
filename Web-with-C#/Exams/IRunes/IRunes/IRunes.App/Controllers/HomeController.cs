@@ -17,27 +17,20 @@
         [HttpGet("/")]
         public HttpResponse Index()
         {
-            if (!this.IsUserLoggedIn())
+            if (this.IsUserLoggedIn())
             {
-                return this.View();
+                var viewModel = this.homeService.GetUsername(this.User);
+
+                return this.View(viewModel, "Home");
             }
 
-            var viewModel = this.homeService.GetUsername();
-
-            return this.View(viewModel, "Home");
+            return this.View();
         }
 
         [HttpGet("/Home/Index")]
         public HttpResponse Home()
         {
-            if (!this.IsUserLoggedIn())
-            {
-                return this.Redirect("/Users/Login");
-            }
-
-            var viewModel = this.homeService.GetUsername();
-
-            return this.View(viewModel);
+            return this.Index();
         }
     }
 }
