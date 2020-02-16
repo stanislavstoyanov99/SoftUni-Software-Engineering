@@ -47,6 +47,11 @@
             this.dbContext.SaveChanges();
         }
 
+        public bool DoesTripExist(string tripId)
+        {
+            return this.dbContext.Trips.Any(x => x.Id == tripId);
+        }
+
         public DetailsViewModel GetDetails(string id)
         {
             var viewModel = this.dbContext.Trips

@@ -102,6 +102,11 @@
                 return this.Redirect("/Users/Login");
             }
 
+            if (!this.tripsService.DoesTripExist(tripId))
+            {
+                return this.Redirect($"/Trips/All");
+            }
+
             // Check if the user tries to delete tripId in the query data
             if (string.IsNullOrEmpty(tripId))
             {

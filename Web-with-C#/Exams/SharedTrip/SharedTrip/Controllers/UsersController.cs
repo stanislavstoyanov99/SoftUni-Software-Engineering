@@ -85,7 +85,7 @@
 
             if (inputModel.Password != inputModel.ConfirmPassword)
             {
-                return this.View();
+                return this.Error("Pesho e velik!");
             }
 
             this.usersService.CreateUser(inputModel.Username, inputModel.Email, inputModel.Password);

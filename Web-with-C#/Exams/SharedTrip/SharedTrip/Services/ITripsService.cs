@@ -10,6 +10,8 @@
 
         void AddUserToTrip(string userId, string tripId);
 
+        bool DoesTripExist(string tripId);
+
         bool IsTripJoined(string userId, string tripId);
 
         IEnumerable<InfoViewModel> ListAllTrips();
