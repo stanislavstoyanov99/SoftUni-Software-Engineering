@@ -1,8 +1,8 @@
 function solve(number) {
-    let digit = number.toString()[0];
-    let isTheSameDigit = true;
+    const digit = number.toString()[0];
     let sumOfDigits = Number(digit);
-    let numberAsString = number.toString();
+    let isTheSameDigit = true;
+    const numberAsString = number.toString();
 
     for (let i = 1; i < numberAsString.length; i++) {
         let currDigit = numberAsString[i];

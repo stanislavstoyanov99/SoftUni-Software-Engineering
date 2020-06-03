@@ -1,5 +1,5 @@
 function composeObject(inputArray) {
-    let data = inputArray
+    const data = inputArray
         .toString()
         .split(',');
     

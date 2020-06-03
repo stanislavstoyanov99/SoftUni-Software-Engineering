@@ -1,6 +1,6 @@
-function buyFruit(fruitType, weight, pricePerKg) {
-    let weightInKg = (Number(weight) / 1000);
-    let neededMoney = weightInKg * Number(pricePerKg);
+function buyFruit(fruitType, weightInGrams, pricePerKg) {
+    const weightInKg = Number(weightInGrams) / 1000;
+    const neededMoney = weightInKg * Number(pricePerKg);
     return `I need $${neededMoney.toFixed(2)} to buy ${weightInKg.toFixed(2)} kilograms ${fruitType}.`;
 }
 

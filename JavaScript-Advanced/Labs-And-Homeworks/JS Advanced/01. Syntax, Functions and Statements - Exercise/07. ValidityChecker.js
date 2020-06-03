@@ -4,8 +4,8 @@ function checkDistanceBetweenPoints(inputArray) {
     let x2 = +inputArray[2];
     let y2 = +inputArray[3];
 
-    let cartesianX = 0;
-    let cartesianY = 0;
+    const cartesianX = 0;
+    const cartesianY = 0;
 
     let distanceBetweenPoints = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     let distanceBetweenCartesianFirstPoint = Math.sqrt(Math.pow(x1 - cartesianX, 2) + Math.pow(y1 - cartesianY, 2));

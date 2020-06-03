@@ -2,8 +2,8 @@ function checkSpeedLimit(input) {
     let data = input
         .toString()
         .split(',');
-    let speed = Number(data[0]);
-    let area = String(data[1]);
+    const speed = Number(data[0]);
+    const area = String(data[1]);
 
     let speedLimit = 0;
     switch (area) {
@@ -24,7 +24,7 @@ function checkSpeedLimit(input) {
     let resultMessage = "";
 
     if (speed > speedLimit) {
-        let speedOverTheLimit = speed - speedLimit;
+        const speedOverTheLimit = speed - speedLimit;
 
         if (speedOverTheLimit <= 20) {
             resultMessage = "speeding";

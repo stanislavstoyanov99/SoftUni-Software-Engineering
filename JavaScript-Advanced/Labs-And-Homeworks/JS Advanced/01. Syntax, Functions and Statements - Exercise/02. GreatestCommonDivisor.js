@@ -3,9 +3,9 @@ function computeCommonDivisor(firstNumber, secondNumber) {
     let y = Math.abs(secondNumber); // truty value
 
     while (y != 0) {
-        let temp = y;
+        let remainder = y;
         y = x % y;
-        x = temp;
+        x = remainder;
     }
 
     return x;
