@@ -7,33 +7,20 @@ function checkDistanceBetweenPoints(inputArray) {
     const cartesianX = 0;
     const cartesianY = 0;
 
-    let distanceBetweenPoints = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-    let distanceBetweenCartesianFirstPoint = Math.sqrt(Math.pow(x1 - cartesianX, 2) + Math.pow(y1 - cartesianY, 2));
-    let distanceBetweenCartesianSecondPoint = Math.sqrt(Math.pow(x2 - cartesianX, 2) + Math.pow(y2 - cartesianY, 2));
+    isValid(x1, y1, cartesianX, cartesianY);
+    isValid(x2, y2, cartesianX, cartesianY);
+    isValid(x1, y1, x2, y2);
 
-    let isValidDistanceBetweenPoints = Number.isInteger(distanceBetweenPoints);
-    let isFirstPointValidWithCartesian = Number.isInteger(distanceBetweenCartesianFirstPoint);
-    let isSecondPointValidWithCartesian = Number.isInteger(distanceBetweenCartesianSecondPoint);
+    function isValid(x1, y1, x2, y2) {
+        const distanceBetweenPoints = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 
-    if (isFirstPointValidWithCartesian === true) {
-        console.log(`{${x1}, ${y1}} to {0, 0} is valid`);
-    }
-    else {
-        console.log(`{${x1}, ${y1}} to {0, 0} is invalid`);
-    }
+        const isInteger = Number.isInteger(distanceBetweenPoints);
 
-    if (isSecondPointValidWithCartesian === true) {
-        console.log(`{${x2}, ${y2}} to {0, 0} is valid`);
-    }
-    else {
-        console.log(`{${x2}, ${y2}} to {0, 0} is invalid`);
-    }
-
-    if (isValidDistanceBetweenPoints === true) {
-        console.log(`{${x1}, ${y1}} to {${x2}, ${y2}} is valid`);
-    }
-    else {
-        console.log(`{${x1}, ${y1}} to {${x2}, ${y2}} is invalid`);
+        if (isInteger) {
+            console.log(`{${x1}, ${y1}} to {${x2}, ${y2}} is valid`);
+        } else {
+            console.log(`{${x1}, ${y1}} to {${x2}, ${y2}} is invalid`);
+        }
     }
 }
 

@@ -1,25 +1,14 @@
-function composeObject(inputArray) {
-    const data = inputArray
-        .toString()
-        .split(',');
-    
-    let composedObject = {};
-    let nameOfFood;
-    let calories;
+function composeObject(params) {
+    const calorieObject = {};
 
-    for (let i = 0; i < data.length; i++) {
-        if (i % 2 === 0) {
-            nameOfFood = data[i];                    
-        }
-        else {
-            calories = Number(data[i]);
-        }
+    for (let i = 0; i < params.length; i += 2) {
+        const nameOfFood = params[i];
+        const calories = Number(params[i + 1]);
 
-        composedObject[nameOfFood] = calories;
+        calorieObject[nameOfFood] = calories;
     }
 
-    console.log(composedObject);
+    console.log(calorieObject);
 }
 
 composeObject(['Yoghurt', '48', 'Rise', '138', 'Apple', '52']);
-composeObject(['Potato', '93', 'Skyr', '63', 'Cucumber', '18', 'Milk', '42']);
