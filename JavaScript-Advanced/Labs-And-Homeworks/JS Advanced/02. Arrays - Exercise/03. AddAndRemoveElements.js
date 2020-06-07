@@ -4,12 +4,13 @@ function solve(inputArray) {
 
     for (const command of inputArray) {
         if (command === 'add') {
-            resultArray.push(currNum++);
+            resultArray.push(currNum);
         }
         else if (command === 'remove') {
-            currNum++;
             resultArray.pop();
         }
+
+        currNum++;
     }
 
     if (resultArray.length === 0) {
