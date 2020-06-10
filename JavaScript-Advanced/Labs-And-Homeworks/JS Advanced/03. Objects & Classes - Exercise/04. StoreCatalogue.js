@@ -8,8 +8,7 @@ function storeCatalogue(inputData) {
         catalogue[productName] = productPrice;
     }
 
-    const sortedProducts = Object.keys(catalogue)
-        .sort((a, b) => a.localeCompare(b) || catalogue[a] - catalogue[b]);
+    const sortedProducts = Object.keys(catalogue).sort((a, b) => a.localeCompare(b));
 
     let currInitialLetter = '';
 
