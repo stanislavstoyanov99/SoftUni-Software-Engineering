@@ -4,9 +4,8 @@ function notify(message) {
     notificationMessage.textContent = message;
     notificationMessage.style.display = 'block';
 
-    let intervalID = setTimeout(
+    setTimeout(
         function () {
             notificationMessage.style.display = 'none';
-            clearTimeout(intervalID);
         }, 2000);
 }
