@@ -1,8 +1,6 @@
 function solve() {
    const searchBtn = document.getElementById('searchBtn');
 
-   const tableData = document.querySelectorAll('.container tbody td');
-
    let selectedRows = [];
 
    searchBtn.addEventListener('click', () => {
@@ -10,17 +8,21 @@ function solve() {
          selectedRows.forEach(row => row.parentElement.classList.remove('select'));
       }
 
+      const tableData = document.querySelectorAll('.container tbody td');
       const inputField = document.getElementById('searchField');
+      const inputValue = inputField.value.trim();
 
-      for (let row = 0; row < tableData.length; row++) {
-         const currentRow = tableData[row];
-
-         if (currentRow.textContent.includes(inputField.value)) {
-            selectedRows.push(currentRow);
-            currentRow.parentElement.classList.add('select');
+      if (inputValue.length > 0) {
+         for (let row = 0; row < tableData.length; row++) {
+            const currentRow = tableData[row];
+   
+            if (currentRow.textContent.trim().includes(inputValue)) {
+               selectedRows.push(currentRow);
+               currentRow.parentElement.classList.add('select');
+            }
          }
+         
+         inputField.value = '';
       }
-      
-      inputField.value = '';
    });
 }
