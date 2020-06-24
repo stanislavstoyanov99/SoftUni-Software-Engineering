@@ -5,12 +5,6 @@ class Company {
 
     addEmployee(username, salary, position, department) {
         if (username && salary > 0 && position && department) {
-            // if (!this.departments.hasOwnProperty(department)) {
-            //     let found = {
-            //         name: department,
-            //         employees: []
-            //     };
-            // }
             let foundDepartment = this.departments.find(x => x.name === department);
 
             if (!foundDepartment) {
