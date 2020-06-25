@@ -8,7 +8,7 @@ class Hex {
     }
 
     toString() {
-        return '0x' + (this.number.toString(16)).toUpperCase();
+        return '0x' + this.number.toString(16).toUpperCase();
     }
 
     plus(obj) {
@@ -19,8 +19,7 @@ class Hex {
             return new Hex(this.number);
         }
 
-        const value = this.number + obj.number;
-        return new Hex(value);
+        return new Hex(this.number + obj.number);
     }
 
     minus(obj) {
@@ -31,8 +30,7 @@ class Hex {
             return new Hex(this.number);
         }
 
-        const value = this.number - obj.number;
-        return new Hex(value);
+        return new Hex(this.number - obj.number);
     }
 
     parse(input) {
@@ -42,7 +40,7 @@ class Hex {
 
 let FF = new Hex(255);
 console.log(FF.toString());
-console.log(FF.valueOf() + 1 === 256);
+console.log(FF + 1 === 256);
 
 let a = new Hex(10);
 let b = new Hex(5);

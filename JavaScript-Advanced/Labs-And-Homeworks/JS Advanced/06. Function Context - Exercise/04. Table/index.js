@@ -1,5 +1,5 @@
 function solve() {
-   const tableBody = document.querySelector('.minimalistBlack > tbody');
+   const tableBody = document.querySelector('.minimalistBlack tbody');
 
    let selectedRow;
    

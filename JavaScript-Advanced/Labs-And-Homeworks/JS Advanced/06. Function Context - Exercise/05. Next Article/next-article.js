@@ -1,9 +1,10 @@
+// Example usage of closure
 function getArticleGenerator(articles) {
     const divContent = document.getElementById('content');
 
-    return appendArticle;
+    return showNext;
     
-    function appendArticle() {
+    function showNext() {
         const currArticle = articles.shift();
 
         if (currArticle) {

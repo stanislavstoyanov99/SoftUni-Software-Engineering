@@ -1,15 +1,22 @@
-class Company {
-    constructor() {
-        this.departments = [];
-        this.index = {};
-    }
+function Company() {
+    const departments = [];
+    const index = {};
 
-    addEmployee(username, salary, position, department) {
+    const company = {
+        departments,
+        index,
+        addEmployee,
+        bestDepartment
+    };
+
+    return company;
+
+    function addEmployee(username, salary, position, department) {
         if (username && salary > 0 && position && department) {
             
             // let foundDepartment = this.departments.find(x => x.name === department);
             // Faster way with indexing
-            let foundDepartment = this.departments[this.index[department]];
+            let foundDepartment = departments[index[department]];
 
             if (!foundDepartment) {
                 foundDepartment = {
@@ -17,8 +24,8 @@ class Company {
                     employees: []
                 };
 
-                this.departments.push(foundDepartment);
-                this.index[department] = this.departments.length - 1;
+                departments.push(foundDepartment);
+                index[department] = this.departments.length - 1;
             }
 
             const employee = { username, salary, position };
@@ -30,8 +37,8 @@ class Company {
         throw new Error('Invalid input!');
     }
 
-    bestDepartment() {
-        const bestDepartment = this.departments.sort((a, b) => b.salary - a.salary)[0];
+    function bestDepartment() {
+        const bestDepartment = departments.sort((a, b) => b.salary - a.salary)[0];
         const totalSalary = bestDepartment.employees.map(x => x.salary).reduce((a, b) => a + b, 0);
         const averageSalary = totalSalary / bestDepartment.employees.length;
 
@@ -52,7 +59,7 @@ class Company {
     }
 }
 
-let company = new Company();
+let company = Company();
 
 company.addEmployee("Stanimir", 2000, "engineer", "Construction");
 company.addEmployee("Pesho", 1500, "electrical engineer", "Construction");
@@ -63,4 +70,3 @@ company.addEmployee("Pesho", 1000, "graphical designer", "Marketing");
 company.addEmployee("Gosho", 1350, "HR", "Human resources");
 
 console.log(company.bestDepartment());
-
