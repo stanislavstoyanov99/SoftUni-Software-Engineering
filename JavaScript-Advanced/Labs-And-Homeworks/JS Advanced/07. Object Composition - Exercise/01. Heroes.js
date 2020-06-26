@@ -1,49 +1,57 @@
 function solve() {
-    const canFight = (profile) => ({
-        fight: () => {
-            profile.stamina--;
-            console.log(`${profile.name} slashes at the foe!`);
-        }
-    });
+    const fighterProto = {
+        fight
+    };
 
-    const canCast = (profile) => ({
-        cast: (spell) => {
-            profile.mana--;
-            console.log(`${profile.name} cast ${spell}`);
-        }
-    });
+    function fight() {
+        this.stamina--;
+        console.log(`${this.name} slashes at the foe!`);
+    }
 
-    const fighter = (name) => {
-        let profile = {
+    const mageProto = {
+        cast
+    };
+
+    function cast(spell) {
+        this.mana--;
+        console.log(`${this.name} cast ${spell}`);   
+    }
+
+    function fighter(name) {
+        const fighterInstace = Object.create(fighterProto);
+        
+        Object.assign(fighterInstace, {
             name,
             health: 100,
             stamina: 100
-        };
+        });
 
-        return Object.assign(profile, canFight(profile));
-    };
+        return fighterInstace;
+    }
 
-    const mage = (name) => {
-        let profile = {
+    function mage(name) {
+        const mageInstance = Object.create(mageProto);
+
+        Object.assign(mageInstance, {
             name,
             health: 100,
             mana: 100
-        };
+        });
 
-        return Object.assign(profile, canCast(profile));
-    };
+        return mageInstance;
+    }
 
     return {mage: mage, fighter: fighter};
 }
 
 let create = solve();
 const scorcher = create.mage("Scorcher");
-scorcher.cast("fireball")
-scorcher.cast("thunder")
-scorcher.cast("light")
+scorcher.cast("fireball");
+scorcher.cast("thunder");
+scorcher.cast("light");
 
 const scorcher2 = create.fighter("Scorcher 2");
-scorcher2.fight()
+scorcher2.fight();
 
 console.log(scorcher2.stamina);
 console.log(scorcher.mana);

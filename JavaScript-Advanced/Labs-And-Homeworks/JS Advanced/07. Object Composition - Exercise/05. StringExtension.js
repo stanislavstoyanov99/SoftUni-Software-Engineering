@@ -25,7 +25,7 @@
 
     String.prototype.truncate = function (n) {
         const currString = this.toString();
-        const ellipsis = ".".repeat(3);
+        const ellipsis = '.'.repeat(3);
 
         if (n < 3) {
             return ellipsis;
@@ -34,7 +34,7 @@
         if (currString.length <= n) {
             return currString;
         } else {
-            let lastIndex = this.toString().substring(0, n - 2).lastIndexOf(" ");
+            let lastIndex = this.toString().substring(0, n - 2).lastIndexOf(' ');
 
             if (lastIndex !== -1) {
                 return this.toString().substring(0, lastIndex) + ellipsis;

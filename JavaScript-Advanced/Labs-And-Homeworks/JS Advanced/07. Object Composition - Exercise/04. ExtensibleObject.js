@@ -1,14 +1,27 @@
 function solve() {
-    return {
-        extend(template) {
-            for (const property in template) {
-                if (typeof template[property] === 'function') {
-                    const prototype = Object.getPrototypeOf(this);
-                    prototype[property] = template[property];           
-                }
+    const proto = {};
 
-                this[property] = template[property];
+    const instance = Object.create(proto);
+
+    instance.extend = function (template) {
+        for (let prop in template) {
+            if (typeof template[prop] === 'function') {
+                proto[prop] = template[prop];
+            } else {
+                instance[prop] = template[prop];
             }
         }
     }
+
+    return instance;
 }
+
+const myInstance = solve();
+
+myInstance.extend({
+    extensionMethod: function () { },
+    extensionProperty: 'someString'
+});
+
+console.log('Instance properties: ', myInstance);
+console.log('Prototype properties: ', Object.getPrototypeOf(myInstance));

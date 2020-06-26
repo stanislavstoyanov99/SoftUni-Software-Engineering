@@ -1,18 +1,23 @@
 function sortedList() {
     const collection = [];
-    let size = 0;
+
+    const instance = {
+        add,
+        remove,
+        get,
+        size: 0
+    };
 
     function add(element) {
         collection.push(element);
-        this.size++;
+        instance.size++;
         return sortList();
     }
 
     function remove(index) {
         validateIndex(index);
         collection.splice(index, 1);
-        this.size--;
-        return sortList();
+        instance.size--;
     }
 
     function get(index) {
@@ -30,7 +35,7 @@ function sortedList() {
         collection.sort((a, b) => a - b);
     }
 
-    return { add, remove, get, size };
+    return instance;
 }
 
 const list = sortedList();

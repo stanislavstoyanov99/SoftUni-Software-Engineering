@@ -5,7 +5,14 @@ function assembleCar(inputCar) {
         200: { power: 200, volume: 3500 }
     };
 
-    let assembledCar = {
+    // Can be array with engine objects
+    // const engineArray = [
+    //     { power: 90, volume: 1800 },
+    //     { power: 120, volume: 2400 },
+    //     { power: 200, volume: 3500 }
+    // ];
+
+    const assembledCar = {
         model: inputCar.model,
         engine: setEngine(inputCar.power),
         carriage: {
@@ -14,6 +21,14 @@ function assembleCar(inputCar) {
         },
         wheels: setWheels(inputCar.wheelsize)
     };
+
+    // Another solution for setting engine
+    // for (const engine of engineArray) {
+    //     if (engine.power >= inputCar.power) {
+    //         assembledCar.engine = Object.assign(engine);
+    //         break;
+    //     }       
+    // }
 
     return assembledCar;
 
