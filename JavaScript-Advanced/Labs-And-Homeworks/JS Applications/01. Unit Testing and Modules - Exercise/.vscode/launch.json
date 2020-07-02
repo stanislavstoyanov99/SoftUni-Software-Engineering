@@ -22,6 +22,7 @@
             ],
             "type": "pwa-node"
         },
+
         {
             "type": "node",
             "request": "launch",
@@ -29,7 +30,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${file}"
+            "program": "${workspaceFolder}\\01. EvenOrOdd.js"
         }
     ]
 }
