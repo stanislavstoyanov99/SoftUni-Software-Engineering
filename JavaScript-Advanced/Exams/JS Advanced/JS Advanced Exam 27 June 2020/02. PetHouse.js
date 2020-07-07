@@ -90,5 +90,3 @@ console.log(dog.addComment('likes to be brushed'));
 console.log(dog.addComment('sleeps a lot'));
 console.log(dog.feed());
 console.log(dog.toString());
-
-

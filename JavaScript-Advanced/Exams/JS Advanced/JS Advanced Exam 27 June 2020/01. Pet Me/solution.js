@@ -7,7 +7,7 @@ function solve() {
     const inputOwner = inputKind.nextElementSibling;
 
     addButton.addEventListener('click', (e) => {
-        if (!inputName.value || !inputAge.value || !inputKind.value || !inputOwner.value) {
+        if (!inputName.value || isNaN(Number(inputAge.value)) || !inputKind.value || !inputOwner.value) {
             return;
         }
 
@@ -23,9 +23,7 @@ function solve() {
         const contactBtn = document.createElement('button');
 
         liName.textContent = inputName.value;
-
         liAge.textContent = inputAge.value;
-
         liKind.textContent = inputKind.value;
 
         const textNameNode = document.createTextNode(' is a ');
@@ -103,4 +101,3 @@ function solve() {
         e.target.parentElement.remove();
     }
 }
-
