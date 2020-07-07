@@ -1,1 +1,1 @@
-First and second problems are done using firebase server, whereas third and fourth are done using localhost.
+All problems are done with firebase server. In problem 3 - Phonebook Softuni server is not used, because is not configured to use database.
