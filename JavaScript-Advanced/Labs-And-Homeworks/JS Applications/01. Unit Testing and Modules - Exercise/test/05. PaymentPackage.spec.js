@@ -62,8 +62,8 @@ describe('Payment Package tests', function () {
         });
 
         it('should accept and set valid value', function () {
-            instance.value = 50;
-            expect(instance.value).to.equal(50);
+            instance.value = 0;
+            expect(instance.value).to.equal(0);
         });
 
         it('throws exception when invalid value is passed', function () {
