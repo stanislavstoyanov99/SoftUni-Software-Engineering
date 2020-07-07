@@ -7,52 +7,85 @@ function attachEvents() {
         phoneBook() { return document.getElementById('phonebook') }
     };
 
-    const url = `http://localhost:3000/phonebook`;
-    let contacts = [];
+    const url = 'https://phonebook-nakov.firebaseio.com/phonebook.json';
 
-    elements.createButton().addEventListener('click', () => {
+    elements.createButton().addEventListener('click', createContact);
+
+    elements.loadButton().addEventListener('click', reloadContacts);
+
+    function createContact() {
         const { value: person } = elements.person();
         const { value: phone } = elements.phone();
+        const contact = { person, phone };
+
+        if (!person || !phone) {
+            handleError();
+            return;
+        }
 
         fetch(url, {
             method: 'POST',
-            body: JSON.stringify({ person, phone })
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(contact)
         })
             .then((respone) => respone.json())
-            .then((createdContact) => {
-                contacts.push(createdContact);
-                elements.person().value = '';
-                elements.phone().value = '';
+            .then(() => reloadContacts())
+            .catch((error) => handleError(error));
 
-                reloadContacts();
-            });
-    });
-
-    elements.loadButton().addEventListener('click', () => {
-        reloadContacts();
-    });
+        elements.person().value = '';
+        elements.phone().value = '';
+    }
 
     function reloadContacts() {
-        elements.phoneBook().textContent = '';
+        elements.phoneBook().innerHTML = '';
 
-        contacts.forEach(contact => {
-            const listItem = document.createElement('li');
-            const id = Object.keys(contact)[0];
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                if (!data) {
+                    alert('There are not any contacts.');
+                    return;
+                }
 
-            listItem.textContent = `${contact[id].person}:${contact[id].phone}`;
+                const contactIds = Array.from(Object.keys(data));
 
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Delete';
-            listItem.appendChild(deleteBtn);
+                contactIds.forEach(id => {
+                    const listItem = document.createElement('li');
+                    const name = data[id].person;
+                    const phone = data[id].phone;
 
-            elements.phoneBook().appendChild(listItem);
+                    listItem.textContent = `${name}:${phone}`;
 
-            // Delete functionality only removes from DOM, cannot make it to remove the object from the array
-            // It would be better if we have a database in order to make REST calls
-            deleteBtn.addEventListener('click', (e) => {
-                e.target.parentElement.remove();
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Delete';
+                    listItem.appendChild(deleteBtn);
+
+                    elements.phoneBook().appendChild(listItem);
+
+                    deleteBtn.addEventListener('click', () => deleteContact(id));
+                })
             });
-        });
+    }
+
+    function deleteContact(id) {
+        const url = `https://phonebook-nakov.firebaseio.com/phonebook/${id}.json`;
+
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        })
+            .then(() => reloadContacts())
+            .catch((error) => handleError(error));
+    }
+
+    function handleError(error) {
+        elements.person().value = '';
+        elements.phone().value = '';
+        alert('Error');
     }
 }
 
