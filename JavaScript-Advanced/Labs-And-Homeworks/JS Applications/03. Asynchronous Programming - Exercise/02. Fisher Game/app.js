@@ -22,6 +22,8 @@ window.addEventListener('load', () => {
     async function onAddBtnClick(e) {
         e.preventDefault();
 
+        validateInput();
+
         const inputAngler = elements.anglerField().value;
         const inputWeight = elements.weightField().value;
         const inputSpecies = elements.speciesField().value;
@@ -47,6 +49,7 @@ window.addEventListener('load', () => {
         }
 
         await loadCatches();
+
         clearInput();
     }
 
@@ -113,14 +116,73 @@ window.addEventListener('load', () => {
         return divContainer;
     }
 
-    // TODO
-    function onUpdateBtnClick(e) {
+    async function onUpdateBtnClick(e) {
         e.preventDefault();
+
+        const target = e.target;
+        const id = target.parentElement.getAttribute('data-id');
+
+        try {
+            const updatedObj = updateCatchObj(target.parentElement);       
+            await data.updateCatch(id, updatedObj) 
+        } catch (error) {
+            alert(`Error: ${error}`);
+            return;     
+        }
+        finally {
+            loadCatches();
+        }
     }
 
-    // TODO
-    function onDeleteBtnClick(e) {
+    function updateCatchObj(catchElement) {
+        const angler = catchElement.querySelector('input.angler').value.trim();
+        const weight = catchElement.querySelector('input.weight').value.trim();
+        const species = catchElement.querySelector('input.species').value.trim();
+        const location = catchElement.querySelector('input.location').value.trim();
+        const bait = catchElement.querySelector('input.bait').value.trim();
+        const captureTime = catchElement.querySelector('input.captureTime').value.trim();
+
+        if (!angler || 
+            Number(weight) <= 0 || 
+            !species || 
+            !location || 
+            !bait || 
+            Number(captureTime) <= 0) {
+            alert('Invalid data.');
+            return;
+        }
+
+        const updatedObj = { angler, weight, species, location, bait, captureTime };
+
+        return updatedObj;
+    }
+
+    async function onDeleteBtnClick(e) {
         e.preventDefault();
+
+        const id = e.target.parentElement.getAttribute('data-id');
+
+        try {
+            await data.deleteCatch(id);    
+        } catch (error) {
+            alert(`Error: ${error}`);
+            return;  
+        }
+
+        loadCatches();
+    }
+
+    function validateInput() {
+        if (elements.anglerField().value === '' ||
+            Number(elements.weightField().value) <= 0 ||
+            elements.speciesField().value === '' ||
+            elements.locationField().value === '' ||
+            elements.baitField().value === '' ||
+            Number(elements.captureTimeField().value) <= 0) {
+            alert('Wrong data!');
+            clearInput();
+            return;
+        }
     }
 
     function clearInput() {
