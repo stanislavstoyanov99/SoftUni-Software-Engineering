@@ -14,11 +14,11 @@ function attachEvents() {
 
     const baseUrl = 'https://judgetests.firebaseio.com/';
     const weatherSymbols = {
-        'Sunny': '&#x2600',
-        'Partly sunny': '&#x26C5',
-        'Overcast': '&#x2601',
-        'Rain': '&#x2614',
-        'Degrees': '&#176'
+        'Sunny': '&#x2600;',
+        'Partly sunny': '&#x26C5;',
+        'Overcast': '&#x2601;',
+        'Rain': '&#x2614;',
+        'Degrees': '&#176;'
     };
     const degreesSymbol = weatherSymbols['Degrees'];
 
