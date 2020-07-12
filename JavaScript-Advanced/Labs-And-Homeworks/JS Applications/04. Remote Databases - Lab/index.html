@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Remote databases demo</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <h1>Remote databases demo</h1>
+    <div>
+        <h3>Books list</h3>
+        <ul id="books-list"></ul>
+    </div>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="./node_modules/firebase/firebase-app.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="./node_modules/firebase/firebase-analytics.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="./node_modules/firebase/firebase-auth.js"></script>
+
+    <script type="module" src="./app.js"></script>
+</body>
+
+</html>
