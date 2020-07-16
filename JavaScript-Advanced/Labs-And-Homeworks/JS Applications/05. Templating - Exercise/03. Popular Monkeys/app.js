@@ -7,11 +7,9 @@ import { monkeys } from './monkeys.js';
     await attachEvents();
 
     async function render() {
-        const monkeyCardTemplate = await fetch('./templates/monkey-card.hbs')
-            .then(data => data.text());
+        const monkeyCardTemplate = await (await fetch('./templates/monkey-card.hbs')).text();
 
-        const monkeysTemplate = await fetch('./templates/monkeys.hbs')
-            .then(data => data.text());
+        const monkeysTemplate = await (await fetch('./templates/monkeys.hbs')).text();
 
         Handlebars.registerPartial('monkey-card', monkeyCardTemplate);
         const template = Handlebars.compile(monkeysTemplate);
@@ -21,9 +19,11 @@ import { monkeys } from './monkeys.js';
     }
 
     async function attachEvents() {
+        const monkeysDiv = document.querySelector('.monkeys');
+        
         try {
             // Instead of attaching event for each button I use the power of bubbling (event delegation) and attach one event
-            monkeysSection.addEventListener('click', (e) => {
+            monkeysDiv.addEventListener('click', (e) => {
                 const target = e.target;
 
                 if (target.nodeName !== 'BUTTON') { return; }

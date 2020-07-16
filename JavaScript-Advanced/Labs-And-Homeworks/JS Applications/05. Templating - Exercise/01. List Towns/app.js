@@ -8,8 +8,7 @@
     elements.rootDiv().innerHTML = '';
 
     try {
-        const townsTemplate = await fetch('./templates/towns.hbs')
-            .then(data => data.text());
+        const townsTemplate = await (await fetch('./templates/towns.hbs')).text();
 
         const template = Handlebars.compile(townsTemplate);
 

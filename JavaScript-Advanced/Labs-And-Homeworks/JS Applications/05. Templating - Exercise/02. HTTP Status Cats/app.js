@@ -5,11 +5,8 @@
     await attachEvents();
 
     async function render() {
-        const catCardTemplate = await fetch('./templates/cat-card.hbs')
-            .then(data => data.text());
-
-        const catsTemplate = await fetch('./templates/cats.hbs')
-            .then(data => data.text());
+        const catCardTemplate = await (await fetch('./templates/cat-card.hbs')).text();
+        const catsTemplate = await (await fetch('./templates/cats.hbs')).text();
 
         Handlebars.registerPartial('cat-card', catCardTemplate);
         const template = Handlebars.compile(catsTemplate);
