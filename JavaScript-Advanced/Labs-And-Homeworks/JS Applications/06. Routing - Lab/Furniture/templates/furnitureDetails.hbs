@@ -20,7 +20,11 @@
             <p>Year: {{year}}</p>
             <p>Description: {{description}}</p>
             <p>Price: {{price}}</p>
+            {{#if material}}
             <p>Material: {{material}}</p>
+            {{else}}
+            <p>Material: none</p>
+            {{/if}}
         </div>
     </div>
 </div>

@@ -5,24 +5,29 @@ import * as manageFurniture from '../controllers/furniture.js';
 
 const loader = document.querySelector('#loadingBox');
 
-function toggleLoader(isLoading) {
-    if (isLoading) {
-        loader.style.display = 'block';
-    } else {
-        loader.style.display = 'none';
+(function toggleNavbar() {
+    const navigation = document.querySelector("#navigation");
+    const navigationTabs = [...navigation.querySelectorAll('li > #navigation-tab')];
+
+    navigation.addEventListener('click', onClick);
+
+    function onClick(e) {
+        if (e.target.nodeName !== 'A') { return; }
+
+        navigationTabs.forEach(tab => {
+            tab.classList.remove('active');
+        });
+
+        e.target.classList.add('active');
     }
-} 
+}());
 
 window.addEventListener('load', () => {
     const app = Sammy('#container', function () {
         this.use('Handlebars', 'hbs');
 
         this.before({}, function () {
-            toggleLoader(true);
-        });
-
-        this.after({}, function () {
-            toggleLoader(false);
+            loader.style.display = 'block';
         });
 
         this.get('index.html', home);
@@ -32,10 +37,12 @@ window.addEventListener('load', () => {
 
         this.get('#/furniture/create', createFurniture);
         this.get('#/furniture/details/:id', manageFurniture.furnitureDetails);
+        this.get('#/furniture/all/:id', manageFurniture.likeFurniture);
+
         this.post('#/furniture/create', () => false);
 
         this.get('#/furniture/mine', myFurniture);
-        this.get('#/furniture/mine/:id', manageFurniture.deleteFurniture);
+        this.get('#/furniture/mine/:id', manageFurniture.dislikeFurniture);
     });
 
     app.run();

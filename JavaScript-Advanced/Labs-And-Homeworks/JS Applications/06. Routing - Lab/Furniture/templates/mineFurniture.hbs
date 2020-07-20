@@ -7,11 +7,27 @@
     </div>
     <div class="row space-top">
         {{#each furniture}}
-        {{>mineFurniture-details mineFurniture=.}}
-        {{else}}
-            <div class="col-md-12">
-                <h1>No furniture!</h1>
+        <div class="col-md-4">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <blockquote class="card-blockquote">
+                        <img src="{{image}}" />
+                        <p>{{description}}</p>
+                        <footer>Someone famous in
+                            <cite title="Source Title">{{make}}</cite>
+                        </footer>
+                        <div class="pull-right">
+                            <a href="#/furniture/details/{{objectId}}" class="btn btn-info">Details</a>
+                            <a href="#/furniture/mine/{{objectId}}" class="btn btn-danger">Dislike Item</a>
+                        </div>
+                    </blockquote>
+                </div>
             </div>
+        </div>
+        {{else}}
+        <div class="col-md-12">
+            <h2>No furniture!</h2>
+        </div>
         {{/each}}
     </div>
 </div>

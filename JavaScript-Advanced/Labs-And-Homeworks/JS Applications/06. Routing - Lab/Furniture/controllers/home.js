@@ -1,6 +1,6 @@
 import * as data from '../api/data.js';
 
-export default async function() {
+export default async function () {
     let furniture = [];
 
     try {
@@ -12,5 +12,5 @@ export default async function() {
     }
 
     const context = { furniture };
-    this.partial('./templates/allFurniture.hbs', context);
+    await this.partial('./templates/allFurniture.hbs', context);
 }

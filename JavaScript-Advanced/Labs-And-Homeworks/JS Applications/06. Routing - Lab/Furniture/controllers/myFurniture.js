@@ -4,7 +4,7 @@ export default async function() {
     let furniture = [];
 
     try {
-        furniture = await data.getAllFurniture();
+        furniture = await data.getMyFurniture();
     } catch (error) {
         alert(`Error: ${error.message}`);
         console.error(error);
@@ -12,5 +12,5 @@ export default async function() {
     }
 
     const context = { furniture };
-    this.partial('./templates/mineFurniture.hbs', context);
+    await this.partial('./templates/mineFurniture.hbs', context);
 }
