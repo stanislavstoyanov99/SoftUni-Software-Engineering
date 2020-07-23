@@ -1,12 +1,8 @@
 import home from '../controllers/home.js';
 import about from '../controllers/about.js';
-import login, { loginPost } from '../controllers/login.js';
-import register, { registerPost } from '../controllers/register.js';
-import logout from '../controllers/logout.js';
-import catalog from '../controllers/catalog.js';
-import details from '../controllers/details.js';
-import create, { createPost } from '../controllers/create.js';
-import edit from '../controllers/edit.js';
+import * as users from '../controllers/users.js';
+import * as catalog from '../controllers/catalog.js';
+import * as team from '../controllers/team.js';
 
 window.addEventListener('load', () => {
     const app = Sammy('#main', function () {
@@ -15,7 +11,10 @@ window.addEventListener('load', () => {
 
         this.userData = {
             loggedIn: false,
-            hasTeam: false
+            hasTeam: false,
+            username: undefined,
+            userId: undefined,
+            teamId: undefined,
         };
 
         this.get('index.html', home);
@@ -24,19 +23,22 @@ window.addEventListener('load', () => {
 
         this.get('#/about', about);
 
-        this.get('#/login', login);
-        this.get('#/register', register);
-        this.get('#/logout', logout);
+        this.get('#/login', users.loginGet);
+        this.post('#/login', (ctx) => { users.loginPost.call(ctx); });
 
-        this.get('#/catalog', catalog);
-        this.get('#/catalog/:id', details);
+        this.get('#/register', users.registerGet);
+        this.post('#/register', (ctx) => { users.registerPost.call(ctx); });
+        
+        this.get('#/logout', users.logoutGet);
 
-        this.get('#/create', create);
-        this.get('#/edit/:id', edit);
+        this.get('#/catalog', catalog.teamCatalog);
+        this.get('#/catalog/:id', catalog.teamDetails);
 
-        this.post('#/register', (ctx) => { registerPost.call(ctx); });
-        this.post('#/login', (ctx) => { loginPost.call(ctx); });
-        this.post('#/create', (ctx) => { createPost.call(ctx); });
+        this.get('#/create', catalog.createTeamGet);
+        this.post('#/create', (ctx) => { catalog.createTeamPost.call(ctx); });
+
+        this.get('#/edit/:id', team.editTeamGet);
+        this.post('#/edit/:id', (ctx) => { team.editTeamPost.call(ctx); });
     });
 
     app.run();
