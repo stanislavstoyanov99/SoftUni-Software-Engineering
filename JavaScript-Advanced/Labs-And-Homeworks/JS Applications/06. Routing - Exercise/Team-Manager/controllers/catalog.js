@@ -102,7 +102,7 @@ export async function createTeamPost() {
     }
 
     if (this.app.userData.hasTeam) {
-        notifications.showNotification('You already have a team.', 'error');
+        notifications.showNotification('You already have a team', 'error');
         this.redirect('#/catalog');
         return;
     }
@@ -112,20 +112,21 @@ export async function createTeamPost() {
         return;
     }
 
-    const newTeam = {
+    const team = {
         name: this.params.name,
         comment: this.params.comment
     };
 
     try {
-        const createdTeam = await createTeam(newTeam, token);
+        const createdTeam = await createTeam(team, token);
 
         if (createdTeam.code) {
             throw createdTeam;
         }
 
         this.app.userData.hasTeam = true;
-        notifications.showNotification('Team created!', 'info');
+        this.app.userData.teamId = createdTeam.objectId;
+        notifications.showNotification('Team created', 'info');
 
         this.redirect(`#/catalog/${createdTeam.objectId}`);
     } catch (error) {

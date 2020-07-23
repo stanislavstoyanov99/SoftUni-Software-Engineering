@@ -74,7 +74,7 @@ export async function createTeam(team, token) {
         return teamMembers;
     }
 
-    await (await fetch(host(api.TEAMS + `/${userId}`), {
+    await (await fetch(host(api.USERS + `/${userId}`), {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
@@ -97,6 +97,79 @@ export async function editTeam(editedTeam, id, token) {
         },
         body: JSON.stringify(editedTeam)
     })).json();
+}
+
+export async function joinTeam(teamId, userId, token) {
+    await (await fetch(host(api.TEAMS + `/${teamId}/members`), {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json',
+            'user-token': token
+        },
+        body: JSON.stringify([userId])
+    })).json();
+
+    const user = await (await fetch(host(api.USERS) + `/${userId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json',
+            'user-token': token
+        },
+        body: JSON.stringify({
+            teamId: teamId
+        })
+    })).json();
+
+    return user;
+}
+
+export async function leaveTeam(userId, token) {
+    const user = await (await fetch(host(api.USERS) + `/${userId}`, {
+        method: 'GET',
+        headers: {
+            'user-token': token
+        }
+    })).json();
+
+    const url = host(api.TEAMS + `/${user.teamId}` + api.MEMBERS);
+    const teamWithMembers = await (await fetch(url, {
+        method: 'GET',
+        headers: {
+            'user-token': token
+        }
+    })).json();
+
+    let teamMembers = teamWithMembers.members.map(m => m.objectId);
+    const userIndex = teamMembers.indexOf(userId);
+
+    if (userIndex < 0) {
+        throw new Error('You are not a member of that team!');
+    }
+
+    // Remove user from team members array
+    teamMembers.splice(userIndex, 1);
+
+    await (await fetch(host(api.TEAMS) + `/${user.teamId}/members`, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'user-token': token
+        },
+        body: JSON.stringify(teamMembers)
+    })).json();
+
+    const updatedUser = await (await fetch(host(api.USERS) + `/${userId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json',
+            'user-token': token
+        },
+        body: JSON.stringify({
+            teamId: ''
+        })
+    })).json();
+
+    return updatedUser;
 }
 
 export async function getTeamById(id, token) {

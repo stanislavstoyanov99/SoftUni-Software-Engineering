@@ -39,6 +39,9 @@ window.addEventListener('load', () => {
 
         this.get('#/edit/:id', team.editTeamGet);
         this.post('#/edit/:id', (ctx) => { team.editTeamPost.call(ctx); });
+
+        this.get('#/join/:id', team.joinTeam);
+        this.get('#/leave', team.leaveTeam);
     });
 
     app.run();

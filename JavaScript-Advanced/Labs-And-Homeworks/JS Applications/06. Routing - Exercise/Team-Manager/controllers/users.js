@@ -14,6 +14,11 @@ export async function loginGet() {
 }
 
 export async function loginPost() {
+    if (!this.params.username || !this.params.password) {
+        notifications.showNotification('Username or password is incorrect.', 'error');
+        return;
+    }
+    
     const user = {
         login: this.params.username,
         password: this.params.password
@@ -59,17 +64,17 @@ export async function registerGet() {
 
 export async function registerPost() {
     if (this.params.username.length < 3) {
-        notifications.showNotification('Username should be at least 2 symbols!', 'error');
+        notifications.showNotification('Username should be at least 2 symbols', 'error');
         return;
     }
 
     if (this.params.password.length < 3) {
-        notifications.showNotification('Password should be at least 3 symbols!', 'error');
+        notifications.showNotification('Password should be at least 3 symbols', 'error');
         return;
     }
 
     if (this.params.password !== this.params.repeatPassword) {
-        notifications.showNotification('Passwords do not match.', 'eror');
+        notifications.showNotification('Passwords do not match', 'error');
         return;
     }
 
@@ -85,7 +90,7 @@ export async function registerPost() {
             throw registeredUser;
         }
 
-        notifications.showNotification('Successful registration!', 'info');
+        notifications.showNotification('Successful registration', 'info');
         this.redirect('#/login');
     } catch (error) {
         console.error(error);
@@ -118,7 +123,7 @@ export async function logoutGet() {
         localStorage.removeItem('username');
         localStorage.removeItem('userId');
 
-        notifications.showNotification('Successful logout!', 'info');
+        notifications.showNotification('Successful logout', 'info');
 
         this.redirect('#/home');
     } catch (error) {
