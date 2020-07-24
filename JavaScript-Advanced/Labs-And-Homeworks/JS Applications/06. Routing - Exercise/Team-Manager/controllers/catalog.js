@@ -1,11 +1,11 @@
 import { getTeams, createTeam, getTeamById} from '../scripts/data.js';
 import * as notifications from '../scripts/notifications.js';
+import { validateToken } from '../scripts/tokenValidation.js';
 
 export async function teamCatalog() {
-    const token = localStorage.getItem('userToken');
+    const token = validateToken(this);
+
     if (!token) {
-        notifications.showNotification('User is not logged in', 'error');
-        this.redirect('#/home');
         return;
     }
 
@@ -32,10 +32,9 @@ export async function teamCatalog() {
 }
 
 export async function teamDetails() {
-    const token = localStorage.getItem('userToken');
+    const token = validateToken(this);
+    
     if (!token) {
-        notifications.showNotification('User is not logged in', 'error');
-        this.redirect('#/home');
         return;
     }
 
@@ -77,10 +76,9 @@ export async function teamDetails() {
 }
 
 export async function createTeamGet() {
-    const token = localStorage.getItem('userToken');
+    const token = validateToken(this);
+    
     if (!token) {
-        notifications.showNotification('User is not logged in', 'error');
-        this.redirect('#/login');
         return;
     }
 
@@ -94,10 +92,9 @@ export async function createTeamGet() {
 }
 
 export async function createTeamPost() {
-    const token = localStorage.getItem('userToken');
+    const token = validateToken(this);
+    
     if (!token) {
-        notifications.showNotification('User is not logged in', 'error');
-        this.redirect('#/login');
         return;
     }
 

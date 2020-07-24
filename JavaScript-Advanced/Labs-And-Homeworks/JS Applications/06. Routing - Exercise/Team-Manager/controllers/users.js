@@ -2,6 +2,7 @@ import { login } from '../scripts/data.js';
 import { register } from '../scripts/data.js';
 import { logout } from '../scripts/data.js';
 import * as notifications from '../scripts/notifications.js';
+import { validateToken } from '../scripts/tokenValidation.js';
 
 export async function loginGet() {
     this.partials = {
@@ -99,10 +100,9 @@ export async function registerPost() {
 }
 
 export async function logoutGet() {
-    const token = localStorage.getItem('userToken');
+    const token = validateToken(this);
+    
     if (!token) {
-        notifications.showNotification('User is not logged in', 'error');
-        this.redirect('#/home');
         return;
     }
 
