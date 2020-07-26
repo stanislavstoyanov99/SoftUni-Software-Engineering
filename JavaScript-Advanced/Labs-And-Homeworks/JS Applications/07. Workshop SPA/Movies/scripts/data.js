@@ -13,7 +13,7 @@ const api = {
     MOVIES: 'data/movies'
 };
 
-async function register(user) {
+export async function register(user) {
     return (await fetch(host(api.REGISTER), {
         method: 'POST',
         headers: {
@@ -23,7 +23,7 @@ async function register(user) {
     })).json();
 }
 
-async function login(user) {
+export async function login(user) {
     return (await fetch(host(api.LOGIN), {
         method: 'POST',
         headers: {
@@ -33,7 +33,7 @@ async function login(user) {
     })).json();
 }
 
-async function logout(token) {
+export async function logout(token) {
     return await fetch(host(api.LOGOUT), {
         method: 'GET',
         headers: {
@@ -42,7 +42,7 @@ async function logout(token) {
     });
 }
 
-async function createMovie(movie, token) {
+export async function createMovie(movie, token) {
     return await (await fetch(host(api.MOVIES), {
         method: 'POST',
         headers: {
@@ -53,7 +53,7 @@ async function createMovie(movie, token) {
     })).json(); 
 }
 
-async function editMovie(editedMovie, id, token) {
+export async function editMovie(editedMovie, id, token) {
     return await (await fetch(host(api.MOVIES + '/' + id), {
         method: 'PUT',
         headers: {
@@ -64,7 +64,7 @@ async function editMovie(editedMovie, id, token) {
     })).json();
 }
 
-async function deleteMovie(id, token) {
+export async function deleteMovie(id, token) {
     return await (await fetch(host(api.MOVIES + '/' + id), {
         method: 'DELETE',
         headers: {
@@ -73,15 +73,15 @@ async function deleteMovie(id, token) {
     })).json();
 }
 
-async function buyTicket(movie, token) {
+export async function buyTicket(movie, token) {
     const newTickets = movie.tickets - 1;
     const movieId = movie.objectId;
 
     return editMovie({ tickets: newTickets}, movieId, token);
 }
 
-async function getMovieByOwner(ownerId, token) {
-    return (await fetch(host(api.MOVIES + `where=ownerId%3D%27${ownerId}%27`), {
+export async function getMovieByOwner(ownerId, token) {
+    return (await fetch(host(api.MOVIES + `?where=ownerId%3D%27${ownerId}%27`), {
         headers: {
             'Content-Type': 'application/json',
             'user-token': token
@@ -89,8 +89,8 @@ async function getMovieByOwner(ownerId, token) {
     })).json();
 }
 
-async function getMovieById(id, token) {
-    return await (await fetch(host(api.movie + '/' + id), {
+export async function getMovieById(id, token) {
+    return await (await fetch(host(api.MOVIES + '/' + id), {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ async function getMovieById(id, token) {
     })).json();
 }
 
-async function getAllMovies(token) {
+export async function getAllMovies(token) {
     return await (await fetch(host(api.MOVIES), {
         method: 'GET',
         headers: {
