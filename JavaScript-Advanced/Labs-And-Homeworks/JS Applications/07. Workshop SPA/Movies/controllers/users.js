@@ -24,6 +24,7 @@ export async function loginPost() {
     };
 
     try {
+        notifications.showLoader();
         const loggedUser = await login(user);
 
         if (loggedUser.code) {
@@ -37,10 +38,12 @@ export async function loginPost() {
         localStorage.setItem('username', loggedUser.username);
         localStorage.setItem('userId', loggedUser.objectId);
 
+        notifications.hideLoader();
         notifications.showNotification('Login successful.', 'info');
         this.redirect('#/home');
     } catch (error) {
         console.error(error);
+        notifications.hideLoader();
         notifications.showNotification(error.message, 'error');
     }
 }
@@ -77,16 +80,19 @@ export async function registerPost() {
     };
 
     try {
+        notifications.showLoader();
         const registeredUser = await register(user);
 
         if (registeredUser.code) {
             throw registeredUser;
         }
 
+        notifications.hideLoader();
         notifications.showNotification('User registration successful.', 'info');
-        await login(user);
+        this.redirect('#/login');
     } catch (error) {
         console.error(error);
+        notifications.hideLoader();
         notifications.showNotification(error.message, 'error');
     }
 }
@@ -99,6 +105,7 @@ export async function logoutGet() {
     }
 
     try {
+        notifications.showLoader();
         const logoutUser = await logout();
 
         if (logoutUser.code) {
@@ -112,11 +119,13 @@ export async function logoutGet() {
         localStorage.removeItem('username');
         localStorage.removeItem('userId');
 
+        notifications.hideLoader();
         notifications.showNotification('Logout successful.', 'info');
 
         this.redirect('#/home');
     } catch (error) {
         console.error(error);
+        notifications.hideLoader();
         notifications.showNotification(error.message, 'error');
         this.redirect('#/home');
     }

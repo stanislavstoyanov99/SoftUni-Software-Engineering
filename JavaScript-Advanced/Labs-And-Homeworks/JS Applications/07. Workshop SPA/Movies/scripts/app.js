@@ -1,14 +1,19 @@
 import home from '../controllers/home.js';
 import * as users from '../controllers/users.js';
+import * as notifications from './notifications.js';
 
 window.addEventListener('load', () => {
     const app = Sammy('#container', function () {
         
         this.use('Handlebars', 'hbs');
 
+        this.before('/', notifications.showLoader);
+        this.before('index.html', notifications.showLoader);
+        this.before('#/home', notifications.showLoader);
+
         this.userData = {
-            username: undefined,
-            userId: undefined,
+            username: localStorage.getItem('username') || '',
+            userId: localStorage.getItem('userId') || '',
         };
 
         this.get('index.html', home);
@@ -24,5 +29,5 @@ window.addEventListener('load', () => {
         this.get('#/logout', users.logoutGet);
     });
 
-    app.run();
+    app.run('/');
 });

@@ -1,3 +1,5 @@
+import * as notifications from '../scripts/notifications.js';
+
 export default async function() {
     this.partials = {
         header: await this.load('./templates/common/header.hbs'),
@@ -5,4 +7,6 @@ export default async function() {
     };
 
     this.partial('./templates/home/home.hbs', this.app.userData);
+
+    notifications.hideLoader();
 }
