@@ -2,7 +2,6 @@
 <div id="detailsMovie">
     <h1>Details</h1>
     <div class="movie">
-        {{#with movie}}
         <h2>Title: {{title}}</h2>
         <img src="{{image}}"/>
         <p>{{description}}</p>
@@ -11,8 +10,7 @@
             <li>{{genres}}</li>
         </ul>
         <p>Available Tickets: {{tickets}}</p>
-        <button><a href="#/buy/{{objectId}}">Buy Ticket</a></button>
-        {{/with}}
+        <button><a href="#/buy/{{objectId}}?origin={{@root.origin}}">Buy Ticket</a></button>
     </div>
 </div>
 {{>footer}}

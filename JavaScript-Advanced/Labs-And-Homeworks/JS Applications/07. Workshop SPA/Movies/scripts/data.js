@@ -111,3 +111,25 @@ export async function getAllMovies(token) {
         }
     })).json();
 }
+
+export async function getMovies(token, searchedGenre) {
+    let result = [];
+
+    if (searchedGenre) {
+        result = await getMoviesBySearchCriteria(token, searchedGenre);
+    } else {
+        result = await getAllMovies(token);
+    }
+
+    return result;
+}
+
+export async function getMoviesBySearchCriteria(token, searchedGenre) {
+    const url = host(api.MOVIES) + `?where=${escape(`genres LIKE '%${searchedGenre}%'`)}`;
+
+    return (await fetch(url, {
+        headers: {
+            'user-token': token
+        }
+    })).json();
+}
