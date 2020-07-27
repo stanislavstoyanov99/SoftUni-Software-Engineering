@@ -74,13 +74,16 @@ export async function deleteMovie(id, token) {
 }
 
 export async function buyTicket(movie, token) {
-    const newTickets = movie.tickets - 1;
-    const movieId = movie.objectId;
-
-    return editMovie({ tickets: newTickets}, movieId, token);
+    if (movie.tickets - 1 >= 0) {
+        const newTickets = movie.tickets - 1;
+        const movieId = movie.objectId;
+        return editMovie({ tickets: newTickets}, movieId, token);
+    } else {
+        throw new Error('There are no available tickets');
+    }
 }
 
-export async function getMovieByOwner(ownerId, token) {
+export async function getMoviesByOwner(ownerId, token) {
     return (await fetch(host(api.MOVIES + `?where=ownerId%3D%27${ownerId}%27`), {
         headers: {
             'Content-Type': 'application/json',

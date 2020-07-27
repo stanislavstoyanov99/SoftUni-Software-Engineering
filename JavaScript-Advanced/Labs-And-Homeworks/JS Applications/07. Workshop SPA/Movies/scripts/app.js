@@ -1,6 +1,8 @@
 import home from '../controllers/home.js';
 import * as users from '../controllers/users.js';
 import * as notifications from './notifications.js';
+import * as movies from '../controllers/movies.js';
+import * as catalog from '../controllers/catalog.js';
 
 window.addEventListener('load', () => {
     const app = Sammy('#container', function () {
@@ -27,6 +29,16 @@ window.addEventListener('load', () => {
         this.post('#/register', (ctx) => { users.registerPost.call(ctx); });
         
         this.get('#/logout', users.logoutGet);
+
+        this.get('#/create', movies.createGet);
+        this.post('#/create', (ctx) => { movies.createPost.call(ctx); });
+
+        this.get('#/catalog', catalog.allMovies);
+        this.get('#/details/:id', movies.detailsGet);
+
+        this.get('#/buy/:id', movies.buyTicketGet);
+
+        this.get('#/myMovies', catalog.myMovies);
     });
 
     app.run('/');
