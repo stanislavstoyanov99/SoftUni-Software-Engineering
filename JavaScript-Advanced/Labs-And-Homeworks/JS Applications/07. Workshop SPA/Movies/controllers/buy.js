@@ -11,13 +11,13 @@ export async function buyTicketGet() {
 
     try {
         notifications.showLoader();
-        const movie = await getMovieById(this.params.id, token);
+        const movie = await getMovieById(this.params.id);
 
         if (movie.code) {
             throw movie;
         }
 
-        const updatedMovie = await buyTicket(movie, token);
+        const updatedMovie = await buyTicket(movie);
         if (updatedMovie.code) {
             throw updatedMovie;
         }
@@ -25,7 +25,6 @@ export async function buyTicketGet() {
         notifications.hideLoader();
         notifications.showNotification(`Successfully bought ticket for ${movie.title}`, 'info');
 
-        console.log(this.params.origin);
         if (this.params.search) {
             this.redirect(this.params.origin + `?search=${this.params.search}`);
         } else {

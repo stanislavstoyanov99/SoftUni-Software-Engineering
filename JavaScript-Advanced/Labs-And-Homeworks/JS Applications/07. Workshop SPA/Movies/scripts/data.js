@@ -1,135 +1,62 @@
+import API from './api.js';
+
 const appId = '9AFEBA00-D662-C9E3-FF69-9E58B8BD8500';
 const restApiKey = '9720BEFE-DCFA-4D72-AEF0-906495BA8552';
 
-function host(endpoint) {
-    return `https://api.backendless.com/${appId}/${restApiKey}/${endpoint}`;
-}
-
-const api = {
-    REGISTER: 'users/register',
-    LOGIN: 'users/login',
-    LOGOUT: 'users/logout',
-    USERS: 'data/Users',
+const endpoints = {
     MOVIES: 'data/movies'
 };
 
-export async function register(user) {
-    return (await fetch(host(api.REGISTER), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-    })).json();
+const api = new API(appId, restApiKey, endpoints);
+
+export const login = api.login.bind(api);
+export const register = api.register.bind(api);
+export const logout = api.logout.bind(api);
+
+export async function createMovie(movie) {
+    return api.post(endpoints.MOVIES, movie);
 }
 
-export async function login(user) {
-    return (await fetch(host(api.LOGIN), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-    })).json();
+export async function editMovie(editedMovie, id) {
+    return api.put(endpoints.MOVIES + '/' + id, editedMovie);
 }
 
-export async function logout(token) {
-    return await fetch(host(api.LOGOUT), {
-        method: 'GET',
-        headers: {
-            'user-token': token
-        }
-    });
+export async function deleteMovie(id) {
+    return api.delete(endpoints.MOVIES + '/' + id);
 }
 
-export async function createMovie(movie, token) {
-    return await (await fetch(host(api.MOVIES), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'user-token': token
-        },
-        body: JSON.stringify(movie)
-    })).json(); 
-}
-
-export async function editMovie(editedMovie, id, token) {
-    return await (await fetch(host(api.MOVIES + '/' + id), {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'user-token': token
-        },
-        body: JSON.stringify(editedMovie)
-    })).json();
-}
-
-export async function deleteMovie(id, token) {
-    return await (await fetch(host(api.MOVIES + '/' + id), {
-        method: 'DELETE',
-        headers: {
-            'user-token': token
-        }
-    })).json();
-}
-
-export async function buyTicket(movie, token) {
+export async function buyTicket(movie) {
     if (movie.tickets - 1 >= 0) {
         const newTickets = movie.tickets - 1;
         const movieId = movie.objectId;
-        return editMovie({ tickets: newTickets}, movieId, token);
+        return editMovie({ tickets: newTickets}, movieId);
     } else {
         throw new Error('There are no available tickets');
     }
 }
 
-export async function getMoviesByOwner(ownerId, token) {
-    return (await fetch(host(api.MOVIES + `?where=ownerId%3D%27${ownerId}%27`), {
-        headers: {
-            'Content-Type': 'application/json',
-            'user-token': token
-        }
-    })).json();
+export async function getMoviesByOwner(ownerId) {
+    return api.get(endpoints.MOVIES + `?where=ownerId%3D%27${ownerId}%27`);
 }
 
-export async function getMovieById(id, token) {
-    return await (await fetch(host(api.MOVIES + '/' + id), {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'user-token': token
-        }
-    })).json();
+export async function getMovieById(id) {
+    return api.get(endpoints.MOVIES + '/' + id);
 }
 
-export async function getAllMovies(token) {
-    return await (await fetch(host(api.MOVIES), {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'user-token': token
-        }
-    })).json();
+export async function getAllMovies() {
+    return api.get(endpoints.MOVIES);
 }
 
-export async function getMovies(token, searchedGenre) {
-    let result = [];
-
+export async function getMovies(searchedGenre) {
     if (searchedGenre) {
-        result = await getMoviesBySearchCriteria(token, searchedGenre);
+        return await getMoviesBySearchCriteria(searchedGenre);
     } else {
-        result = await getAllMovies(token);
+        return await getAllMovies();
     }
-
-    return result;
 }
 
-export async function getMoviesBySearchCriteria(token, searchedGenre) {
-    const url = host(api.MOVIES) + `?where=${escape(`genres LIKE '%${searchedGenre}%'`)}`;
+export async function getMoviesBySearchCriteria(searchedGenre) {
+    const endpoint = endpoints.MOVIES + `?where=${escape(`genres LIKE '%${searchedGenre}%'`)}`;
 
-    return (await fetch(url, {
-        headers: {
-            'user-token': token
-        }
-    })).json();
+    return api.get(endpoint);
 }

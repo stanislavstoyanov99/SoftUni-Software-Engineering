@@ -34,10 +34,6 @@ export async function loginPost() {
         this.app.userData.username = loggedUser.username;
         this.app.userData.userId = loggedUser.objectId;
 
-        localStorage.setItem('userToken', loggedUser['user-token']);
-        localStorage.setItem('username', loggedUser.username);
-        localStorage.setItem('userId', loggedUser.objectId);
-
         notifications.hideLoader();
         notifications.showNotification('Login successful.', 'info');
         this.redirect('#/home');
@@ -115,10 +111,6 @@ export async function logoutGet() {
         this.app.userData.username = undefined;
         this.app.userData.userId = undefined;
         
-        localStorage.removeItem('userToken');
-        localStorage.removeItem('username');
-        localStorage.removeItem('userId');
-
         notifications.hideLoader();
         notifications.showNotification('Logout successful.', 'info');
 

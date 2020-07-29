@@ -46,13 +46,13 @@ export async function createPost() {
         return;
     }
 
-    if (!this.params.image.startsWith('https://')) {
-        notifications.showNotification('The image should start with https://"', 'error');
+    if (!this.params.image.startsWith('https://') && !this.params.image.startsWith('http://')) {
+        notifications.showNotification('The image should start with "https://" or "http://"', 'error');
         return;
     }
 
-    if (isNaN(this.params.tickets)) {
-        notifications.showNotification('The available tickets should be a number.', 'error');
+    if (isNaN(this.params.tickets) || Number(this.params.tickets) <= 0) {
+        notifications.showNotification('The available tickets should be a positive number.', 'error');
         return;
     }
     
@@ -66,7 +66,7 @@ export async function createPost() {
 
     try {
         notifications.showLoader();
-        const createdMovie = await createMovie(movie, token);
+        const createdMovie = await createMovie(movie);
 
         if (createdMovie.code) {
             throw createdMovie;
@@ -95,7 +95,7 @@ export async function editGet() {
 
     try {
         notifications.showLoader();
-        data.movie = await getMovieById(this.params.id, token);
+        data.movie = await getMovieById(this.params.id);
 
         if (data.movie.code) {
             throw data.movie;
@@ -142,13 +142,13 @@ export async function editPost() {
         return;
     }
 
-    if (!this.params.image.startsWith('https://')) {
-        notifications.showNotification('The image should start with https://"', 'error');
+    if (!this.params.image.startsWith('https://') && !this.params.image.startsWith('http://')) {
+        notifications.showNotification('The image should start with "https://" or "http://"', 'error');
         return;
     }
 
-    if (isNaN(this.params.tickets)) {
-        notifications.showNotification('The available tickets should be a number.', 'error');
+    if (isNaN(this.params.tickets) || Number(this.params.tickets) <= 0) {
+        notifications.showNotification('The available tickets should be a positive number.', 'error');
         return;
     }
     
@@ -162,17 +162,16 @@ export async function editPost() {
 
     try {
         notifications.showLoader();
-        console.log(this.params.id);
-        const editedMovie = await editMovie(movie, this.params.id, token);
+        const editedMovie = await editMovie(movie, this.params.id);
 
         if (editedMovie.code) {
             throw editedMovie;
         }
 
         notifications.hideLoader();
-        notifications.showNotification(`Movie with title ${movie.title} has been edited successfully.`, 'info');
+        notifications.showNotification(`Movie with title ${editedMovie.title} has been edited successfully.`, 'info');
 
-        this.redirect('#/myMovies');
+        this.redirect(`#/details/${this.params.id}`);
     } catch (error) {
         console.error(error);
         notifications.hideLoader();
@@ -192,7 +191,7 @@ export async function deleteGet() {
 
     try {
         notifications.showLoader();
-        data.movie = await getMovieById(this.params.id, token);
+        data.movie = await getMovieById(this.params.id);
 
         if (data.movie.code) {
             throw data.movie;
@@ -223,7 +222,7 @@ export async function deletePost() {
     try {
         notifications.showLoader();
 
-        await deleteMovie(this.params.id, token);
+        await deleteMovie(this.params.id);
 
         notifications.hideLoader();
         notifications.showNotification('Movie removed successfully', 'info');
@@ -238,7 +237,7 @@ export async function deletePost() {
         footer: await this.load('./templates/common/footer.hbs')
     };
 
-    this.redirect('#/myMovies');
+    this.redirect('#/catalog/myMovies');
 }
 
 export async function detailsGet() {
@@ -251,10 +250,10 @@ export async function detailsGet() {
     let movie = {};
     try {
         notifications.showLoader();
-        movie = await getMovieById(this.params.id, token);
+        movie = await getMovieById(this.params.id);
 
         if (movie.code) {
-            throw data.movie;
+            throw movie;
         }
 
         notifications.hideLoader();
@@ -272,5 +271,4 @@ export async function detailsGet() {
     Object.assign(movie, { origin: encodeURIComponent('#/details/' +  this.params.id)}, this.app.userData);
 
     this.partial('./templates/movies/details.hbs', movie);
-    notifications.hideLoader();
 }

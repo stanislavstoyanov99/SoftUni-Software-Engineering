@@ -16,7 +16,7 @@ window.addEventListener('load', () => {
 
         this.userData = {
             username: localStorage.getItem('username') || '',
-            userId: localStorage.getItem('userId') || '',
+            userId: localStorage.getItem('userId') || ''
         };
 
         this.get('index.html', home);

@@ -20,12 +20,7 @@ export async function allMovies() {
 
     try {
         notifications.showLoader();
-        const allMovies = await getMovies(token, searchInput);
-
-        if (allMovies.length === 0) {
-            notifications.showNotification('There are not any results matching your criteria.', 'info');
-            this.redirect('#/catalog');
-        }
+        const allMovies = await getMovies(searchInput);
 
         data.movies = allMovies.sort((m1, m2) => m2.tickets - m1.tickets);
 
@@ -61,11 +56,13 @@ export async function myMovies() {
 
     try {
         notifications.showLoader();
-        data.myMovies = (await getMoviesByOwner(localStorage.getItem('userId'), token))
+
+        const ownerId = localStorage.getItem('userId');
+        data.myMovies = (await getMoviesByOwner(ownerId))
             .sort((m1, m2) => m2.tickets - m1.tickets);
 
         if (data.myMovies.code) {
-            throw data.movies;
+            throw data.myMovies;
         }
 
         notifications.hideLoader();
