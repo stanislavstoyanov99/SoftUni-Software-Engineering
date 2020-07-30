@@ -4,6 +4,7 @@ function Sammy(selector, initFn) {
     const mainElement = document.querySelector(selector);
     const getPathCollection = [];
     const postPathCollection = [];
+    const putPathCollection = [];
     let currentPath;
 
     function setupAnchorHandlers() {
@@ -12,18 +13,16 @@ function Sammy(selector, initFn) {
                 if (i.hasAttribute('data-has-handler')) { return; }
                 i.addEventListener('click', onAchorClickHandler);
                 i.setAttribute('data-has-handler', true);
-            }
-        );
+            });
     }
 
-    function setupFormSubmissionHandlers() {
+    function setupFormSubmissionHandlers(cb) {
         [...document.querySelectorAll('form')].forEach(
             f => {
                 if (f.hasAttribute('data-has-handler')) { return; }
                 f.addEventListener('submit', cb);
                 f.setAttribute('data-has-handler', true);
-            }
-        );
+            });
     }
 
     function setupListeners() {
@@ -34,7 +33,7 @@ function Sammy(selector, initFn) {
         });
     }
 
-    function onAchorClickHandler() {
+    function onAchorClickHandler(e) {
         e.preventDefault();
         const target = e.target;
         const path = target.getAttribute('href');
@@ -52,8 +51,14 @@ function Sammy(selector, initFn) {
             const matchFn = match(path, { decode: decodeURIComponent });
             postPathCollection.push({ path, fn, matchFn });
         },
+        put(path, fn) {
+            const matchFn = match(path, { decode: decodeURIComponent });
+            putPathCollection.push({ path, fn, matchFn });
+        },
         load(url) {
-            return fetch(url).then(res => { return res.json() });
+            return fetch(url).then(res => {
+                return res.json();
+            });
         },
         redirect(path) {
             currentPath = path;
@@ -74,9 +79,10 @@ function Sammy(selector, initFn) {
             setupAnchorHandlers();
         },
         swap(htmlContent) {
-            mainElement.innerHtml = htmlContent;
+            mainElement.innerHTML = htmlContent;
             setTimeout(setupAnchorHandlers, 0);
             setTimeout(() => setupFormSubmissionHandlers(this._formSubmissionHandler), 0);
+            setTimeout(() => setupFormSubmissionHandlers(this._formEditHandler), 0);
         },
         _formSubmissionHandler(e) {
             e.preventDefault();
@@ -89,6 +95,7 @@ function Sammy(selector, initFn) {
                 const data = i.matchFn(path);
 
                 if (data) { params = data.params; }
+                
                 return !!data;
             });
 
@@ -97,7 +104,29 @@ function Sammy(selector, initFn) {
                 return;
             }
 
-            pathObj.fn.call(core, { params, form: target} );
+            pathObj.fn.call(core, { params, form: target });
+        },
+        _formEditHandler(e) {
+            e.preventDefault();
+            const target = e.target;
+            if (target.method.toLowerCase() !== 'put') { return; }
+
+            let params;
+            const pathObj = putPathCollection.find(i => {
+                const path = target.action.replace(location.protocol + '//' + location.host, '');
+                const data = i.matchFn(path);
+
+                if (data) { params = data.params; }
+                
+                return !!data;
+            });
+
+            if (!pathObj) {
+                console.error(`body 404 Not Found put ${target.action}`);
+                return;
+            }
+
+            pathObj.fn.call(core, { params, form: target });
         }
     };
 
@@ -119,20 +148,33 @@ const app = Sammy('#main', function () {
         this.load('https://jsonplaceholder.typicode.com/users').then(users => {
             users.forEach(user => {
                 const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.href = `/user/${user.id}`;
-            a.textContent = user.email;
-            li.appendChild(a);
-            ul.appendChild(li);
+                const a = document.createElement('a');
+                a.href = `/user/${user.id}`;
+                a.textContent = user.email;
+                li.appendChild(a);
+                ul.appendChild(li);
             });
 
-            const homePage = `${ul.outerHTML} <form method="delete" action="/test"><input name="name" value="" /><button>Save</button></form>`;
-            this.swap(homePage);
+            const panel = `${ul.outerHTML} <form method="post" action="/create"><input name="name" value="" /><button>Save</button></form>`;
+            this.swap(panel);
         });
     });
 
-    this.post('/test', function (context) {
-        console.log(context);
+    this.post('/create', async function (context) {
+        const url = 'https://jsonplaceholder.typicode.com/users';
+        const email = context.form[0].value;
+
+        const createdUser = (await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({
+                email
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })).json();
+
+        this.redirect('/');
     });
 
     this.get('/user/:id', function (context) {
