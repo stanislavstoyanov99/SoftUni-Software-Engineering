@@ -1,6 +1,7 @@
 import { html, render } from '../node_modules/lit-html/lit-html.js';
 
-const sliderHTMLTemplate = (ctx) => html`
+const sliderHTMLTemplate = (ctx) => {
+    return html`
 <style>
     .slider-container {
         font-family: 'Montserrat', sans-serif;
@@ -10,13 +11,11 @@ const sliderHTMLTemplate = (ctx) => html`
         justify-content: space-between;
         height: 100px;
     }
-
     .slider-percentage-value {
         font-weight: bold;
         text-align: center;
         margin: 1em 0;
     }
-
     .slider {
         -webkit-appearance: none;
         width: 100%;
@@ -29,7 +28,6 @@ const sliderHTMLTemplate = (ctx) => html`
         transition: opacity .2s;
         margin: 0 1em;
     }
-
     .slider::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
@@ -39,7 +37,6 @@ const sliderHTMLTemplate = (ctx) => html`
         background: #4CAF50;
         cursor: pointer;
     }
-
     .slider::-moz-range-thumb {
         width: 25px;
         height: 25px;
@@ -57,48 +54,59 @@ const sliderHTMLTemplate = (ctx) => html`
         Percentage: <span class="slider-percentage-value">${ctx.percentage}</span>
     </div>
 </div>
-`
+`;
+}
 class Slider extends HTMLElement {
+
+    static get observedAttributes() {
+        return ['step', 'slider-value', 'is-inverted'];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'slider-value') { name = 'value'; }
+        if (name === 'is-inverted') { name = 'isInverted'; }
+        this.state[name] = newValue;
+
+        if (	
+            (name === 'isInverted' && newValue === 'true') ||	
+            (name === 'value' && this.state.isInverted === 'true')	
+        ) {	
+            const value = 100 - Number(this.state.value || '0')	
+            this.state.value = value;	
+        }
+
+        this._update();
+    }
+
     constructor() {
-        super()
+        super();
+        const self = this;
 
         this.state = {
-            step: this.step,
-            value: this.value,
-            percentage: this.percentage,
+            step: '0.1',
+            value: '0',
+            get percentage() {
+                return self.percentage;
+            },
+            set percentage(newValue) {
+                this._percentage = newValue;
+            },
             sliderInputHandler: this.sliderInputHandler
-        }
+        };
 
         this.root = this.attachShadow({ mode: 'closed' });
 
         this._update();
     }
 
-
-    get step() {
-        return this.getAttribute('step') || '0.1';
-    }
-
-    get value() {
-        if (this.isInverted) {
-            return 100 - Number(this.getAttribute('slider-value') || '0')
-        }
-
-        return this.getAttribute('slider-value') || '0';
-    }
-
     get percentage() {
-        let calcPercentage = Number(this.value) / 100 * 100;
+        let calcPercentage = Number(this.state.value) / 100 * 100;
 
-        if (this.isInverted) {
-            calcPercentage = (100 - Number(this.value)) / 100 * 100
+        if (this.state.isInverted) {
+            calcPercentage = (100 - Number(this.state.value)) / 100 * 100
         }
 
-        return `${calcPercentage.toFixed(2)} %`
-    }
-
-    get isInverted() {
-        return this.hasAttribute('invert');
+        return `${calcPercentage.toFixed(2)} %`;
     }
 
     sliderInputHandler(e) {
@@ -114,6 +122,8 @@ class Slider extends HTMLElement {
         this._update();
     }
 
+    // this update method is not optimal please check 07.carousel to see the proper way
+    // for creating the update method (there the method is called render)
     _update() {
         render(sliderHTMLTemplate(this.state), this.root, { eventContext: this });
     }
