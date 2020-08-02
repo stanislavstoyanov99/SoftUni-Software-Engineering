@@ -7,15 +7,25 @@ const getAppRootTemplate = (context) => {
 
     return html`
     <button @click=${context.toggleDisabledHandler}>Toggle Disabled</button>
-    <input ?disabled=${context.isDisabled} value="${context.inputValue}"/>
+    <input ?disabled=${context.isDisabled} .value="${context.inputValue}"/>
 
     ${context.isLoading ? loader : users}
     `;
 };
 
 const getUserListTemplate = (context) => {
-    return html`<ul @click=${context.selectUserHandler}>${repeat(context._users, u => u.id, (user) => html`<li class="user-email" data-id=${user.id}>${user.email}</li>`)}</ul>`;
+    return html`
+        <ul @click=${context.selectUserHandler}>
+            ${repeat(context._users, u => u.id, (user) => renderUser(user))}
+        </ul>
+        `;
 };
+
+function renderUser(user) {
+    return html`
+        <li class="user-email" data-id=${user.id}>${user.email}</li>
+        `;
+}
 
 class AppRoot extends HTMLElement {
 
