@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "firebase": "^7.10.0",
     "handlebars": "^4.7.3",
     "jquery": "^3.4.1",
     "sammy": "^0.7.6"
