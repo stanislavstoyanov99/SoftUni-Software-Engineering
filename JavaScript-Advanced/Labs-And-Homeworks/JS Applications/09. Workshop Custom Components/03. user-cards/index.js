@@ -66,7 +66,9 @@ function getUserCardTemplate(context) {
       <div class="info">
         <h3>${context.name}</h3>
         ${userInfo}
-        <button @click=${context.toggleHandler} class="toggle-info-btn">Toggle Info</button>
+        <button @click=${context.toggleHandler} class="toggle-info-btn">
+            ${context.showInfo ? 'Hide Info' : 'Toggle Info'}
+        </button>
       </div>
   </div>
   `;
@@ -96,7 +98,6 @@ class UserCard extends HTMLElement {
 
     toggleHandler() {
         this.showInfo = !this.showInfo;
-        
         this._render();
     }
 
