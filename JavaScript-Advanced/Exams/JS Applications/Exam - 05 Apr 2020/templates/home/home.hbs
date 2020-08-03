@@ -1,0 +1,56 @@
+{{#unless email}}
+{{>login}}
+{{else}}
+{{>header}}
+<div class="content">
+    <section class="js">
+        <h2>JavaScript</h2>
+        <div class="articles">
+            {{#if jsArticles}}
+            {{#each jsArticles}}
+            {{>article}}
+            {{/each}}
+            {{else}}
+            <h3 class="no-articles">No articles yet</h3>
+            {{/if}}
+        </div>
+    </section>
+    <section class="CSharp">
+        <h2>C#</h2>
+        <div class="articles">
+            {{#if cSharpArticles}}
+            {{#each cSharpArticles}}
+            {{>article}}
+            {{/each}}
+            {{else}}
+            <h3 class="no-articles">No articles yet</h3>
+            {{/if}}
+        </div>
+    </section>
+    <section class="Java">
+        <h2>Java</h2>
+        <div class="articles">
+            {{#if javaArticles}}
+            {{#each javaArticles}}
+            {{>article}}
+            {{/each}}
+            {{else}}
+            <h3 class="no-articles">No articles yet</h3>
+            {{/if}}
+        </div>
+    </section>
+    <section class="Pyton">
+        <h2>Pyton</h2>
+        <div class="articles">
+            {{#if pythonArticles}}
+            {{#each pythonArticles}}
+            {{>article}}
+            {{/each}}
+            {{else}}
+            <h3 class="no-articles">No articles yet</h3>
+            {{/if}}
+        </div>
+    </section>
+</div>
+{{>footer}}
+{{/unless}}
