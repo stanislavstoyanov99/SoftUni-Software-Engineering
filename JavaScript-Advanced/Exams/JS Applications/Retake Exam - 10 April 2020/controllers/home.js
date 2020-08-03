@@ -26,6 +26,4 @@ export default async function() {
     }
 
     this.partial('./templates/home/home.hbs', data);
-
-    notifications.hideLoader();
 }
