@@ -35,7 +35,7 @@ window.addEventListener('load', () => {
         this.get('#/edit/:id', articles.editArticleGet);
         this.post('#/edit/:id', (ctx) => { articles.editArticlePost.call(ctx); });
 
-        this.get('#/delete/:id', articles.deleteArticlePost);
+        this.get('#/delete/:id', articles.deleteArticleGet);
 
         this.get('#/details/:id', articles.detailsGet);
     });

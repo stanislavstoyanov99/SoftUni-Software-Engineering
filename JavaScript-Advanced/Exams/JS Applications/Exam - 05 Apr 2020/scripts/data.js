@@ -21,6 +21,10 @@ export async function getArticleById(id) {
     return api.get(endpoints.ARTICLES + '/' + id);
 }
 
+export async function getAllArticles() {
+    return api.get(endpoints.ARTICLES);
+}
+
 export async function getArticleByCategory(category) {
     const url = endpoints.ARTICLES + `?where=category%3D%27${escape(category)}%27`;
     return api.get(url);
@@ -37,8 +41,4 @@ export async function apiEditArticle(editedArticle, id) {
 
 export async function apiDeleteArticle(id) {
     return api.delete(endpoints.ARTICLES + '/' + id);
-}
-
-export async function getAllArticles() {
-    return api.get(endpoints.ARTICLES);
 }

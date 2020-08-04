@@ -160,7 +160,7 @@ export async function editArticlePost() {
     }
 }
 
-export async function deleteArticlePost() {
+export async function deleteArticleGet() {
     const token = validateToken(this);
 
     if (!token) {
@@ -196,6 +196,7 @@ export async function detailsGet() {
     }
 
     let article = {};
+
     try {
         notifications.showLoader();
         article = await getArticleById(this.params.id);
