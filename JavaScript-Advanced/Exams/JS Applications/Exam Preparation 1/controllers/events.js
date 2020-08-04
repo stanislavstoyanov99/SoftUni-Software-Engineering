@@ -182,22 +182,20 @@ export async function deleteEventGet() {
     try {
         notifications.showLoader();
 
-        await apiDeleteEvent(this.params.id);
+        const deletionTime = await apiDeleteEvent(this.params.id);
+
+        if (deletionTime.code) {
+            throw deletionTime;
+        }
 
         notifications.hideLoader();
         notifications.showNotification('Event closed successfully.', 'info');
+        this.redirect('#/home');
     } catch (error) {
         console.error(error);
         notifications.hideLoader();
         notifications.showNotification(error.message, 'error');
     }
-
-    this.partials = {
-        header: await this.load('./templates/common/header.hbs'),
-        footer: await this.load('./templates/common/footer.hbs')
-    };
-
-    this.redirect('#/home');
 }
 
 export async function detailsGet() {
@@ -269,19 +267,11 @@ export async function joinEventGet() {
         }
 
         notifications.hideLoader();
-        notifications.showNotification('You joined the event successfully.', 'info');
+        notifications.showNotification('You joined the event successfully.', 'info');     
+        this.redirect(`#/details/${this.params.id}`);
     } catch (error) {
         console.error(error);
         notifications.hideLoader();
         notifications.showNotification(error.message, 'error');
     }
-
-    this.partials = {
-        header: await this.load('./templates/common/header.hbs'),
-        footer: await this.load('./templates/common/footer.hbs')
-    };
-
-    Object.assign(event, this.app.userData);
-
-    this.redirect(`#/details/${this.params.id}`);
 }

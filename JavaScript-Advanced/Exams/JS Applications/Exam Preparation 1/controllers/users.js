@@ -133,14 +133,14 @@ export async function profileGet() {
         return;
     }
 
-    let data = {};
+    let events = {};
 
     try {
         notifications.showLoader();
-        data.events = await getEventsByUserId(this.app.userData.userId);
+        events = await getEventsByUserId(this.app.userData.userId);
 
-        if (data.events.code) {
-            throw userEvents;
+        if (events.code) {
+            throw events;
         }
 
         notifications.hideLoader();
@@ -150,6 +150,11 @@ export async function profileGet() {
         notifications.showNotification(error.message, 'error');
         this.redirect('#/home');
     }
+
+    const data = {
+        events: events.map(e => e.name),
+        eventsCount: events.length
+    };
 
     Object.assign(data, this.app.userData);
 
