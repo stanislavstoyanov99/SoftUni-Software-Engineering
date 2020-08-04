@@ -17,6 +17,14 @@ export async function apiCreateEvent(event) {
     return api.post(endpoints.EVENTS, event);
 }
 
+export async function apiEditEvent(editedEvent, id) {
+    return api.put(endpoints.EVENTS + '/' + id, editedEvent);
+}
+
+export async function apiDeleteEvent(id) {
+    return api.delete(endpoints.EVENTS + '/' + id);
+}
+
 export async function getEventById(id) {
     return api.get(endpoints.EVENTS + '/' + id);
 }
@@ -28,12 +36,4 @@ export async function getAllEvents() {
 export async function getEventsByUserId(userId) {
     const url = endpoints.EVENTS + `?where=ownerId%3D%27${userId}%27`;
     return api.get(url);
-}
-
-export async function apiEditEvent(editedEvent, id) {
-    return api.put(endpoints.EVENTS + '/' + id, editedEvent);
-}
-
-export async function apiDeleteEvent(id) {
-    return api.delete(endpoints.EVENTS + '/' + id);
 }

@@ -53,23 +53,26 @@ export async function registerGet() {
 }
 
 export async function registerPost() {
+    const errors = [];
+
     if (!this.params.password || !this.params.username) {
-        notifications.showNotification('All input fields are required', 'error');
-        return;
+        errors.push('All input fields are required.');
     }
 
     if (this.params.username.length < 3) {
-        notifications.showNotification('Username should be at least 3 characters', 'error');
-        return;
+        errors.push('Username should be at least 3 characters.');
     }
 
     if (this.params.password.length < 6) {
-        notifications.showNotification('Password should be at least 6 characters', 'error');
-        return;
+        errors.push('Password should be at least 6 characters.');
     }
 
     if (this.params.password !== this.params.rePassword) {
-        notifications.showNotification('Passwords do not match', 'error');
+        errors.push('Passwords do not match.');
+    }
+
+    if (errors.length !== 0) {
+        notifications.showNotification(errors.join(' '), 'error');
         return;
     }
 

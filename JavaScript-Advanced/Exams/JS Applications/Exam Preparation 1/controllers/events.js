@@ -27,28 +27,33 @@ export async function createEventPost() {
         return;
     }
 
+    const errors = [];
+
     if (!this.params.name ||
         !this.params.dateTime ||
         !this.params.description ||
         !this.params.imageURL) {
-        notifications.showNotification('All input fields are required.', 'error');
-        return;
+        errors.push('All input fields are required.');
     }
 
     if (this.params.name.length < 6) {
-        notifications.showNotification('The event name should be at least 6 characters long.', 'error');
-        return;
+        errors.push('The event name should be at least 6 characters long.');
     }
 
-    // TODO - add data validation
+    if (!(moment(`${this.params.dateTime}`, 'DD-MM-YYYY HH:mm', true).isValid())) {
+        errors.push('Event date should be valid in format "DD-MM-YYYY HH:mm".');
+    }
 
     if (this.params.description.length < 10) {
-        notifications.showNotification('The description should be at least 10 characters long.', 'error');
-        return;
+        errors.push('The description should be at least 10 characters long.');
     }
 
-    if (!this.params.imageURL.startsWith('https://') && !this.params.image.startsWith('http://')) {
-        notifications.showNotification('The image should start with "https://" or "http://"', 'error');
+    if (!this.params.imageURL.startsWith('https://') && !this.params.imageURL.startsWith('http://')) {
+        errors.push('The image should start with "https://" or "http://".');
+    }
+
+    if (errors.length !== 0) {
+        notifications.showNotification(errors.join(' '), 'error');
         return;
     }
 
@@ -69,7 +74,7 @@ export async function createEventPost() {
         }
 
         notifications.hideLoader();
-        notifications.showNotification(`Event created successfully.`, 'info');
+        notifications.showNotification('Event created successfully.', 'info');
 
         this.redirect('#/home');
     } catch (error) {
@@ -120,28 +125,33 @@ export async function editEventPost() {
         return;
     }
 
+    const errors = [];
+
     if (!this.params.name ||
         !this.params.dateTime ||
         !this.params.description ||
         !this.params.imageURL) {
-        notifications.showNotification('All input fields are required.', 'error');
-        return;
+        errors.push('All input fields are required.');
     }
 
     if (this.params.name.length < 6) {
-        notifications.showNotification('The event name should be at least 6 characters long.', 'error');
-        return;
+        errors.push('The event name should be at least 6 characters long.');
     }
 
-    // TODO - add data validation
+    if (!(moment(`${this.params.dateTime}`, 'DD-MM-YYYY HH:mm', true).isValid())) {
+        errors.push('Event date should be valid in format "DD-MM-YYYY HH:mm".');
+    }
 
     if (this.params.description.length < 10) {
-        notifications.showNotification('The description should be at least 10 characters long.', 'error');
-        return;
+        errors.push('The description should be at least 10 characters long.');
     }
 
-    if (!this.params.imageURL.startsWith('https://') && !this.params.image.startsWith('http://')) {
-        notifications.showNotification('The image should start with "https://" or "http://"', 'error');
+    if (!this.params.imageURL.startsWith('https://') && !this.params.imageURL.startsWith('http://')) {
+        errors.push('The image should start with "https://" or "http://".');
+    }
+
+    if (errors.length !== 0) {
+        notifications.showNotification(errors.join(' '), 'error');
         return;
     }
 
@@ -162,7 +172,7 @@ export async function editEventPost() {
         }
 
         notifications.hideLoader();
-        notifications.showNotification(`Event edited successfully.`, 'info');
+        notifications.showNotification('Event edited successfully.', 'info');
 
         this.redirect(`#/home`);
     } catch (error) {
