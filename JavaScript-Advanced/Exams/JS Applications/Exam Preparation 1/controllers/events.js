@@ -40,8 +40,8 @@ export async function createEventPost() {
         errors.push('The event name should be at least 6 characters long.');
     }
 
-    if (!(moment(`${this.params.dateTime}`, 'DD-MM-YYYY HH:mm', true).isValid())) {
-        errors.push('Event date should be valid in format "DD-MM-YYYY HH:mm".');
+    if (!(moment(`${this.params.dateTime}`, 'DD MMMM - hh a', true).isValid())) {
+        errors.push('Event date should be valid in format "DD MMMM - hh PM or AM".');
     }
 
     if (this.params.description.length < 10) {
@@ -138,8 +138,8 @@ export async function editEventPost() {
         errors.push('The event name should be at least 6 characters long.');
     }
 
-    if (!(moment(`${this.params.dateTime}`, 'DD-MM-YYYY HH:mm', true).isValid())) {
-        errors.push('Event date should be valid in format "DD-MM-YYYY HH:mm".');
+    if (!(moment(`${this.params.dateTime}`, 'DD MMMM - hh a', true).isValid())) {
+        errors.push('Event date should be valid in format "DD MMMM - hh PM or AM".');
     }
 
     if (this.params.description.length < 10) {
