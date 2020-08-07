@@ -1,4 +1,5 @@
 import { login, register, logout, getEventsByOrganizer } from '../scripts/data.js';
+import validateUser from '../scripts/validateUser.js';
 import * as notifications from '../scripts/notifications.js';
 
 export async function loginGet() {
@@ -94,6 +95,10 @@ export async function registerPost() {
 }
 
 export async function logoutGet() {
+    if (!validateUser()) {
+        return;
+    }
+
     try {
         notifications.showLoader();
         await logout();
@@ -115,15 +120,15 @@ export async function logoutGet() {
 }
 
 export async function profileGet() {
+    if (!validateUser()) {
+        return;
+    }
+    
     let events = {};
 
     try {
         notifications.showLoader();
         events = await getEventsByOrganizer(this.app.userData.username);
-
-        // if (events.code) {
-        //     throw events;
-        // }
 
         notifications.hideLoader();
     } catch (error) {
