@@ -23,3 +23,5 @@
 |<a href="https://softuni.bg/trainings/2796/asp-net-core-february-2020"> ASP.NET Core </a>| <a href="https://softuni.bg/certificates/details/81036/46dcc61b"> Link</a> |
 |<a href="https://softuni.bg/trainings/2838/js-advanced-may-2020/internal"> JS Advanced </a>| <a href="https://softuni.bg/certificates/details/83940/925b7f29"> Link</a> |
 |<a href="https://softuni.bg/trainings/2840/js-applications-june-2020"> JS Applications </a>| <a href="https://softuni.bg/certificates/details/86871/8dfeab2e"> Link</a> |
+|<a href="https://softuni.bg/trainings/4112/angular-june-2023"> Angular </a>| <a href="https://softuni.bg/certificates/details/184960/17b77448"> Link</a> |
+|<a href="https://softuni.bg/trainings/4359/containers-and-cloud-january-2024"> Containers and Cloud </a>| <a href="https://softuni.bg/certificates/details/207033/89b52ffd"> Link</a> |
