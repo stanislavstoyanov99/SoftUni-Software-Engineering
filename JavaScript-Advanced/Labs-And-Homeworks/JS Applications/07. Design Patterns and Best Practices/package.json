@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "local-web-server": "^4.2.1",
+    "local-web-server": "^5.3.1",
     "path-to-regexp": "^6.1.0"
   }
 }
